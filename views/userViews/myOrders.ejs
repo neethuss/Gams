@@ -1,0 +1,222 @@
+<%- include('header') -%>
+  <div class="page-header text-center"
+    style="background-image: url('assets/images/page-header-bg.jpg'); height: 120px; margin-bottom: 12px;">
+    <div class="container-fluid">
+      <h1 class="page-title">Orders</h1>
+    </div>
+  </div>
+
+
+  <div class="container mt-3">
+
+    <table class="table table-bordered" style="font-size: 15px;">
+      <thead class="table-dark">
+        <tr style="text-align: center;">
+          <th>SL No</th>
+          <th>Product</th>
+          <th>Total</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Cancel Order</th>
+          <th>Return Order</th>
+          <th>Invoice Download</th>
+          <th>More</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% orders.forEach((order,index)=>{ %>
+          <tr style="text-align: center;">
+
+
+            <td>
+              <%= index +1%>
+            </td>
+
+            <td>
+              <% order.products.forEach((product)=> { %>
+                <%= product.product.product_name %>
+                  <br>
+                  <% }); %>
+            </td>
+
+           
+
+
+            <td>
+              Rs. <%= order.payTotal %>
+            </td>
+
+
+            <td>
+              <%=order.orderDate.toLocaleDateString()  %>
+            </td>
+
+            <td>
+              <%= order.status %>
+            </td>
+
+            <% if ((order.status=="Returning" || order.status=="Delivered" )) {%>
+
+              <td>
+                <a style=" cursor: pointer;">Not available</a>
+                           
+              </td>
+
+
+              <% }else if ((order.status !="Cancelled" )) {%>
+
+                <td>
+                  <a style="color: red; cursor: pointer;" class="cancelOrderBtn">Cancel</a>
+                  <input id="orderId" style="display: none;" value="<%= order.id %>" type="text">
+                             
+                </td>
+                <% }else{%>
+                  <td>
+                    <a style=" cursor: pointer;">Not available</a>
+                               
+                  </td>
+                  <%}%>
+
+
+                    <% if ((order.status=="Cancelled" )) {%>
+
+                      <td>
+                        <a style="color: rgb(216, 159, 159); cursor: pointer;">Not available</a>
+                                   
+                      </td>
+
+
+                      <% }else if ((order.status=='Delivered' && order.status !="Returning" )) {%>
+
+                        <td>
+                          <a style="color: red; cursor: pointer;" class="returnOrderBtn">Return</a>
+                          <input id="orderId" style="display: none;" value="<%= order.id %>" type="text">
+                                 
+                        </td>
+                        <% }else{%>
+                          <td>
+                            <a style="color: rgb(216, 159, 159); cursor: pointer;">Not available</a>
+                                       
+                          </td>
+                          <%}%>
+
+                            <% if(order.status=='Delivered' ){%>
+                              <td>
+                                <a href="/invoiceDownload?id=<%=order._id%>"
+                                  style="color: rgb(126, 201, 40); cursor: pointer;">Download</a>
+                              </td>
+                              <%}else{%>
+                                <td>
+                                  <a style="color: rgb(216, 159, 159); cursor: pointer;">Not available</a>
+                                </td>
+                                <%} %>
+
+                                <td>
+                                  <a href="/orderDetails/<%=order._id%>" style=" cursor: pointer; text-decoration: underline; ">View Details</a>
+                                </td>
+          </tr>
+
+          <% }) %>
+      </tbody>
+    </table>
+
+    
+    <div class="pagination" style="display: flex; align-items: center;justify-content: center;">
+      <nav aria-label="Page navigation" class="pagination-container" style="margin-top:30px">
+        <ul class="pagination justify-content-center">
+        
+         <li class="page-item <%= page == 1 ? 'disabled' : '' %>">
+          <a class="page-link" href="?page=<%= page - 1 %>" aria-label="Previous">
+              <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+          </a>
+      </li>
+             
+              <% for (let i=1; i <=totalPages; i++) { %>
+                <li class="page-item <%= page == i ? 'active' : '' %>">
+                  <a class="page-link" href="?page=<%= i %>">
+                    <%= i %>
+                  </a>
+                </li>
+                <% } %>
+
+                 
+                  <li class="page-item <%= page == totalPages ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= page + 1 %>" aria-label="Next">
+                      Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                    </a>
+                  </li>
+        </ul>
+      </nav>
+    </div>
+
+
+
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  <script>
+
+    document.querySelectorAll('.cancelOrderBtn').forEach((btn) => {
+      btn.addEventListener('click', function () {
+
+        var id = document.getElementById('orderId').value;
+        fetch('/cancelOrder', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: id
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+          
+            if (data.message == "yes") {
+              window.location.reload();
+            }
+        
+
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+    });
+  </script>
+
+  <script>
+    document.querySelectorAll('.returnOrderBtn').forEach((btn) => {
+      btn.addEventListener('click', function () {
+        var id = document.getElementById('orderId').value;
+        fetch('/returnOrder', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: id
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+           
+            if (data.message == "yes") {
+              window.location.reload();
+            }
+           
+
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+    })
+  </script>
+
+
+  </body>
+
+  </html>

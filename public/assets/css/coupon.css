@@ -1,0 +1,29 @@
+.card {
+  height: 160px;
+  max-height: 200px;
+  padding: 15px;
+  margin: 10px;
+
+  background-color: #aa8fb6;
+  color: white;
+  /* padding: 10px; */
+  width: 300px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.couponName{
+  font-size: 15px;
+ 
+}
+
+.discountAmount{
+  font-size: 20px;
+}
+.code{
+  background-color: white;
+  color: #e41313;
+  padding: 0 5px;
+}

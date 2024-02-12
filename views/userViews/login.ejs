@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <title>GAMS</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+
+   <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+   <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo-resized.png">
+   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo-resized.png">
+   <link rel="manifest" href="assets/images/icons/site.html">
+   <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
+   <link rel="shortcut icon" href="/uploads/logo-resized.png">
+   <meta name="apple-mobile-web-app-title" content="Molla">
+   <meta name="application-name" content="Molla">
+   <meta name="msapplication-TileColor" content="#cc9966">
+   <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
+   <meta name="theme-color" content="#ffffff">
+ 
+   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+   <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
+   <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
+   <link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/toastify.css">
+</head>
+
+<body>
+  <div class="page-wrapper">
+
+
+    <main class="main">
+
+
+      <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
+        style="background-image: url('/uploads/download.jpg')">
+        <div class="container">
+          <div class="form-box">
+            <div class="form-tab">
+              <ul class="nav nav-pills nav-fill" role="tablist">
+
+                <li class="nav-item">
+                  <a class="nav-link active" id="register-tab-2" data-toggle="tab" href="#register-2" role="tab"
+                    aria-controls="register-2" aria-selected="true">Login</a>
+                </li>
+              </ul>
+              <div class="tab-content">
+
+                <div class="tab-pane fade show active" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
+                  <form action="/login" method="post" onsubmit="return validateForm()">
+                    <div class="form-group">
+                      <label for="register-email-2">Your email address *</label>
+                      <input type="text" class="form-control" id="register-email-2" name="email" value="neethu@gmail.com">
+                      <span id="emailError" class="error" style="color: red;"></span>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="register-password-2">Password *</label>
+                      <input type="password" class="form-control" id="register-password-2" name="password" value="neethu@123">
+                      <span id="passwordError" class="error" style="color: red;"></span>
+                      <a href="/forgotPassword">Forgot Password</a>
+                      
+                    </div>
+
+                    <div class="form-footer">
+                      <button type="submit" class="btn btn-outline-primary-2">
+                        <span>LOGIN</span>
+                        <i class="icon-long-arrow-right"></i>
+                      </button>
+
+
+                    </div>
+                  </form>
+                  <div id="signup-link">
+                    <p>New user? <a href="/signup">signup</a></p>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    function validateForm() {
+
+      document.getElementById('emailError').textContent = ""
+      document.getElementById('passwordError').textContent = ""
+
+      const email = document.getElementById('register-email-2').value.trim()
+      const password = document.getElementById('register-password-2').value.trim()
+
+      
+      if (email === "") {
+        document.getElementById('emailError').textContent = "Email cannot be empty"
+        return false
+      }
+     if(!/^\S+@\S+\.\S+$/.test(email)) {
+        document.getElementById('emailError').textContent = "Invalid email format"
+        return false
+      }
+      if(password === "") {
+        document.getElementById('passwordError').textContent = "Password cannot be empty"
+        return false
+      }
+      if(password.length < 6) {
+        document.getElementById('passwordError').textContent = "Password must contains atleast 6 characters"
+        return false
+      }
+      return true
+    }
+  </script>
+
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+   const successMsg = '<%= successMsg.join("<br>") %>';
+  const errorMsg = '<%= errorMsg.join("<br>") %>';
+
+  if (successMsg) {
+      Toastify({
+        text: successMsg,
+        duration: 3000,
+        className: 'toastify-success',
+        gravity: "top",
+        position: "center",
+        backgroundColor: 'red',
+      }).showToast();
+    }
+
+  if (errorMsg) {
+    Toastify({
+      text: errorMsg,
+      duration: 3000,
+      gravity: "top",
+      position: "center",
+      className: 'toastify-error',
+      backgroundColor: 'red',
+    }).showToast();
+  }
+ 
+
+</script>
+  
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/jquery.hoverIntent.min.js"></script>
+  <script src="assets/js/jquery.waypoints.min.js"></script>
+  
+  
+  <script src="assets/js/main.js"></script>
+</body>
+
+
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>GAMS</title>
+  <meta name="keywords" content="HTML5 Template">
+  <meta name="description" content="Molla - Bootstrap eCommerce Template">
+  <meta name="author" content="p-themes">
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo-resized.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo-resized.png">
+  <link rel="" manifest="" href="/assets/images/icons/site.html">
+  <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+  <link rel="shortcut icon" href="../../upload/logo gams.jpg">
+  <meta name="apple-mobile-web-app-title" content="Molla">
+  <meta name="application-name" content="Molla">
+  <meta name="msapplication-TileColor" content="#cc9966">
+  <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+ 
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/main.min.css">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+
+</head>
+<style>
+  .gradient-custom * {
+    font-size: 15px;
+  }
+</style>
+
+<body>
+  <div class="page-wrapper">
+    <header class="header">
+
+
+      <div class="header-middle sticky-header">
+        <div class="container">
+          <div class="header-left">
+            <button class="mobile-menu-toggler">
+              <span class="sr-only">Toggle mobile menu</span>
+              <i class="icon-bars"></i>
+            </button>
+
+            <a href="" class="logo">
+              <img src="/uploads/logo-resized.png" alt="Molla Logo" width="40" height="20">
+            </a>
+
+            <nav class="main-nav">
+              <ul class="menu sf-arrows">
+                <li class="megamenu-container active">
+                  <a href="/" class="sf-with-ul">Home</a>
+
+                </li>
+
+                <li>
+                  <a href="/shop" class="sf-with-ul">Shop</a>
+                </li>
+
+                <li>
+                  <a href="">About us</a>
+                </li>
+
+              </ul>
+            </nav>
+          </div>
+
+          <div class="header-right">
+
+
+
+            <div class="dropdown cart-dropdown">
+              <a href="/cart" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false" data-display="static">
+                <i class="icon-shopping-cart"></i>
+
+              </a>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="h-100 gradient-custom">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-lg-10 col-xl-8">
+              <div class="card" style="border-radius: 10px;">
+                <div class="card-header px-4 py-5" style="display: flex; justify-content: space-between;">
+                  <div>
+                    <h5 class="text-muted mb-0">Your Order<span style="color: #a8729a;"><br>Order id: <%= order._id %>
+                      </span></h5>
+                  </div>
+
+                  <div>
+                    <h5 class="text-muted mb-0">Order date:<span style="color: #a8729a;">
+                        <%= order.orderDate.toLocaleDateString() %>
+                      </span></h5>
+
+                    <h5 class="text-muted mb-0">Order status:<span style="color: #a8729a;">
+                        <%= order.status %>
+                      </span></h5>
+
+                  </div>
+
+                </div>
+                <div class="card-body p-4">
+                  
+                  <% let totalOrderPrice=0; %>
+                    <% order.products.forEach(product=> { %>
+                      <% totalOrderPrice +=product.totalPrice; %>
+                        <div class="card shadow-0 border mb-4">
+                          <div class="card-body" style="font-size: 18px;">
+                            <div class="row align-items-center">
+                              <div class="col-md-2">
+                                <img src="/uploads/<%= product.product.product_image[0] %>" class="img-fluid"
+                                  alt="Product Image">
+                              </div>
+                              <div class="col-md-2 text-center">
+                                <p class="text-muted mb-0" style="font-weight: bold;">
+                                  <%= product.product.product_name %>
+                                </p>
+                              </div>
+                              <div class="col-md-2 text-center">
+                                <p class="text-muted mb-0">
+                                  Category: <br>
+                                  <%= product.product.product_category.category_name %>
+                                </p>
+                              </div>
+                              <div class="col-md-2 text-center">
+                                <p class="text-muted mb-0 small">
+                                  Price:<br> Rs. <%= product.product.product_price %>
+                                </p>
+                              </div>
+                              <div class="col-md-2 text-center">
+                                <p class="text-muted mb-0 small">Qty: <br>
+                                  <%= product.quantity %>
+                                </p>
+                              </div>
+                              <div class="col-md-2 text-center">
+                                <p class="text-muted mb-0 small">Total: <br>Rs. <%= product.totalPrice %>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <% }); %>
+
+
+                          <div style="display: flex; justify-content: space-between;">
+                            <div>
+                              <div>
+                                <p class="text-muted mb-0"><span class="fw-bold me-4">Shipping Address
+                                </p>
+                                <p class="text-muted mb-0"><span>
+                                    <%= order.shippingAddress.name %><br>
+                                      <%= order.shippingAddress.address %>,<%= order.shippingAddress.district %>,<%=
+                                            order.shippingAddress.state %>,<%= order.shippingAddress.country %>
+                                              <br>pincode: <%= order.shippingAddress.pincode %><br>phone: <%=
+                                                  order.shippingAddress.phone %>
+                                </p>
+                              </div>
+                            </div>
+
+                            <div>
+
+                              <div>
+                                <p class="text-muted mb-0"><span class="fw-bold me-4">Payment Method:</span>
+                                  <%= order.paymentMethod %>
+                                </p>
+                              </div>
+                              <div>
+                                <p class="text-muted mb-0"><span class="fw-bold me-4">Total:</span>Rs. <%=
+                                    totalOrderPrice %>
+                                </p>
+                              </div>
+
+                              <div>
+                                <p class="text-muted mb-0"><span class="fw-bold me-4">Discount:</span>Rs.
+                                  <%= order.discountAmount %>
+                                </p>
+                              </div>
+                            </div>
+
+                          </div>
+
+
+
+
+
+                </div>
+                <div class="card-footer border-0 px-4 py-5"
+                  style="background-color: #696368; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                  <h5 class="d-flex align-items-center justify-content-end text-white  mb-0">TOTAL: <span
+                      class="h2 mb-0 ms-2">Rs. <%= order.payTotal %>/-</span></h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <%- include('footer') %>

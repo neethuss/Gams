@@ -1,0 +1,458 @@
+<%- include('header') %>
+
+
+  <main class="main">
+
+    <div class="page-header text-center"
+      style="background-image: url('assets/images/page-header-bg.jpg'); height: 115px;">
+      <div class="container-fluid">
+        <h1 class="page-title">Our Shop Gallery</h1>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="container" style="margin-top: 30px;">
+        <div class="product-details-top mb-2 ">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="product-gallery">
+                <figure class="product-main-image">
+                  <img id="product-zoom" src="/uploads/<%= product.product_image[0] %>"
+                    data-zoom-image="/uploads/<%= product.product_image[0] %>" alt="product.product_name">
+
+                  <a href="#" id="btn-product-gallery" class="btn-product-gallery">
+                    <i class="icon-arrows"></i>
+                  </a>
+                </figure>
+
+
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="product-details">
+                <h1 class="product-title">
+                  <%= product.product_name %>
+                </h1>
+                
+
+
+
+                <div class="product-price">
+                  <p>
+                    <span>Rs. </span>
+                    <%= product.product_price %>
+                  </p>
+                </div>
+
+                <div class="details-filter-row details-row-size">
+
+                  <div class="product-details-quantity hidden ">
+                    <label for="qty">Qty:<%= product.product_stock %></label>
+                    <input data-qnt-id="<%= product.product_stock +1%>" oninput="a()" type="number" id="qty" value="1"
+                      min="1" max="<%= product.product_stock +1 %>" step="1" data-decimals="0" required>
+                  </div>
+
+
+                  <%if(product.product_stock==0){%>
+                    <div class="outofstock" style="background-color: red;">
+                      <p style="color: #fff; margin: 0 20px;">OUT OF StOCK !</p>
+                    </div>
+                    <% }else{%>
+                      <div class="instock" style="background-color: green;">
+                        <p style="color: #fff; margin: 0 20px;">IN STOCK</p>
+                      </div>
+                      <%} %>
+
+                </div>
+
+
+
+                <div class="product-details-action">
+                  <%if(product.product_stock!=0){%>
+                    <a href="/cart" id="addToCartButton" class="addToCartButton btn-product btn-cart"><span>add to
+                        cart</span></a>
+                    <%}%>
+
+
+                      <div class="details-action-wrapper">
+                        <a href="" id="wishlistButton" class="btn-product btn-wishlist" title="Wishlist">
+                          <% if(product.inWishlist===true){%>
+                            <span>remove from wishlist</span>
+                            <%}else{%>
+                              <span>add to wishlist</span>
+                              <%} %>
+                        </a>
+                      </div>
+                </div>
+
+                <div id="product-zoom-gallery" class="product-image-gallery">
+                  <% for (let i=0; i < product.product_image.length; i++) { %>
+                    <a class="product-gallery-item" href="/uploads/<%= product.product_image[i] %>"
+                      data-image="/uploads/<%= product.product_image[i] %>"
+                      data-zoom-image="/uploads/<%= product.product_image[i] %>" onclick="return false;">
+                      <img src="/uploads/<%= product.product_image[i] %>" alt="product.product_name">
+                    </a>
+                    <% } %>
+                </div>
+
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-details-tab product-details-extended">
+        <div class="container">
+          <ul class="nav nav-pills justify-content-center" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab" role="tab"
+                aria-controls="product-desc-tab" aria-selected="true">Description</a>
+            </li>
+
+          </ul>
+        </div>
+
+        <div class="tab-content">
+
+          <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel"
+            aria-labelledby="product-desc-link">
+            <div class="product-desc-content">
+              <div style="padding: 0 20px;">
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque
+                  volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non,
+                  semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
+                  Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.
+                  Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer ligula
+                  vulputate sem tristique cursus. </p>
+                <ul>
+                  <li>Nunc nec porttitor turpis. In eu risus enim. In vitae mollis elit. </li>
+                  <li>Vivamus finibus vel mauris ut vehicula.</li>
+                  <li>Nullam a magna porttitor, dictum risus nec, faucibus sapien.</li>
+                </ul>
+
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque
+                  volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non,
+                  semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
+                  Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.
+                  Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer ligula
+                  vulputate sem tristique cursus. </p>
+              </div>
+
+
+
+              <div class="product-desc-row bg-image text-white"
+                style="background-image: url('/assets/images/products/single/extended/bg-2.jpg')">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h2>Design</h2>
+                      <p>The perfect choice for the summer months. These wedges are perfect for
+                        holidays and home, with the thick cross-over strap design and heel strap
+                        with an adjustable buckle fastening. Featuring chunky soles with an
+                        espadrille and cork-style wedge. </p>
+                    </div>
+
+                    <div class="col-md-6">
+                      <h2>Fabric & care</h2>
+                      <p>As part of our Forever Comfort collection, these wedges have ultimate
+                        cushioning with soft padding and flexi soles. Perfect for strolls into
+                        the old town on holiday or a casual wander into the village.</p>
+                    </div>
+                  </div>
+
+                  <div class="mb-5"></div>
+
+                  <img src="/assets/images/products/single/extended/sign.png" alt="" class="ml-auto mr-auto">
+                </div>
+              </div>
+
+              <div class="product-desc-row bg-image"
+                style="background-image: url('/assets/images/products/single/extended/bg-3.jpg')">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-lg-5">
+                      <blockquote>
+                        <p>“ Everything is important - <br>that success is in the details. ”</p>
+
+                        <cite>– Steve Jobs</cite>
+                      </blockquote>
+                      <p>Nullam mollis. Ut justo. Suspendisse potenti. Sed egestas, ante et
+                        vulputate volutpat, eros pede semper est, vitae luctus metus libero eu
+                        augue. </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="product-info-tab" role="tabpanel" aria-labelledby="product-info-link">
+            <div class="product-desc-content">
+              <div class="container">
+                <h3>Information</h3>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque
+                  volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non,
+                  semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
+                  Aliquam porttitor mauris sit amet orci. </p>
+
+                <h3>Fabric & care</h3>
+                <ul>
+                  <li>Faux suede fabric</li>
+                  <li>Gold tone metal hoop handles.</li>
+                  <li>RI branding</li>
+                  <li>Snake print trim interior </li>
+                  <li>Adjustable cross body strap</li>
+                  <li> Height: 31cm; Width: 32cm; Depth: 12cm; Handle Drop: 61cm</li>
+                </ul>
+
+                <h3>Size</h3>
+                <p>one size</p>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="product-shipping-tab" role="tabpanel" aria-labelledby="product-shipping-link">
+            <div class="product-desc-content">
+              <div class="container">
+                <h3>Delivery & returns</h3>
+                <p>We deliver to over 100 countries around the world. For full details of the delivery
+                  options we offer, please view our <a href="#">Delivery information</a><br>
+                  We hope you’ll love every purchase, but if you ever need to return an item you can
+                  do so within a month of receipt. For full details of how to make a return, please
+                  view our <a href="#">Returns information</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
+            <div class="reviews">
+              <div class="container">
+                <h3>Reviews (2)</h3>
+                <div class="review">
+                  <div class="row no-gutters">
+                    <div class="col-auto">
+                      <h4><a href="#">Samanta J.</a></h4>
+                      <div class="ratings-container">
+                        <div class="ratings">
+                          <div class="ratings-val" style="width: 80%;"></div>
+                          
+                        </div>
+                      </div>
+                      <span class="review-date">6 days ago</span>
+                    </div>
+                    <div class="col">
+                      <h4>Good, perfect size</h4>
+
+                      <div class="review-content">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum
+                          dolores assumenda asperiores facilis porro reprehenderit animi culpa
+                          atque blanditiis commodi perspiciatis doloremque, possimus,
+                          explicabo, autem fugit beatae quae voluptas!</p>
+                      </div>
+
+                      <div class="review-action">
+                        <a href="#"><i class="icon-thumbs-up"></i>Helpful (2)</a>
+                        <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="review">
+                  <div class="row no-gutters">
+                    <div class="col-auto">
+                      <h4><a href="#">John Doe</a></h4>
+                      <div class="ratings-container">
+                        <div class="ratings">
+                          <div class="ratings-val" style="width: 100%;"></div>
+                         
+                        </div>
+                      </div>
+                      <span class="review-date">5 days ago</span>
+                    </div>
+                    <div class="col">
+                      <h4>Very good</h4>
+
+                      <div class="review-content">
+                        <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum
+                          blanditiis laudantium iste amet. Cum non voluptate eos enim, ab
+                          cumque nam, modi, quas iure illum repellendus, blanditiis
+                          perspiciatis beatae!</p>
+                      </div>
+
+                      <div class="review-action">
+                        <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
+                        <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </main>
+
+
+  <style>
+    .product-gallery {
+      width: 400px;
+      
+      height: 400px;
+      
+      overflow: hidden;
+      
+      position: relative;
+    }
+
+    .product-main-image {
+      width: 100%;
+      height: 100%;
+    }
+
+    #product-zoom {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+
+
+
+  <script>
+    $(document).ready(function () {
+    
+      $('#product-zoom').elevateZoom({
+        zoomType: "inner",
+        cursor: "crosshair",
+        responsive: true,
+        zoomWindowFadeIn: 500,
+        zoomWindowFadeOut: 500,
+        zoomWindowPosition: 1
+      });
+    });
+  </script>
+
+
+
+  <script>
+    document.getElementById('addToCartButton').addEventListener('click', function () {
+      var qtyValue = document.getElementById('qty').value;
+
+      fetch('/cart', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userId: '<%= userId %>',
+          productId: '<%= productId %>',
+          quantity: qtyValue
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          
+          document.getElementById('userIdPlaceholder').innerText = data.userId;
+          updateCartUI(data.cart);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  </script>
+
+  <script>
+    function a() {
+      var inputValue = document.getElementById("qty")
+      let inputQnt = inputValue.value
+      let qntStock = inputValue.dataset.qntId
+      console.log(qntStock);
+      if (inputQnt == qntStock) {
+        Toastify({
+          text: "Added to wishlist",
+          duration: 600,
+          destination: "https://github.com/apvarun/toastify-js",
+          newWindow: true,
+          close: true,
+          gravity: "top", 
+          position: "center",
+          stopOnFocus: true, 
+          style: {
+            background: " #4CAF50  ",
+          },
+          onClick: function () {
+            alert("Toast clicked!");
+          }
+        }).showToast();
+        console.log("hai");
+      }
+    
+    }
+  </script>
+
+  <script>
+
+    document.getElementById('wishlistButton').addEventListener('click', function () {
+      fetch('/wishlist', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productId: '<%= productId %>'
+        })
+
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.added) {
+            const addToWishlist = document.getElementById('wishlistButton')
+
+            addToWishlist.textContent = 'Remove from wishlist'
+          } else {
+            const addToWishlist = document.getElementById('wishlistButton');
+            addToWishlist.textContent = 'add to wishlist'
+          }
+        })
+    })
+
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+ 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
+
+  <script src="/assets/js/jquery.min.js"></script>
+  <script src="/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+  <script src="/assets/js/jquery.waypoints.min.js"></script>
+  <script src="/assets/js/superfish.min.js"></script>
+  <script src="/assets/js/owl.carousel.min.js"></script>
+  <script src="/assets/js/bootstrap-input-spinner.js"></script>
+  <script src="/assets/js/jquery.elevateZoom.min.js"></script>
+  <script src="/assets/js/bootstrap-input-spinner.js"></script>
+  <script src="/assets/js/jquery.magnific-popup.min.js"></script>
+  
+  <script src="/assets/js/main.js"></script>
+  </body>
+
+
+  </html>
+
+  <%- include('footer') %>

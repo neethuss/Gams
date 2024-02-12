@@ -1,0 +1,264 @@
+<%- include('header') -%>
+
+  <main class="main">
+    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+      <div class="container">
+        <h1 class="page-title">Your cart</h1>
+      </div>
+    </div>
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+        </ol>
+      </div>
+    </nav>
+    <%if(!cart || !cart.products || cart.products.length===0){%>
+
+      <div style="display: flex; justify-content: center; height: 50vh;">
+
+        <img src="/uploads/emptyCart.png" alt="">
+      </div>
+      <%}else{%>
+
+        <div class="page-content">
+          <div class="cart">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-9">
+                  <table class="table table-cart table-mobile">
+                    <thead>
+                      <tr style="text-align: center;">
+                        <th>Product</th>
+                        <th></th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <% let cartTotal=0; %> 
+
+
+
+
+
+                        <% cart.products.forEach((product)=> { %>
+
+                          <tr style="text-align: center;" data-product-id="<%= product.product._id %>">
+                            <td>
+                              <img style="width: 50px;" src="/uploads/<%= product?.product.product_image[0] %>"
+                                alt="no image">
+                            <td>
+                              <%= product.product.product_name %>
+                            </td>
+                            </td>
+
+                            <td>
+                              Rs. <%= product.product.product_price %>
+                            </td>
+
+                            <td>
+                              <div class="quantity">
+                                <div class="product-details-quantity" style="margin-left: 15px;">
+                                  <input data-qnt-id="<%= product.product.product_stock +1%>"
+                                    data-product-id="<%= product.product._id %>" oninput="return a(event)" type="number"
+                                    id="qty" class=" form-control qu" value="<%= product.quantity  %>" min="1"
+                                    max="<%= product.product.product_stock +1 %>" step="1" data-decimals="0" required>
+                                </div>
+
+
+                              </div>
+                            </td>
+
+
+                            <td>
+                              <% const total=product.product.product_price * product.quantity;%>
+                                <span class="product-total">
+                                  Rs. <%= total %>
+                                </span>
+                                <% cartTotal +=total; %>
+                            </td>
+
+                            <td>
+
+                              <a href="/removeCart/<%=product.product._id%>"
+                                class="btn btn-danger remove-product">Remove</a>
+
+
+                            </td>
+
+                          </tr>
+                        <%})%>  
+
+                    </tbody>
+
+
+                  </table>
+
+                  
+
+
+                  
+                </div>
+                <aside class="col-lg-3">
+                  <div class="summary summary-cart">
+                    <h3 class="summary-title">Cart Total</h3>
+
+                    <table class="table table-summary">
+                      <tbody>
+
+
+                        <tr class="summary-total">
+                          <td>Total:</td>
+                          <td id="cartTotal">Rs. <%= cartTotal.toFixed(2) %>
+                          </td>
+                        </tr>
+                        
+                        
+                      </tbody>
+                    </table>
+
+                    <% if(cart && cart.products && cart.products[0]){ %>
+                      <a href="/checkout" class="btn btn-outline-primary-2 btn-order btn-block"
+                        id="checkoutButton">PROCEED
+                        TO
+                        CHECKOUT</a>
+
+                      <%}%>
+                  </div>
+
+                  <a href="/shop" class="btn btn-outline-dark-2 btn-block mb-3 "><span>CONTINUE
+                      SHOPPING</span><i class="icon-refresh"></i></a>
+                </aside>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+          <%}%>
+
+  </main>
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+  <script>
+
+    function a(event) {
+      var inputElement = event.target;
+      let inputQnt = inputElement.value;
+      console.log(inputQnt);
+      let qntStock = inputElement.dataset.qntId;
+      let productId = inputElement.dataset.productId;
+      let button = document.getElementById("checkoutButton");
+      console.log(qntStock);
+
+      if (inputQnt == qntStock) {
+
+        Toastify({
+          text: "OUT OF STOCK",
+          duration: 600,
+          destination: "https://cdn.jsdelivr.net/npm/toastify-js",
+          newWindow: true,
+          close: true,
+          gravity: "top",
+          position: "center",
+          stopOnFocus: true,
+          style: {
+            background: " #4CAF50  ",
+          },
+          onClick: function () {
+            alert("Toast clicked!");
+          }
+        }).showToast();
+        console.log("succes");
+        console.log("button disabled")
+        button.style.display = "none"
+      } else {
+
+        button.style.display = "block"
+      }
+    }
+  </script>
+
+
+
+
+  <script>
+    console.log('domloaded');
+    document.addEventListener('DOMContentLoaded', function () {
+      const quantityInputs = document.querySelectorAll('.product-details-quantity input');
+      quantityInputs.forEach(input => {
+        input.addEventListener('input', function (event) {
+          const productId = event.target.dataset.productId;
+          const quantity = parseInt(event.target.value, 10);
+          console.log('Quantity changed:', productId, quantity);
+          updateCart(productId, quantity);
+        });
+      });
+    });
+
+    async function updateCart(productId, quantity) {
+      console.log('Updating cart:', productId, quantity);
+      try {
+        const response = await fetch('/updateCart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: '<%= userId %>',
+            updatedProducts: [{ productId, quantity }],
+          }),
+        });
+
+        if (response.ok) {
+          
+          const responseData = await response.json();
+
+          
+          console.log('Updated data:', responseData);
+
+          if (typeof responseData.cartTotal != Number) {
+            responseData.cartTotal = Number(responseData.cartTotal)
+
+            
+            const cartTotalElement = document.querySelector('.summary-total td:last-child');
+            cartTotalElement.textContent = `Rs. ${responseData.cartTotal.toFixed(2)}`;
+
+          }
+
+
+
+          
+          responseData.cart.products.forEach(product => {
+            const productRow = document.querySelector(`[data-product-id="${product.product._id}"]`);
+            const productTotalElement = productRow.querySelector('.product-total');
+            productTotalElement.textContent = `Rs. ${(product.product.product_price * product.quantity).toFixed(2)}`;
+          });
+
+          console.log('Cart updated successfully');
+        } else {
+          console.log('Error updating cart:', response.statusText);
+        }
+
+      } catch (error) {
+        console.error('Error updating cart:', error);
+      }
+    }
+
+
+  </script>
+
+
+
+
+  <%- include('footer') -%>

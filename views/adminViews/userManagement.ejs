@@ -1,0 +1,105 @@
+<%- include('nav') -%>
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-danger shadow-primary border-radius-lg pt-4 pb-3">
+                            <h6 class="text-white text-capitalize ps-3">UserManagement</h6>
+                            
+                        </div>
+                    </div>
+                    <div class="card-body px-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                    <tr style="text-align: center;">
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Id</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Name</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Email</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Phone</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% users.forEach((users,i)=>{%>
+
+
+                                        <tr style="text-align: center">
+                                            <td>
+                                                <%= i+1 %>
+                                            </td>
+                                            <td>
+                                                <%= users.username %>
+                                            </td>
+                                            <td>
+                                                <%= users.email %>
+                                            </td>
+                                            <td>
+                                                <%= users.phone %>
+                                            </td>
+                                            <td>
+                                                <% if (!users.isBlocked) { %>
+                                                    <a href="/admin/blockUser?email=<%=users.email%>"
+                                                        class="btn btn-danger">Unblock</a>
+
+                                                    <% } else { %>
+                                                        <a href="/admin/blockUser?email=<%=users.email%>"
+                                                            class="btn btn-success" id="blockUser">Block</a>
+
+                                                        <% } %>
+                                            </td>
+
+                                        </tr>
+                                        <%}) %>
+                                </tbody>
+                            </table>
+                            
+                            <div class="pagination"
+                                style="display: flex; align-items: center; justify-content: center;">
+                                <nav aria-label="Page navigation" class="pagination-container"
+                                    style="margin-top: 30px;">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item <%= page == 1 ? 'disabled' : '' %>">
+                                            <a class="page-link" href="?page=<%= page - 1 %>" aria-label="Previous">
+                                                <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+                                            </a>
+                                        </li>
+
+                                        <% for (let i=1; i <=totalPages; i++) { %>
+                                            <li class="page-item <%= page == i ? 'active' : '' %>">
+                                                <a class="page-link" href="?page=<%= i %>">
+                                                    <%= i %>
+                                                </a>
+                                            </li>
+                                            <% } %>
+
+                                                <li class="page-item <%= page == totalPages ? 'disabled' : '' %>">
+                                                    <a class="page-link" href="?page=<%= page + 1 %>" aria-label="Next">
+                                                        Next <span aria-hidden="true"><i
+                                                                class="icon-long-arrow-right"></i></span>
+                                                    </a>
+                                                </li>
+                                    </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+    </body>
+
+    </html>

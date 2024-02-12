@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Your Profile</title>
+  <style>
+   
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    form {
+      max-width: 500px;
+      margin: auto;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    input[type="submit"] {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+
+
+
+    .custom-navbar {
+      background-color: #123456;
+      
+    }
+
+    body {
+      background-image: url('http://www.pixelstalk.net/wp-content/uploads/2016/04/Grey-backgrounds-for-desktop.jpg');
+     
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .price-pro {
+      color: #920808;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+
+    .navbar-brand {
+      color: #000;
+    }
+
+    .navbar-toggler-icon {
+      background-color: #000;
+    }
+
+    .product-images img {
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .product-info h4 {
+      color: #000;
+    }
+
+    .price-pro {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    .product-description {
+      color: #ccc;
+      font-size: 1.1rem;
+    }
+
+    .btn-add-to-cart,
+    .btn-buy-now {
+      background-color: #ff8800;
+      color: #fff;
+      border: none;
+      margin-top: 10px;
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-add-to-cart:hover,
+    .btn-buy-now:hover {
+      background-color: #cc6e00;
+    }
+
+    .message {
+      display: none;
+      background-color: #28a745;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+
+    .product-images img {
+      width: 250px;
+    
+      height: 250px;
+     
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+
+
+  <div>
+    <h1>Edit Your Profile</h1>
+  </div>
+
+
+  <div>
+    <form action="/editProfile/<%=user._id%>" method="post" onsubmit="return validateForm()">
+      <label for="userName">Username:</label>
+      <input type="text" id="username" name="username" value="<%=user.username %>" ><br><br>
+      <span id="usernameError" class="error" style="color: red;"></span><br><br>
+
+
+      <label for="street">Email:</label>
+      <input type="text" id="email" name="email" value="<%=user.email %>" ><br><br>
+      <span id="emailError" class="error" style="color: red;"></span><br><br>
+
+
+      <label for="street">Phone:</label>
+      <input type="text" id="phone" name="phone" value="<%=user.phone %>" ><br><br>
+      <span id="phoneError" class="error" style="color: red;"></span><br><br>
+
+
+
+
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+  <script>
+    function validateForm() {
+      document.getElementById('usernameError').textContent = ""
+      document.getElementById('emailError').textContent = ""
+      document.getElementById('phoneError').textContent = ""
+
+     
+      const username = document.getElementById('username').value.trim()
+      const email = document.getElementById('email').value.trim()
+      const phone = document.getElementById('phone').value.trim()
+
+
+      if (username === "") {
+        document.getElementById('usernameError').textContent = "Username cannot be empty"
+        return false
+      }
+
+      if (username.length < 4) {
+        document.getElementById("usernameError").textContent = "Username must be at least 4 characters";
+        return false;
+      }
+
+      if (!/^[a-zA-Z]+$/.test(username)) {
+        document.getElementById("usernameError").textContent = "Username cannot contain numbers or symbols";
+        return false;
+      }
+
+      if (email === "") {
+        document.getElementById("emailError").textContent = "Email cannot be empty";
+        return false
+      }
+
+      if (!/^\S+@\S+\.\S+$/.test(email)) {
+        document.getElementById("emailError").textContent = "Invalid email format";
+        return false;
+      }
+
+      if (phone === "") {
+        document.getElementById("phoneError").textContent = "Phone number cannot be empty";
+        return false
+      }
+
+
+      if (phone.length !== 10) {
+        document.getElementById("phoneError").textContent = "Phone number must contain 10 digits";
+        return false;
+      }
+
+      if (!/^\d+$/.test(phone)) {
+        document.getElementById("phoneError").textContent = "Phone number cant contain letters";
+        return false
+      }
+
+      return true; 
+    }
+  </script>
+</body>
+
+</html>

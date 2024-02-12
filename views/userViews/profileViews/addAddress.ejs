@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Address</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 500px;
+            margin: auto;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        
+
+
+
+.custom-navbar {
+   background-color: #123456; 
+}
+     body {
+    background-image: url('http://www.pixelstalk.net/wp-content/uploads/2016/04/Grey-backgrounds-for-desktop.jpg'); /* Replace 'path_to_your_image.jpg' with the actual path to your image file */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.price-pro {
+    color: #920808;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+
+        .navbar-brand {
+            color: #000;
+        }
+
+        .navbar-toggler-icon {
+            background-color: #000;
+        }
+
+        .product-images img {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .product-info h4 {
+            color: #000;
+        }
+
+        .price-pro {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .product-description {
+            color: #ccc;
+            font-size: 1.1rem;
+        }
+
+        .btn-add-to-cart,
+        .btn-buy-now {
+            background-color: #ff8800;
+            color: #fff;
+            border: none;
+            margin-top: 10px;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-add-to-cart:hover,
+        .btn-buy-now:hover {
+            background-color: #cc6e00;
+        }
+
+        .message {
+            display: none;
+            background-color: #28a745;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        .product-images img {
+    width: 250px; 
+    height: 250px; 
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+
+    </style>
+    
+</head>
+
+<body>
+
+
+
+
+    <h1>Add Delivery Address</h1>
+    <form action="/addAddress" method="post" onsubmit="return validateForm()">
+        <label for="houseName">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="street">Address:</label>
+        <input type="text" id="address" name="address" required><br><br>
+
+        <label for="city">District:</label>
+        <input type="text" id="district" name="district" required><br><br>
+
+        <label for="state">State:</label>
+        <input type="text" id="state" name="state" required><br><br>
+
+        <label for="pincode">Country:</label>
+        <input type="text" id="country" name="country" required><br><br>
+
+        <label for="pincode">Pincode:</label>
+        <input type="text" id="pincode" name="pincode" required><br><br>
+
+        <label for="pincode">Phone Number:</label>
+        <input type="text" id="phone" name="phone" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        function validateForm() {
+            
+            var name = document.getElementById("name").value.trim();
+            var address = document.getElementById("address").value.trim();
+            var district = document.getElementById("district").value.trim();
+            var state = document.getElementById("state").value.trim();
+            var country = document.getElementById("country").value.trim();
+            var pincode = document.getElementById("pincode").value.trim();
+            var phone = document.getElementById("phone").value.trim();
+
+            
+            if (name === "") {
+                alert("name must be filled out");
+                return false;
+            }
+
+            
+            if (address === "") {
+                alert("address must be filled out");
+                return false;
+            }
+
+            
+            if (district === "") {
+                alert("district must be filled out");
+                return false;
+            }
+
+            
+            if (state === "") {
+                alert("State must be filled out");
+                return false;
+            }
+
+            if (country === "") {
+                alert("country must be filled out");
+                return false;
+            }
+
+            if (pincode === "") {
+                alert("pincode must be filled out");
+                return false;
+            }
+
+            if (phone === "") {
+                alert("phone must be filled out");
+                return false;
+            }
+
+            if (name.length < 4) {
+                alert("name must be at least 4 characters")
+                return false;
+            }
+
+            if (!/^[a-zA-Z]+$/.test(name)) {
+                alert("Enter valid name")
+                return false;
+            }
+
+            
+            if (!/^[a-zA-Z]+$/.test(address)) {
+                alert("Enter valid address")
+                return false;
+            }
+
+            if (!/^[a-zA-Z]+$/.test(district)) {
+                alert("Enter valid district")
+                return false;
+            }
+
+            if (!/^[a-zA-Z]+$/.test(state)) {
+                alert("Enter valid state")
+                return false;
+            }
+
+            if (!/^[a-zA-Z]+$/.test(country)) {
+                alert("Enter valid country")
+                return false;
+            }
+
+            if (pincode.length !== 6 || !/^\d+$/.test(pincode)) {
+                alert("Enter valid pincode")
+                return false;
+            }
+
+            if (phone.length !== 10 || !/^\d+$/.test(phone)) {
+                alert("Enter valid phone number")
+                return false;
+            }
+
+            return true; 
+        }
+    </script>
+</body>
+
+</html>

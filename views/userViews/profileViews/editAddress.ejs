@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Address</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 500px;
+            margin: auto;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Edit Address</h1>
+    <div class="container">
+        <form action="/editAddress/<%=address._id%>" method="post" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="<%= address.name %>" class="form-control">
+                <span id="nameError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" value="<%= address.address %>" class="form-control">
+                <span id="addressError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="district">District:</label>
+                <input type="text" id="district" name="district" value="<%= address.district %>" class="form-control">
+                <span id="districtError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" value="<%= address.state %>" class="form-control">
+                <span id="stateError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" value="<%= address.country %>" class="form-control">
+                <span id="countryError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="pincode">Pincode:</label>
+                <input type="text" id="pincode" name="pincode" value="<%= address.pincode %>" class="form-control">
+                <span id="pincodeError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" value="<%= address.phone %>" class="form-control" required>
+                <span id="phoneError" class="error"></span>
+            </div>
+
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+    </div>
+
+
+  <script>
+    function validateForm() {
+
+      document.getElementById('nameError').textContent = ""
+      document.getElementById('addressError').textContent = ""
+      document.getElementById('districtError').textContent = ""
+      document.getElementById('stateError').textContent = ""
+      document.getElementById('countryError').textContent = ""
+      document.getElementById('pincodeError').textContent = ""
+      document.getElementById('phoneError').textContent = ""
+
+      const name = document.getElementById("name").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const district = document.getElementById("district").value.trim();
+      const state = document.getElementById("state").value.trim();
+      const country = document.getElementById("country").value.trim();
+      const pincode = document.getElementById("pincode").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+
+      if (name === "") {
+        document.getElementById('nameError').textContent = "name cannot be empty"
+        return false
+      }
+
+      if (name.length < 4) {
+        document.getElementById("nameError").textContent = "name must be at least 4 characters";
+        return false;
+      }
+
+      if (!/^[a-zA-Z]+$/.test(name)) {
+        document.getElementById("nameError").textContent = "name cannot contain numbers or symbols";
+        return false;
+      }
+
+      if (address === "") {
+        document.getElementById('addressError').textContent = "address cannot be empty"
+        return false
+      }
+
+      if (!/^([a-zA-Z]+\s)+[a-zA-Z]+$/.test(address)) {
+        document.getElementById("addressError").textContent = "Invalid address format";
+        return false;
+      }
+
+      if (district === "") {
+        document.getElementById('districtError').textContent = "district name cannot be empty"
+        return false
+      }
+
+      if (!/^[a-zA-Z]+$/.test(district)) {
+        document.getElementById("districtError").textContent = " district name cannot contain numbers or symbols";
+        return false;
+      }
+
+      if (state === "") {
+        document.getElementById('stateError').textContent = "state name cannot be empty"
+        return false
+      }
+
+      if (!/^[a-zA-Z]+$/.test(state)) {
+        document.getElementById("stateError").textContent = " state name cannot contain numbers or symbols";
+        return false;
+      }
+
+      if (country === "") {
+        document.getElementById('nameError').textContent = "country name cannot be empty"
+        return false
+      }
+
+      if (!/^[a-zA-Z]+$/.test(country)) {
+        document.getElementById("countryError").textContent = "country name cannot contain numbers or symbols";
+        return false;
+      }
+
+      if (pincode === "") {
+        document.getElementById('pincodeError').textContent = "pincode cannot be empty"
+        return false
+      }
+
+      if (pincode.length != 6) {
+        document.getElementById('pincodeError').textContent = "Incorrect pincode"
+        return false
+      }
+
+      if (!/^\d+$/.test(pincode)) {
+        document.getElementById("pincodeError").textContent = "pincode cant contain letters";
+        return false
+      }
+
+
+      if (phone === "") {
+        document.getElementById('phoneError').textContent = "phone number cannot be empty"
+        return false
+      }
+
+      if (phone.length !== 10) {
+        document.getElementById("phoneError").textContent = "Phone number must contain 10 digits";
+        return false;
+      }
+
+      if (!/^\d+$/.test(phone)) {
+        document.getElementById("phoneError").textContent = "Phone number cant contain letters";
+        return false
+      }
+
+
+      return true;
+    }
+  </script>
+</body>
+
+</html>

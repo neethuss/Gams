@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;500;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GAMS</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>GAMS</title>
+  <meta name="keywords" content="HTML5 Template">
+  <meta name="description" content="Molla - Bootstrap eCommerce Template">
+  <meta name="author" content="p-themes">
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo-resized.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo-resized.png">
+  <link rel="manifest" href="/assets/images/icons/site.html">
+  <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+  <link rel="shortcut icon" href="/uploads/logo-resized.png">
+  <meta name="apple-mobile-web-app-title" content="Molla">
+  <meta name="application-name" content="Molla">
+  <meta name="msapplication-TileColor" content="#cc9966">
+  <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
+  <link rel="stylesheet" href="/assets/css/plugins/magnific-popup/magnific-popup.css">
+ 
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/plugins/nouislider/nouislider.css">
+  <style>
+      .centered-box {
+      text-align: center;
+      margin: 50px auto; 
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    .wallet-amount {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .wallet-history-btn {
+      padding: 10px 15px;
+      font-size: 16px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .wallet-history-btn:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+
+<body>
+
+
+
+  <header class="header">
+
+
+    <div class="header-middle sticky-header">
+      <div class="container">
+        <div class="header-left">
+          <button class="mobile-menu-toggler">
+            <span class="sr-only">Toggle mobile menu</span>
+            <i class="icon-bars"></i>
+          </button>
+
+          <a href="index.html" class="logo">
+            <img src="assets/images/logo.png" alt="Molla Logo" width="105" height="25">
+          </a>
+
+          <nav class="main-nav">
+            <ul class="menu sf-arrows">
+              <li class="megamenu-container active">
+                <a href="/" class="sf-with-ul">Home</a>
+
+
+              </li>
+              <li>
+                <a href="/shop" class="sf-with-ul">Shop</a>
+
+
+              </li>
+              <li>
+                <a href="/aboutUs" class="sf-with-ul">About Us</a>
+
+
+              </li>
+
+            </ul>
+          </nav>
+        </div>
+
+        <div class="header-right">
+          <ul class="menu sf-arrows">
+
+
+            <li>
+              <a href="/cart" class="sf-with-ul">Go to Cart </a>
+
+
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <div class="container">
+    <div class="centered-box">
+      <h2>My Wallet</h2>
+      <div class="wallet-amount">
+        Wallet Amount: Rs.<span id="walletAmountPlaceholder">
+          <% if (wallet && wallet.walletAmount !== undefined) { %>
+            <%= wallet.walletAmount %>
+          <% } else { %>
+            0.00
+          <% } %>
+        </span>
+      </div>
+      <a href="/walletHistory"><button class="wallet-history-btn">Wallet History</button></a>
+    </div>
+  </div>
+  
+
+
+  <script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/jquery.hoverIntent.min.js"></script>
+<script src="assets/js/jquery.waypoints.min.js"></script>
+<script src="assets/js/superfish.min.js"></script>
+<script src="assets/js/owl.carousel.min.js"></script>
+<script src="assets/js/bootstrap-input-spinner.js"></script>
+<script src="assets/js/jquery.magnific-popup.min.js"></script>
+<script src="assets/js/wNumb.js"></script>
+<script src="assets/js/nouislider.min.js"></script>
+
+<script src="assets/js/main.js"></script>
+
+</body>
+<html>

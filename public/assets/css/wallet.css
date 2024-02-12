@@ -1,0 +1,64 @@
+/* Add your custom styles for the wallet page here */
+.wallet-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.wallet-header {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.wallet-history-button {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.wallet-amount-container {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.wallet-amount-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.wallet-amount-display {
+  font-size: 24px;
+  color: #007bff;
+}
+
+.add-wallet-form {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.add-wallet-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.add-wallet-button {
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.add-wallet-button:hover {
+  background-color: #218838;
+}

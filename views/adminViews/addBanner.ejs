@@ -1,0 +1,111 @@
+<%- include('nav') -%>
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div
+                            class="bg-gradient-danger shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between">
+                            <h6 class="text-white text-capitalize ps-3">Add Banner</h6>
+                            
+                        </div>
+                    </div>
+                    <div class="card-body px-3 pb-2">
+                        <form action="/admin/addBanner" method="post" enctype="multipart/form-data"
+                            onsubmit="validateForm()" style="display: flex;flex-direction: column;align-items: center;">
+
+                            <div class="mb-3">
+                                <label for="bannerImage" class="form-label">Banner Image</label>
+                                <input multiple type="file" class="form-control" id="bannerImage" name="bannerImage"
+                                accept="image/jpeg, image/png, image/gif"
+                                    style="border: 1px solid #ced4da; width: 430px;text-align: center;">
+                                <span id="imageError" style="color: red;"></span>
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="bannerTitle" class="form-label">Banner Title</label>
+                                <input type="text" class="form-control" id="bannerTitle" name="bannerTitle"
+                                    placeholder="Enter Banner Title"
+                                    style="border: 1px solid #ced4da; width: 430px;text-align: center;" required>
+                                <span id="bannerTitleError" style="color: red;"></span>
+
+                                <div class="mb-3">
+                                    <label for="bannerSubTitle" class="form-label">Banner Sub Title</label>
+                                    <input type="text" class="form-control" id="bannerSubTitle" name="bannerSubTitle"
+                                        placeholder="EnterBanner Sub Title"
+                                        style="border: 1px solid #ced4da; width: 430px;text-align: center;" required>
+                                    <span id="bannerSubTitleError" style="color: red;"></span>
+
+                                    <div class="mb-3">
+                                        <label for="bannerUrl" class="form-label">Banner url</label>
+                                        <input type="text" class="form-control" id="bannerUrl" name="bannerUrl"
+                                            placeholder="Enter Product url"
+                                            style="border: 1px solid #ced4da; width: 430px;text-align: center;"
+                                            required>
+                                        <span id="bannerUrlError" style="color: red;"></span>
+
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Add Banner</button>
+                                    <p class="text-danger text-center mt-3 mb-0">
+                                        <%= locals.msg ? locals.msg : "" %>
+                                    </p>
+                                    <p class="text-danger text-center mt-2 mb-0">
+                                        <%= locals.error ? locals.error : "" %>
+                                    </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    
+    <script>
+        function validateForm() {
+
+            document.getElementById('imageError').textContent = ""
+            document.getElementById('bannerTitleError').textContent = ""
+            document.getElementById('bannerSubTitleError').textContent = ""
+            document.getElementById('bannerUrlError').textContent = ""
+
+            var bannerImage = document.getElementById("bannerImage").value
+            var bannerTitle = parseFloat(document.getElementById("bannerTitle").value);
+            var bannerSubTitle = parseInt(document.getElementById("bannerSubTitle").value);
+            var bannerUrl = parseInt(document.getElementById("bannerUrl").value);
+
+
+            if (bannerTitle === "") {
+                document.getElementById('bannerTitleError').textContent = "Enter banner title"
+                return false
+            }
+
+            if (bannerSubTitle === "") {
+                document.getElementById('bannerSubTitleError').textContent = "Enter banner sub title"
+                return false
+            }
+
+
+            if (bannerUrl === "") {
+                document.getElementById('bannerUrlError').textContent = "Enter banner surl"
+                return false
+            }
+
+            return true;
+        }
+    </script>
+    </body>
+
+    </html>
+
+   
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+    </body>
+
+    </html>

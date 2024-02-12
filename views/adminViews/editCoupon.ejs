@@ -1,0 +1,170 @@
+<%- include('nav') -%>
+
+
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-danger shadow-primary border-radius-lg pt-4 pb-3">
+              <h6 class="text-white text-capitalize ps-3">Edit Coupon</h6>
+            </div>
+          </div>
+          <div class="card-body px-3 pb-2">
+
+            <form action="/admin/editCoupon/<%=coupon._id%>" method="post" onsubmit="return validateForm()"
+              style="display: flex;flex-direction: column;align-items: center;">
+              <div class="mb-3">
+                <label for="couponName" class="form-label">Coupon Name</label>
+                <input type="text" class="form-control" id="couponName" name="couponName"
+                  value="<%= locals.coupon.couponName %>"
+                  style="border: 2px solid #a1b0bb;  width: 430px;text-align: center;">
+                <span id="couponNameError" style="color: red;"></span>
+
+              </div>
+
+              <div class="mb-3">
+                <label for="couponCode" class="form-label">Coupon Code</label>
+                <input type="text" class="form-control" id="couponCode" name="couponCode"
+                  value="<%= locals.coupon.couponCode %>"
+                  style="border: 2px solid #a1b0bb; width: 430px;text-align: center;">
+                <span id="couponCodeError" style="color: red;"></span>
+
+              </div>
+
+              <div class="mb-3">
+                <label for="discountAmount" class="form-label">Discount Amount</label>
+                <input type="number" class="form-control" id="discountAmount" name="discountAmount"
+                  value="<%= locals.coupon.discountAmount %>"
+                  style="border: 2px solid #a1b0bb; width: 430px;text-align: center;">
+                <span id="discountAmountError" style="color: red;"></span>
+
+              </div>
+
+              <div class="mb-3">
+                <label for="minimumPurchaseAmount" class="form-label">Minimum Purchase Amount</label>
+                <input type="number" class="form-control" id="minimumPurchaseAmount" name="minimumPurchaseAmount"
+                  value="<%= locals.coupon.minimumPurchaseAmount %>"
+                  style="border: 2px solid #a1b0bb; width: 430px;text-align: center;">
+                <span id="minimumPurchaseAmountError" style="color: red;"></span>
+
+              </div>
+
+              <div class="mb-3">
+                <label for="expiryDate" class="form-label">Expiry Date</label>
+                <input type="date" class="form-control" id="expiryDate" name="expiryDate"
+                  value="<%= locals.coupon.expiryDate.toLocaleDateString() %>"
+                  style="border: 2px solid #a1b0bb; width: 430px;text-align: center;">
+                <span id="expiryDateError" style="color: red;"></span>
+
+              </div>
+
+
+              <button type="submit" class="btn btn-success">Edit Coupon</button>
+              <p class="text-danger text-center mt-3 mb-0">
+                <%=locals.msg?locals.msg: "" %>
+              </p>
+              <p class="text-danger text-center mt-2 mb-0">
+                <%=locals.error?locals.error: "" %>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function validateForm() {
+
+      document.getElementById('couponNameError').textContent = ""
+      document.getElementById('couponCodeError').textContent = ""
+      document.getElementById('discountAmountError').textContent = ""
+      document.getElementById('minimumPurchaseAmountError').textContent = ""
+      document.getElementById('expiryDateError').textContent = ""
+
+      var couponName = document.getElementById("couponName").value.trim()
+      var couponCode = document.getElementById("couponCode").value.trim()
+      var discountAmount = document.getElementById("discountAmount").value.trim()
+      var minimumPurchaseAmount = document.getElementById("minimumPurchaseAmount").value.trim()
+      var expiryDate = document.getElementById("expiryDate").value.trim()
+
+      if (couponName === "") {
+        document.getElementById('couponNameError').textContent = "Coupon name is required";
+        return false;
+      }
+
+      if (!/^[a-zA-Z]+$/.test(couponName)) {
+        document.getElementById("couponNameError").textContent = "Coupon name cannot contain numbers or symbols";
+        return false;
+      }
+
+      if (couponCode === "") {
+        document.getElementById('couponCodeError').textContent = "Coupon code is required";
+        return false;
+      }
+
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+$/.test(couponCode)) {
+        document.getElementById("couponCodeError").textContent = "Coupon code must contain a mixture of capital letter, small letter, and number";
+        return false;
+      }
+
+      if (couponCode.length < 4) {
+        document.getElementById('couponCodeError').textContent = "Coupon code contains atleast 4 characters";
+        return false;
+      }
+
+      if (discountAmount === "") {
+        document.getElementById('discountAmountError').textContent = "Discount amount is required";
+        return false;
+      }
+
+      if (!/^\d+$/.test(discountAmount)) {
+        document.getElementById("discountAmountError").textContent = "Discount amount must only contain numbers";
+        return false;
+      }
+
+      if (discountAmount < 0) {
+        document.getElementById('discountAmountError').textContent = "Enter a valid discount amount";
+        return false;
+      }
+
+      if (minimumPurchaseAmount === "") {
+        document.getElementById('minimumPurchaseAmountError').textContent = "Minimum purchase amount is required";
+        return false;
+      }
+
+      if (!/^\d+$/.test(minimumPurchaseAmount)) {
+        document.getElementById("minimumPurchaseAmountError").textContent = "Minimum purchase amount must only contain numbers";
+        return false;
+      }
+
+      if (minimumPurchaseAmount < 0) {
+        document.getElementById('minimumPurchaseAmountError').textContent = "Enter a valid minimuum purchase amount";
+        return false;
+      }
+
+      if (expiryDate === "") {
+        document.getElementById('expiryDateError').textContent = "Expiry date is required";
+        return false;
+      }
+
+      var today = new Date();
+      var selectedDate = new Date(expiryDate);
+
+      if (selectedDate < today) {
+        document.getElementById('expiryDateError').textContent = "Enter a valid expiry date";
+        return false;
+      }
+
+      return true
+
+    }
+  </script>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+  </body>
+
+  </html>

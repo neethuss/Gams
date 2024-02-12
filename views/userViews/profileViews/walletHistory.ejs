@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;500;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GAMS</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>GAMS</title>
+  <meta name="keywords" content="HTML5 Template">
+  <meta name="description" content="Molla - Bootstrap eCommerce Template">
+  <meta name="author" content="p-themes">
+ 
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo-resized.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo-resized.png">
+  <link rel="manifest" href="/assets/images/icons/site.html">
+  <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+  <link rel="shortcut icon" href="/uploads/logo-resized.png">
+  <meta name="apple-mobile-web-app-title" content="Molla">
+  <meta name="application-name" content="Molla">
+  <meta name="msapplication-TileColor" content="#cc9966">
+  <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
+  <link rel="stylesheet" href="/assets/css/plugins/magnific-popup/magnific-popup.css">
+
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/plugins/nouislider/nouislider.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <style>
+    .centered-table {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+
+    }
+
+    table {
+      width: 80%;
+      margin: auto;
+      font-size: 14px;
+    }
+
+    .table th,
+    .table td {
+      text-align: center;
+      padding: 10px;
+    }
+
+    .table thead {
+      background-color: #343a40;
+      color: #fff;
+    }
+
+    .table tbody tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+  </style>
+</head>
+
+<body>
+
+
+
+  <header class="header">
+
+
+    <div class="header-middle sticky-header">
+      <div class="container">
+        <div class="header-left">
+          <button class="mobile-menu-toggler">
+            <span class="sr-only">Toggle mobile menu</span>
+            <i class="icon-bars"></i>
+          </button>
+
+          <a href="index.html" class="logo">
+            <img src="assets/images/logo.png" alt="Molla Logo" width="105" height="25">
+          </a>
+
+          <nav class="main-nav">
+            <ul class="menu sf-arrows">
+              <li class="megamenu-container active">
+                <a href="/" class="sf-with-ul">Home</a>
+
+
+              </li>
+              <li>
+                <a href="/shop" class="sf-with-ul">Shop</a>
+
+
+              </li>
+              <li>
+                <a href="/aboutUs" class="sf-with-ul">About Us</a>
+
+
+              </li>
+
+            </ul>
+          </nav>
+        </div>
+
+        <div class="header-right">
+          <ul class="menu sf-arrows">
+           
+            <li>
+              <a href="/wallet" class="sf-with-ul">Wallet</a>
+
+
+            </li>
+            <li>
+              <a href="/Cart" class="sf-with-ul">Go to Cart</a>
+
+
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <% if(wallet) {%>
+
+    <div class="container">
+      <div class="centered-table">
+        <table class="table">
+          <thead class="table-dark">
+            <tr>
+              <th>Process</th>
+              <th>Amount</th>
+              <th>Date</th>
+            </tr>
+  
+          </thead>
+          <tbody>
+            <% wallet.forEach((item)=>{%>
+              <tr>
+                <td>
+                  <%= item.process %>
+                </td>
+  
+                <td class="<%= (item.process.includes('refund') ? 'green-text' : 'red-text') %>">
+                  <%= (item.process.includes('refund') ? '+' : '-' ) %>
+                    <%= item.amount %>
+                </td>
+                <td>
+                  <%= item.date.toLocaleDateString() %>
+                </td>
+              </tr>
+              <%}) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  <%}else{%>
+
+    <div class="wallet-history" >
+     
+      <div class="wallet-history-empty">
+          <h class="wallet-history-message">No transactions found in your wallet history.</h>
+         
+      </div>
+  </div>
+  
+    
+    <%}%>
+
+ <style>
+  .wallet-history {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+font-size: medium;
+    height: 70vh; 
+}
+ </style>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/jquery.hoverIntent.min.js"></script>
+  <script src="assets/js/jquery.waypoints.min.js"></script>
+  <script src="assets/js/superfish.min.js"></script>
+  <script src="assets/js/owl.carousel.min.js"></script>
+  <script src="assets/js/bootstrap-input-spinner.js"></script>
+  <script src="assets/js/jquery.magnific-popup.min.js"></script>
+  <script src="assets/js/wNumb.js"></script>
+  <script src="assets/js/nouislider.min.js"></script>
+ 
+  <script src="assets/js/main.js"></script>
+
+</body>
+<html>

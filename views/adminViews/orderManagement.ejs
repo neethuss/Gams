@@ -1,0 +1,176 @@
+<%- include('nav') -%>
+
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-danger shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between">
+              <h6 class="text-white text-capitalize ps-3">Order Management</h6>
+              <div class="d-flex align-items-center">
+
+
+
+              </div>
+            </div>
+          </div>
+          <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+
+
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr style="text-align: center;">
+
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sl.no</th>
+
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Product</th>
+
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Total</th>
+
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
+
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edit Status</th>
+
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Order Details</th>
+
+                </thead>
+                <tbody>
+                  <% orders.forEach((order,i)=>{ %>
+
+                    <tr style="text-align: center;">
+
+                      <td>
+                        <%= i+1 %>
+                      </td>
+
+                      <td>
+                        <%=order.userId.username %>
+                      </td>
+
+
+
+                      <td>
+                        <% order.products.forEach((product)=> { %>
+                          <%= product.product.product_name %>
+                            <br>
+                            <% }); %>
+                      </td>
+
+
+                      <td>
+                        <%= order.payTotal %>
+                      </td>
+
+                      <td>
+                        <%=order.orderDate.toLocaleDateString()  %>
+                      </td>
+
+                      <td>
+                        <%= order.status %>
+                      </td>
+
+                      <td>
+                        <div class="dropdown">
+                          <button class="btn btn-secondary dropdown-toggle" type="button" id="statusDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="true">
+                            Change Status
+                          </button>
+                          <ul class="dropdown-menu" aria-labelledby="statusDropdown">
+                            <li><a class="dropdown-item"
+                                href="/admin/updateOrderStatus/<%= order._id %>/Order Confirmed"
+                                onclick="updateOrderStatus('<%= order._id %>', 'Order Confirmed')">Order
+                                Confirmed</a></li>
+                            <li><a class="dropdown-item" href="/admin/updateOrderStatus/<%= order._id %>/Shipped"
+                                onclick="updateOrderStatus('<%= order._id %>', 'Shipped')">Shipped</a></li>
+                            <li><a class="dropdown-item"
+                                href="/admin/updateOrderStatus/<%= order._id %>/Out For Delivery"
+                                onclick="updateOrderStatus('<%= order._id %>', 'Out For Delivery')">Out For
+                                Delivery</a></li>
+                            <li><a class="dropdown-item" href="/admin/updateOrderStatus/<%= order._id %>/Delivered"
+                                onclick="updateOrderStatus('<%= order._id %>', 'Delivered')">Delivered</a></li>
+                          </ul>
+                        </div>
+                      </td>
+
+                      <td>
+                        <a href="/admin/orderDetails/<%=order._id%>">
+                          <button class="btn btn-info btn-sm me-2">View Details</button>
+                        </a>
+                      </td>
+
+
+                    </tr>
+
+
+                    <% }) %>
+                </tbody>
+              </table>
+
+
+
+              <div class="pagination" style="display: flex; align-items: center; justify-content: center;">
+                <nav aria-label="Page navigation" class="pagination-container" style="margin-top: 30px;">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item <%= page == 1 ? 'disabled' : '' %>">
+                      <a class="page-link" href="?page=<%= page - 1 %>" aria-label="Previous">
+                        <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+                      </a>
+                    </li>
+
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                      <li class="page-item <%= page == i ? 'active' : '' %>">
+                        <a class="page-link" href="?page=<%= i %>">
+                          <%= i %>
+                        </a>
+                      </li>
+                      <% } %>
+
+                        <li class="page-item <%= page == totalPages ? 'disabled' : '' %>">
+                          <a class="page-link" href="?page=<%= page + 1 %>" aria-label="Next">
+                            Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                          </a>
+                        </li>
+                  </ul>
+                </nav>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+      var dropdownList = dropdownElementList.map(function (dropdownToggle) {
+        return new bootstrap.Dropdown(dropdownToggle);
+      });
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+  </body>
+
+  </html>

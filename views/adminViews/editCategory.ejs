@@ -1,0 +1,72 @@
+<%- include('nav') -%>
+
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card my-4" >
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-danger shadow-primary border-radius-lg pt-4 pb-3">
+                        <h6 class="text-white text-capitalize ps-3">Edit Category</h6>
+                    </div>
+                </div>
+                <div class="card-body px-3 pb-2" >
+
+                    <form action="/admin/editCategory/<%=category._id%>" method="post" onsubmit="return validateForm()" style="display: flex;flex-direction: column;align-items: center;">
+                        <div class="mb-3" >
+                            <label for="categoryName" class="form-label">Category Name</label>
+                            <input type="text" class="form-control" id="categoryName" name="categoryName" value="<%= locals.category.category_name %>" style="border: 2px solid #a1b0bb;width: 430px;text-align: center;" >
+                            <span id="categoryNameError" style="color: red;"></span>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoryDescription" class="form-label" >Category Description</label>
+                            <textarea class="form-control" id="categoryDescription" name="categoryDescription"  style="border: 2px solid #a1b0bb;width: 430px;text-align: center;" ><%= locals.category.category_description %></textarea>
+                            <span id="categoryDescriptionError" style="color: red;"></span>
+
+                        </div>
+                        <div class="invisible">
+                          <input type="text" value="<%= locals.category.category_id %>" class="" id="categoryId" name="categoryId">
+                      </div>
+                        <button type="submit" class="btn btn-success">Edit Category</button>
+                        <p class="text-danger text-center mt-3 mb-0">
+                          <%=locals.msg?locals.msg: "" %>
+                        </p>
+                        <p class="text-danger text-center mt-2 mb-0">
+                          <%=locals.error?locals.error: "" %>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function validateForm(){
+        document.getElementById("categoryNameError").textContent = ""
+        document.getElementById("categoryDescriptionError").textContent = ""
+
+        const categoryName = document.getElementById("categoryName").value.trim()
+        const categoryDescription = document.getElementById("categoryDescription").value.trim()
+
+        if(categoryName === ""){
+            document.getElementById("categoryNameError").textContent = "Category name cannot be empty"
+            return false
+        }
+
+        if(categoryDescription === ""){
+            document.getElementById("categoryDescriptionError").textContent = "Category descrioption cannot be empty"
+            return false
+        }
+        return true
+    }
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<%- include('nav') -%>
+
+  <div>
+    <section class="h-100 gradient-custom">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-lg-10 col-xl-8">
+            <div class="card" style="border-radius: 10px;">
+              <div class="card-header px-4 py-5" style="display: flex; justify-content: space-between;">
+                <div>
+                  <h5 class="text-muted mb-0">Your Order<span style="color: #a8729a;"><br>Order id: <%= order._id %>
+                    </span></h5>
+                </div>
+
+                <div>
+                  <h5 class="text-muted mb-0">Order date:<span style="color: #a8729a;">
+                      <%= order.orderDate.toLocaleDateString() %>
+                    </span></h5>
+
+                  <h5 class="text-muted mb-0">Order status:<span style="color: #a8729a;">
+                      <%= order.status %>
+                    </span></h5>
+
+                </div>
+
+              </div>
+              <div class="card-body p-4">
+                <!-- orderDetails.ejs -->
+                <% let totalOrderPrice=0; %>
+                  <% order.products.forEach(product=> { %>
+                    <% totalOrderPrice +=product.totalPrice; %>
+                      <div class="card shadow-0 border mb-4">
+                        <div class="card-body" style="font-size: 18px;">
+                          <div class="row align-items-center">
+                            <div class="col-md-2">
+                              <img src="/uploads/<%= product.product.product_image[0] %>" class="img-fluid"
+                                alt="Product Image">
+                            </div>
+                            <div class="col-md-2 text-center">
+                              <p class="text-muted mb-0" style="font-weight: bold;">
+                                <%= product.product.product_name %>
+                              </p>
+                            </div>
+                            <div class="col-md-2 text-center">
+                              <p class="text-muted mb-0">
+                                Category: <br>
+                                <%= product.product.product_category.category_name %>
+                              </p>
+                            </div>
+                            <div class="col-md-2 text-center">
+                              <p class="text-muted mb-0 small">
+                                Price:<br> Rs. <%= product.product.product_price %>
+                              </p>
+                            </div>
+                            <div class="col-md-2 text-center">
+                              <p class="text-muted mb-0 small">Qty: <br>
+                                <%= product.quantity %>
+                              </p>
+                            </div>
+                            <div class="col-md-2 text-center">
+                              <p class="text-muted mb-0 small">Total: <br>Rs. <%= product.totalPrice %>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <% }); %>
+
+
+                        <div style="display: flex; justify-content: space-between;">
+                          <div>
+                            <div>
+                              <p class="text-muted mb-0"><span class="fw-bold me-4">Shipping Address
+                              </p>
+                              <p class="text-muted mb-0"><span>
+                                  <%= order.shippingAddress.name %><br>
+                                    <%= order.shippingAddress.address %>,<%= order.shippingAddress.district %>,<%=
+                                          order.shippingAddress.state %>,<%= order.shippingAddress.country %>
+                                            <br>pincode: <%= order.shippingAddress.pincode %><br>phone: <%=
+                                                order.shippingAddress.phone %>
+                              </p>
+                            </div>
+                          </div>
+
+                          <div>
+
+                            <div>
+                              <p class="text-muted mb-0"><span class="fw-bold me-4">Payment Method:</span>
+                                <%= order.paymentMethod %>
+                              </p>
+                            </div>
+                            <div>
+                              <p class="text-muted mb-0"><span class="fw-bold me-4">Total:</span>Rs. <%= totalOrderPrice
+                                  %>
+                              </p>
+                            </div>
+
+                            <div>
+                              <p class="text-muted mb-0"><span class="fw-bold me-4">Discount:</span>Rs.
+                                <%= order.discountAmount %>
+                              </p>
+                            </div>
+
+                            <div>
+
+                              <p class="text-muted mb-0"><span class="fw-bold me-4">Total:</span>Rs.
+                                Rs. <%= order.payTotal %>/-
+                              </p>
+                            </div>
+
+                          </div>
+
+                        </div>
+
+
+
+
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
