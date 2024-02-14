@@ -50,6 +50,9 @@ mongoose.connect(process.env.MONGODB_URI, {
     app.listen(port, () => {
       console.log(`Server running in http://localhost:${port}`);
       Banner.find({}).then(console.log)
+
+
+      
     });
   })
   .catch((error) => {
