@@ -328,13 +328,17 @@ const getReferalLogout = async (req, res) => {
 
 //logout user session
 const getLogout = (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.redirect("/login");
-    }
-  });
+  // req.session.destroy((err) => {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     res.redirect("/login");
+  //   }
+  // });
+   req.session.user = null
+         res.redirect("/login");
+
+
 };
 
 module.exports = {

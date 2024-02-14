@@ -12,13 +12,16 @@ const isBlocked = async (req, res, next) => {
 
     if (req.session.user && check && !check.isBlocked) {
       console.log('user is blocked');
-      req.session.destroy((err) => {
-        if (err) {
-          res.send(err);
-        } else {
-          res.status(500).render('userviews/login', { successMsg: [], errorMsg: ["User is Blocked"] });
-        }
-      });
+      // req.session.destroy((err) => {
+      //   if (err) {
+      //     res.send(err);
+      //   } else {
+      //     res.status(500).render('userviews/login', { successMsg: [], errorMsg: ["User is Blocked"] });
+      //   }
+      // });
+      req.session.user = null
+       res.status(500).render('userviews/login', { successMsg: [], errorMsg: ["User is Blocked"] });
+
     } else {
       next();
     }
