@@ -13,6 +13,7 @@ const getOrder = async (req, res) => {
       const userDetails = req.session.user;
       const user = await userCollection.findOne({ email: userDetails.email });
       const userId = user._id;
+      const userAddress = user.userAddress
   
       const cartDetails = await cartCollection.findOne({ userId: userId });
       console.log(cartDetails);
