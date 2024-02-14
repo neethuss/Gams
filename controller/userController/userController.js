@@ -317,13 +317,15 @@ const postNewPassword = async (req, res) => {
 
 // get method for session destroy while applying a referel code
 const getReferalLogout = async (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.redirect("/signup");
-    }
-  });
+  // req.session.destroy((err) => {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     res.redirect("/signup");
+  //   }
+  // });
+  req.session.user = null
+         res.redirect("/signup");
 };
 
 //logout user session
