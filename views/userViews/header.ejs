@@ -9,7 +9,7 @@
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Molla - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
- 
+
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo-resized.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo-resized.png">
@@ -21,9 +21,9 @@
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
-    
+
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    
+
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/toastify.css">
     <link rel="stylesheet" href="/assets/css/coupon.css">
@@ -67,19 +67,41 @@
                     </div>
 
                     <div class="header-right">
+                        <nav>
+                            <ul>
+                                <li style="width: 50px;">
+                                    <a href="/profile" ><img src="/uploads/user profile.png" alt="user-profile" style="width: 60%;"></a>
 
+                                </li>
 
+                                <li style="width: 50px;">
+                                    <a href="/wishlist"><img src="/uploads/my-wish-list.png" alt="wishlist" style="width: 70%;"></a>
+                                </li>
 
-                        <div class="dropdown cart-dropdown">
-                            <a href="/cart" class="dropdown-toggle" role="button" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false" data-display="static">
-                                <i class="icon-shopping-cart"></i>
+                                <li style="width: 50px;">
+                                    <a href="/cart"><img src="/uploads/shopping-cart.png" alt="shopping-cart" style="width: 60%;"></a>
+                                </li>
 
-                            </a>
-
-
-                        </div>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
         </header>
+
+        <style>
+            .header-right nav ul {
+                display: flex;
+                /* Display items in a row */
+                list-style: none;
+                /* Remove default list styles */
+                padding: 0;
+                margin: 0;
+            }
+
+            .header-right nav ul li {
+                margin-right: 10px;
+                /* Adjust spacing between list items as needed */
+            }
+            
+        </style>

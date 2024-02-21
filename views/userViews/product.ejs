@@ -69,7 +69,7 @@
 
                 <div class="product-details-action">
                   <%if(product.product_stock!=0){%>
-                    <a href="/cart" id="addToCartButton" class="addToCartButton btn-product btn-cart"><span>add to
+                    <a href="#" id="addToCartButton" class="addToCartButton btn-product btn-cart"><span>add to
                         cart</span></a>
                     <%}%>
 
@@ -77,9 +77,9 @@
                       <div class="details-action-wrapper">
                         <a href="" id="wishlistButton" class="btn-product btn-wishlist" title="Wishlist">
                           <% if(product.inWishlist===true){%>
-                            <span>remove from wishlist</span>
+                            <span>Remove from wishlist</span>
                             <%}else{%>
-                              <span>add to wishlist</span>
+                              <span>Add to wishlist</span>
                               <%} %>
                         </a>
                       </div>
@@ -362,8 +362,8 @@
         .then(response => response.json())
         .then(data => {
           
-          document.getElementById('userIdPlaceholder').innerText = data.userId;
-          updateCartUI(data.cart);
+          console.log('data')
+          window.location.href = '/cart'
         })
         .catch((error) => {
           console.log(error);
@@ -402,34 +402,36 @@
 
   <script>
 
-    document.getElementById('wishlistButton').addEventListener('click', function () {
-      fetch('/wishlist', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          productId: '<%= productId %>'
-        })
+document.getElementById('wishlistButton').addEventListener('click', function (event) {
+  event.preventDefault(); 
 
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data.added) {
-            const addToWishlist = document.getElementById('wishlistButton')
+  let inWishlist = this.textContent.trim() === 'Remove from wishlist';
 
-            addToWishlist.textContent = 'Remove from wishlist'
-          } else {
-            const addToWishlist = document.getElementById('wishlistButton');
-            addToWishlist.textContent = 'add to wishlist'
-          }
-        })
+  fetch('/wishlist', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      productId: '<%= productId %>',
+      inWishlist: inWishlist
     })
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      inWishlist = data.added;
+      this.textContent = inWishlist ? 'Remove from wishlist' : 'Add to wishlist';
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+});
+
 
   </script>
 
