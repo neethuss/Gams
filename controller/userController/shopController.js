@@ -1,5 +1,6 @@
 const categoryCollection = require("../../models/categoryModel");
 const productCollection = require("../../models/productModel");
+const cartCollection = require('../../models/cartModel')
 
 
 //get method for rendering shop page
@@ -25,6 +26,12 @@ const getShop = async (req, res) => {
       const category = req.query.category || null;
       const search = req.query.search || null;
 
+      const cart = await cartCollection.findOne({userId:req.session.user._id})
+  
+      const cartQuantity = cart.products.length
+      
+      
+
       res.render("userViews/shop", {
         products: currentProducts,
         page,
@@ -33,6 +40,7 @@ const getShop = async (req, res) => {
         sortOption,
         category,
         search,
+        cartQuantity
       });
     }
   } catch (error) {
@@ -52,7 +60,6 @@ const getSearchProduct = async (req, res) => {
 
     const allCategories = await categoryCollection.find();
     const categories = allCategories.filter((category) => category.isBlocked);
-
     const allProducts = await productCollection
       .find()
       .populate("product_category");
@@ -72,6 +79,9 @@ const getSearchProduct = async (req, res) => {
     const sortOption = req.query.sortOption || null;
     const category = req.query.category || null;
 
+    const cart = await cartCollection.findOne({userId:req.session.user._id})
+    const cartQuantity = cart.products.length
+
     res.render("userViews/shop", {
       products: currentProducts,
       page,
@@ -79,7 +89,8 @@ const getSearchProduct = async (req, res) => {
       categories,
       sortOption,
       category,
-      search
+      search,
+      cartQuantity
     });
   } catch (error) {
     console.log(error);
@@ -95,6 +106,9 @@ const getFilterByCategory = async (req, res) => {
 
     const page = parseInt(req.query.page) || 1;
     const perPage = 6; 
+
+    const cart = await cartCollection.findOne({userId:req.session.user._id})
+    const cartQuantity = cart.products.length
 
     let products;
 
@@ -123,6 +137,8 @@ const getFilterByCategory = async (req, res) => {
     const sortOption = req.query.sortOption || null;
     const search = req.query.search || null;
 
+    
+
     res.render("userViews/shop", {
       products: currentProducts,
       page,
@@ -131,6 +147,7 @@ const getFilterByCategory = async (req, res) => {
       category,
       sortOption,
       search,
+      cartQuantity
     });
   } catch (error) {
     console.log(error);
@@ -170,6 +187,9 @@ const getSortByPrice = async (req, res) => {
     const category = req.query.category || null;
     const search = req.query.search || null;
 
+    const cart = await cartCollection.findOne({userId:req.session.user._id})
+    const cartQuantity = cart.products.length
+
     res.render("userViews/shop", {
       products,
       page,
@@ -178,6 +198,7 @@ const getSortByPrice = async (req, res) => {
       sortOption,
       category,
       search,
+      cartQuantity
     });
   } catch (error) {
     console.log(error);
@@ -203,10 +224,13 @@ const getProduct = async (req, res) => {
         return res.status(404).send("Product not found");
       }
 
+      const cart = await cartCollection.findOne({userId:req.session.user._id})
+      const cartQuantity = cart.products.length
       res.render("userViews/product", {
         product: productData,
         userId: userId,
         productId: proId,
+        cartQuantity
       });
     }
   } catch (error) {

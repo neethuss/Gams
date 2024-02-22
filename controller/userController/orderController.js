@@ -94,7 +94,9 @@ const getOrder = async (req, res) => {
 const getOrderConfirmed = async (req, res) => {
   try {
     if (req.session.user) {
-      res.render("userViews/orderConfirmed");
+      const order = await orderCollection.findOne({userId:req.session.user._id}).sort({ orderDate: -1 }) 
+      .limit(1)
+      res.render("userViews/orderConfirmed",{order});
     }
   } catch (error) {
     console.log(error);
@@ -125,7 +127,10 @@ const getMyOrders = async (req, res) => {
         .skip(skip)
         .limit(perPage);
 
-      res.render("userViews/myOrders", { orders, page, totalPages });
+        const cart = await cartCollection.findOne({userId:req.session.user._id})
+        const cartQuantity = cart.products.length
+
+      res.render("userViews/myOrders", { orders, page, totalPages,cartQuantity });
     }
   } catch (error) {
     console.log(error);
@@ -388,7 +393,10 @@ const getOrderDetail = async (req, res) => {
         }
       })
       .populate('shippingAddress');
-    res.render('userViews/orderDetails', { order });
+
+      const cart = await cartCollection.findOne({userId:req.session.user._id})
+      const cartQuantity = cart.products.length
+    res.render('userViews/orderDetails', { order ,cartQuantity});
   } catch (error) {
     console.log(error);
     res.status(500).send('Error while rendering order detail page');

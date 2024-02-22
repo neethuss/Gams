@@ -5,6 +5,8 @@ const orderCollection = require("../../models/orderModel");
 const getOrederManagement = async (req, res) => {
   try {
     if (req.session.admin) {
+      const successMsg = req.flash("success")
+      const errorMsg = req.flash("error")
       const perPage = 5; 
       const page = parseInt(req.query.page) || 1; 
 
@@ -27,6 +29,8 @@ const getOrederManagement = async (req, res) => {
         orders: orderDetails,
         page,
         totalPages,
+        successMsg,
+        errorMsg
       });
     } else {
       res.render("adminViews/login");
@@ -46,9 +50,7 @@ const getUpdateOrderStatus = async (req, res) => {
     const order = await orderCollection.findById(orderId);
 
     if (order.status === "Cancelled") {
-      console.log(
-        "Order is already cancelled. Admin cannot change the status."
-      );
+      req.flash("error","Order already cancelled")
       return res.redirect("/admin/orderManagement");
     }
 
@@ -58,7 +60,7 @@ const getUpdateOrderStatus = async (req, res) => {
       { new: true }
     );
 
-    console.log("Updated Order:", updatedOrder);
+    req.flash("success",`Order status updated to ${newStatus}`)
     res.redirect("/admin/orderManagement");
   } catch (error) {
     console.error("Error updating order status:", error);

@@ -1,5 +1,6 @@
 const productCollection = require("../../models/productModel");
 const wishlistCollection = require("../../models/wishlistModel");
+const cartCollection = require('../../models/cartModel')
 
 //get method to rendering wishlist page
 const getWishlist = async (req, res) => {
@@ -9,7 +10,11 @@ const getWishlist = async (req, res) => {
       const wishlist = await wishlistCollection
         .findOne({ userId: userId })
         .populate("products.product");
-      res.render("userViews/wishlist", { wishlist ,userId});
+
+        const cart = await cartCollection.findOne({userId:req.session.user._id})
+        const cartQuantity = cart.products.length
+
+      res.render("userViews/wishlist", { wishlist ,userId,cartQuantity});
     }
   } catch (error) {
     console.log(error);

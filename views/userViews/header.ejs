@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/toastify.css">
     <link rel="stylesheet" href="/assets/css/coupon.css">
-
+    <link rel="stylesheet" href="/assets/css/modal.css">
 </head>
 
 <body>
@@ -67,41 +67,50 @@
                     </div>
 
                     <div class="header-right">
-                        <nav>
-                            <ul>
-                                <li style="width: 50px;">
-                                    <a href="/profile" ><img src="/uploads/user profile.png" alt="user-profile" style="width: 60%;"></a>
 
-                                </li>
+                        <ul style="display: flex; justify-content: space-between;align-items: center;">
+                            <li style="width: 20px; margin-right: 20px;">
+                                <a href="/profile"><img src="/uploads/user profile.png" alt=""></a>
+                            </li>
 
-                                <li style="width: 50px;">
-                                    <a href="/wishlist"><img src="/uploads/my-wish-list.png" alt="wishlist" style="width: 70%;"></a>
-                                </li>
+                            <li style="width: 20px; margin-right: 20px;">
+                                <a href="/wishlist"><img src="/uploads/wishlist-icon.png" alt=""></a>
+                            </li>
 
-                                <li style="width: 50px;">
-                                    <a href="/cart"><img src="/uploads/shopping-cart.png" alt="shopping-cart" style="width: 60%;"></a>
-                                </li>
+                            <li style="position: relative; width: 40px; margin-right: 20px; margin-top: 12px;">
+                                <a href="/cart" style="display: inline-block;">
+                                    <img src="/uploads/shopping-cart-icon.webp" alt="">
+                                    <span class="cart-badge">
+                                        <%= cartQuantity %>
+                                    </span>
+                                </a>
+                            </li>
 
-                            </ul>
-                        </nav>
+                            <li style="width: 20px;">
+                                <a id="logoutIcon" href="#"><img src="/uploads/logout-icon.png" alt=""></a>
+                            </li>
+
+                        </ul>
+
+
+
+
                     </div>
                 </div>
             </div>
         </header>
-
         <style>
-            .header-right nav ul {
-                display: flex;
-                /* Display items in a row */
-                list-style: none;
-                /* Remove default list styles */
-                padding: 0;
-                margin: 0;
+            .cart-badge {
+                position: absolute;
+                top: -10px;
+                right: -10px;
+                background-color: #c73232a1;
+                color: white;
+                border-radius: 50%;
+                font-size: 12px;
+                width: 20px;
+                height: 20px;
+                text-align: center;
+                line-height: 20px;
             }
-
-            .header-right nav ul li {
-                margin-right: 10px;
-                /* Adjust spacing between list items as needed */
-            }
-            
         </style>

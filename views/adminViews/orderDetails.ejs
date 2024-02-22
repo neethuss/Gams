@@ -21,6 +21,10 @@
                       <%= order.status %>
                     </span></h5>
 
+                    <h5 class="text-muted mb-0">Payment Method:<span style="color: #a8729a;">
+                      <%= order.paymentMethod %>
+                    </span></h5>
+
                 </div>
 
               </div>
@@ -86,11 +90,7 @@
 
                           <div>
 
-                            <div>
-                              <p class="text-muted mb-0"><span class="fw-bold me-4">Payment Method:</span>
-                                <%= order.paymentMethod %>
-                              </p>
-                            </div>
+                  
                             <div>
                               <p class="text-muted mb-0"><span class="fw-bold me-4">Total:</span>Rs. <%= totalOrderPrice
                                   %>

@@ -33,7 +33,7 @@
                 <h1 class="product-title">
                   <%= product.product_name %>
                 </h1>
-                
+
 
 
 
@@ -235,7 +235,7 @@
                       <div class="ratings-container">
                         <div class="ratings">
                           <div class="ratings-val" style="width: 80%;"></div>
-                          
+
                         </div>
                       </div>
                       <span class="review-date">6 days ago</span>
@@ -265,7 +265,7 @@
                       <div class="ratings-container">
                         <div class="ratings">
                           <div class="ratings-val" style="width: 100%;"></div>
-                         
+
                         </div>
                       </div>
                       <span class="review-date">5 days ago</span>
@@ -295,17 +295,29 @@
 
 
     </div>
+
+    <div id="logoutModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Are you sure you want to logout?</p>
+        <div class="modal-buttons">
+          <button id="confirmLogout">Yes</button>
+          <button id="cancelLogout">Cancel</button>
+        </div>
+      </div>
+    </div>
+
   </main>
 
 
   <style>
     .product-gallery {
       width: 400px;
-      
+
       height: 400px;
-      
+
       overflow: hidden;
-      
+
       position: relative;
     }
 
@@ -318,7 +330,7 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      
+
     }
 
     .hidden {
@@ -330,7 +342,7 @@
 
   <script>
     $(document).ready(function () {
-    
+
       $('#product-zoom').elevateZoom({
         zoomType: "inner",
         cursor: "crosshair",
@@ -359,11 +371,16 @@
           quantity: qtyValue
         })
       })
-        .then(response => response.json())
-        .then(data => {
-          
-          console.log('data')
-          window.location.href = '/cart'
+        .then(response => {
+          if (response.ok) {
+
+            console.log('Product added to cart successfully');
+            window.location.href = '/cart';
+          } else {
+
+            console.error('Failed to add product to cart');
+          }
+
         })
         .catch((error) => {
           console.log(error);
@@ -384,9 +401,9 @@
           destination: "https://github.com/apvarun/toastify-js",
           newWindow: true,
           close: true,
-          gravity: "top", 
+          gravity: "top",
           position: "center",
-          stopOnFocus: true, 
+          stopOnFocus: true,
           style: {
             background: " #4CAF50  ",
           },
@@ -396,47 +413,78 @@
         }).showToast();
         console.log("hai");
       }
-    
+
     }
   </script>
 
   <script>
 
-document.getElementById('wishlistButton').addEventListener('click', function (event) {
-  event.preventDefault(); 
+    document.getElementById('wishlistButton').addEventListener('click', function (event) {
+      event.preventDefault();
 
-  let inWishlist = this.textContent.trim() === 'Remove from wishlist';
+      let inWishlist = this.textContent.trim() === 'Remove from wishlist';
 
-  fetch('/wishlist', {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      productId: '<%= productId %>',
-      inWishlist: inWishlist
-    })
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      inWishlist = data.added;
-      this.textContent = inWishlist ? 'Remove from wishlist' : 'Add to wishlist';
-    })
-    .catch(error => {
-      console.error('Error:', error);
+      fetch('/wishlist', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productId: '<%= productId %>',
+          inWishlist: inWishlist
+        })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          inWishlist = data.added;
+          this.textContent = inWishlist ? 'Remove from wishlist' : 'Add to wishlist';
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
     });
-});
 
 
   </script>
 
+  <script>
+    const logoutIcon = document.querySelector('#logoutIcon');
+    const logoutModal = document.querySelector('#logoutModal');
+    const closeButton = document.querySelector('.close');
+
+    logoutIcon.addEventListener('click', function () {
+      logoutModal.style.display = 'block';
+    });
+
+    closeButton.addEventListener('click', function () {
+      logoutModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function (event) {
+      if (event.target == logoutModal) {
+        logoutModal.style.display = 'none';
+      }
+    });
+
+    document.querySelector('#cancelLogout').addEventListener('click', function () {
+      logoutModal.style.display = 'none';
+    });
+
+    document.querySelector('#confirmLogout').addEventListener('click', function () {
+      window.location.href = '/logout';
+    });
+
+
+  </script>
+
+
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
- 
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
 
@@ -450,7 +498,7 @@ document.getElementById('wishlistButton').addEventListener('click', function (ev
   <script src="/assets/js/jquery.elevateZoom.min.js"></script>
   <script src="/assets/js/bootstrap-input-spinner.js"></script>
   <script src="/assets/js/jquery.magnific-popup.min.js"></script>
-  
+
   <script src="/assets/js/main.js"></script>
   </body>
 

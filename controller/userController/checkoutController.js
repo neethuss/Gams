@@ -22,6 +22,8 @@ const getCheckout = async (req, res) => {
         .findOne({ userId: userId })
         .populate("products.product");
 
+        const cartQuantity = cart.products.length
+
       const addresses = await addressCollection.find({ userId: userId });
       res.render("userViews/checkout", {
         address: address.userAddress,
@@ -29,6 +31,7 @@ const getCheckout = async (req, res) => {
         cart,
         addresses,
         coupons,
+        cartQuantity
       });
     } else {
       res.redirect("/login");

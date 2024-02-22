@@ -41,7 +41,7 @@
                     </thead>
 
                     <tbody>
-                      <% let cartTotal=0; %> 
+                      <% let cartTotal=0; %>
 
 
 
@@ -68,9 +68,14 @@
                                   <input data-qnt-id="<%= product.product.product_stock +1%>"
                                     data-product-id="<%= product.product._id %>" oninput="return a(event)" type="number"
                                     id="qty" class=" form-control qu" value="<%= product.quantity  %>" min="1"
-                                    max="<%= product.product.product_stock%>" step="1" data-decimals="0" required>
+                                    max="<%= product.product.product_stock %>" step="1" data-decimals="0" required>
                                 </div>
 
+
+                                <div class="available-quantity"
+                                  style="color: rgb(209, 37, 37); font-weight: bold; margin-right: 30px;">
+
+                                </div>
 
                               </div>
                             </td>
@@ -93,17 +98,17 @@
                             </td>
 
                           </tr>
-                        <%})%>  
+                          <%})%>
 
                     </tbody>
 
 
                   </table>
 
-                  
 
 
-                  
+
+
                 </div>
                 <aside class="col-lg-3">
                   <div class="summary summary-cart">
@@ -118,8 +123,8 @@
                           <td id="cartTotal">Rs. <%= cartTotal.toFixed(2) %>
                           </td>
                         </tr>
-                        
-                        
+
+
                       </tbody>
                     </table>
 
@@ -140,54 +145,21 @@
           </div>
         </div>
 
-        
-          <%}%>
+
+        <%}%>
+
+        <div id="logoutModal" class="modal">
+          <div class="modal-content">
+              <span class="close">&times;</span>
+              <p>Are you sure you want to logout?</p>
+              <div class="modal-buttons">
+                  <button id="confirmLogout">Yes</button>
+                  <button id="cancelLogout">Cancel</button>
+              </div>
+          </div>
+      </div>
 
   </main>
-
-
-
-
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-  <script>
-
-    function a(event) {
-      var inputElement = event.target;
-      let inputQnt = inputElement.value;
-      console.log(inputQnt);
-      let qntStock = inputElement.dataset.qntId;
-      let productId = inputElement.dataset.productId;
-      let button = document.getElementById("checkoutButton");
-      console.log(qntStock);
-
-      if (inputQnt == qntStock) {
-
-        Toastify({
-          text: "OUT OF STOCK",
-          duration: 600,
-          destination: "https://cdn.jsdelivr.net/npm/toastify-js",
-          newWindow: true,
-          close: true,
-          gravity: "top",
-          position: "center",
-          stopOnFocus: true,
-          style: {
-            background: " #4CAF50  ",
-          },
-          onClick: function () {
-            alert("Toast clicked!");
-          }
-        }).showToast();
-        console.log("succes");
-        console.log("button disabled")
-        button.style.display = "none"
-      } else {
-
-        button.style.display = "block"
-      }
-    }
-  </script>
 
 
 
@@ -202,6 +174,19 @@
           const quantity = parseInt(event.target.value, 10);
           console.log('Quantity changed:', productId, quantity);
           updateCart(productId, quantity);
+
+          const productDetails = event.target.closest('.quantity');
+          const availableQuantityElement = productDetails.querySelector('.available-quantity');
+          const productStock = parseInt(event.target.dataset.qntId, 10);
+          if (quantity === productStock - 1) {
+            const availableStock = productStock - quantity - 1;
+            availableQuantityElement.textContent = ' No more stock left !';
+
+          } else {
+            const availableStock = productStock - quantity - 1;
+            availableQuantityElement.textContent = '';
+          }
+
         });
       });
     });
@@ -221,16 +206,16 @@
         });
 
         if (response.ok) {
-          
+
           const responseData = await response.json();
 
-          
+
           console.log('Updated data:', responseData);
 
           if (typeof responseData.cartTotal != Number) {
             responseData.cartTotal = Number(responseData.cartTotal)
 
-            
+
             const cartTotalElement = document.querySelector('.summary-total td:last-child');
             cartTotalElement.textContent = `Rs. ${responseData.cartTotal.toFixed(2)}`;
 
@@ -238,7 +223,7 @@
 
 
 
-          
+
           responseData.cart.products.forEach(product => {
             const productRow = document.querySelector(`[data-product-id="${product.product._id}"]`);
             const productTotalElement = productRow.querySelector('.product-total');
@@ -258,6 +243,35 @@
 
   </script>
 
+
+<script>
+  const logoutIcon = document.querySelector('#logoutIcon');
+            const logoutModal = document.querySelector('#logoutModal');
+            const closeButton = document.querySelector('.close');
+
+            logoutIcon.addEventListener('click', function () {
+                logoutModal.style.display = 'block';
+            });
+
+            closeButton.addEventListener('click', function () {
+                logoutModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function (event) {
+                if (event.target == logoutModal) {
+                    logoutModal.style.display = 'none';
+                }
+            });
+
+            document.querySelector('#cancelLogout').addEventListener('click', function () {
+                logoutModal.style.display = 'none';
+            });
+
+            document.querySelector('#confirmLogout').addEventListener('click', function () {
+                window.location.href = '/logout'; 
+            });
+
+</script>
 
 
 

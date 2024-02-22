@@ -24,8 +24,11 @@ const getCart = async (req, res) => {
 
         await cart.save();
       }
+      const cartQuantity = cart.products.length
 
-      res.render("userViews/cart", { cart, userId });
+      res.render("userViews/cart", { cart, userId,cartQuantity });
+
+      
     } else {
       res.render("userViews/login");
     }
@@ -52,6 +55,7 @@ const postCart = async (req, res) => {
         products: [{ product: productId, quantity: quantity }],
       };
       await cartCollection.insertMany(cart);
+      res.redirect('/cart')
     } else {
       // If cart exists, check if the product is already in the car
 
@@ -65,12 +69,14 @@ const postCart = async (req, res) => {
         cart.products.push({ product: productId, quantity: quantity });
 
         await cart.save();
+        res.redirect('/cart')
       } else {
         // If the product is already in the cart, update the quantity
 
         cart.products[existingProductIndex].quantity += parseInt(quantity);
 
         await cart.save();
+        res.redirect('/cart')
       }
     }
   } catch (error) {
@@ -119,7 +125,6 @@ const updateCart = async (req, res) => {
     } else {
       res.status(404).json({ error: "Cart not found" });
     }
-    console.log("completed");
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error occurred" });

@@ -10,7 +10,7 @@
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Molla - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
-   
+
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo-resized.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo-resized.png">
@@ -22,13 +22,14 @@
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
-   
+
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    
+
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/toastify.css">
     <link rel="stylesheet" href="/assets/css/coupon.css">
     <link rel="stylesheet" href="/assets/css/shop.css">
+    <link rel="stylesheet" href="/assets/css/modal.css">
 
 </head>
 
@@ -68,7 +69,8 @@
                         </nav>
                     </div>
 
-                    <div class="header-right" style="display: flex;">
+                    <div class="header-right" style="display: flex; align-items: center;">
+
                         <div class="header-search">
                             <a href="#" class="search-toggle" role="button" title="Search"><i
                                     class="icon-search"></i></a>
@@ -81,8 +83,34 @@
                             </form>
                         </div>
 
+                        <div style="margin-top: 12px; margin-left: 40px;">
+                            <ul
+                                style="display: flex;flex-direction: row; justify-content: space-between;align-items: center;">
+                                <li style="width: 20px; margin-right: 20px;">
+                                    <a href="/profile"><img src="/uploads/user profile.png" alt=""></a>
+                                </li>
 
-                    
+                                <li style="width: 20px; margin-right: 20px;">
+                                    <a href="/wishlist"><img src="/uploads/wishlist-icon.png" alt=""></a>
+                                </li>
+
+                                <li class="cart-icon" style="margin-right: 20px;">
+                                    <a href="/cart" class="cart-link">
+                                        <img src="/uploads/shopping-cart-icon.webp" alt="">
+                                        <span class="cart-badge">
+                                            <%= cartQuantity %>
+                                        </span>
+                                    </a>
+                                </li>
+
+                                <li style="width: 20px;">
+                                    <a id="logoutIcon" href="#"><img src="/uploads/logout-icon.png" alt=""></a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -152,14 +180,14 @@
                                         <div class="product">
                                             <figure class="product-media">
 
-                                              
+
                                                 <div class="image-container">
                                                     <img src="/uploads/<%= product.product_image[0] %>"
                                                         alt="Product image" class="product-image">
                                                 </div>
 
 
-                                                
+
                                                 <div class="product-action ">
                                                     <a href="/product/<%= product._id%>" class="btn-product "><span>View
                                                             product</span></a>
@@ -193,11 +221,11 @@
 
                     </div>
 
-                    
+
                     <div class="pagination" style="display: flex; align-items: center; justify-content: center;">
                         <nav aria-label="Page navigation" class="pagination-container" style="margin-top:30px">
                             <ul class="pagination justify-content-center">
-                                
+
                                 <li class="page-item <%= page == 1 ? 'disabled' : '' %>">
                                     <a class="page-link"
                                         href="?page=<%= page - 1 %><%= sortOption ? '&sortOption=' + sortOption : '' %><%= category ? '&category=' + category : '' %><%= search ? '&search=' + search : '' %>"
@@ -206,7 +234,7 @@
                                     </a>
                                 </li>
 
-                               
+
                                 <% for (let i=1; i <=totalPages; i++) { %>
                                     <li class="page-item <%= page == i ? 'active' : '' %>">
                                         <a class="page-link"
@@ -234,9 +262,71 @@
 
                 </div>
             </div>
+
+            <div id="logoutModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>Are you sure you want to logout?</p>
+                    <div class="modal-buttons">
+                        <button id="confirmLogout">Yes</button>
+                        <button id="cancelLogout">Cancel</button>
+                    </div>
+                </div>
+            </div>
         </main>
 
+        <style>
+            .cart-icon {
+                position: relative;
+                width: 40px;
+            }
+
+            .cart-link {
+                display: block;
+            }
+
+            .cart-badge {
+                position: absolute;
+                top: -10px;
+                right: -10px;
+                background-color: #c73232a1;
+                color: white;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
+                padding-left: 6px;
+            }
+        </style>
+
+        <script>
+            const logoutIcon = document.querySelector('#logoutIcon');
+            const logoutModal = document.querySelector('#logoutModal');
+            const closeButton = document.querySelector('.close');
+
+            logoutIcon.addEventListener('click', function () {
+                logoutModal.style.display = 'block';
+            });
+
+            closeButton.addEventListener('click', function () {
+                logoutModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function (event) {
+                if (event.target == logoutModal) {
+                    logoutModal.style.display = 'none';
+                }
+            });
+
+            document.querySelector('#cancelLogout').addEventListener('click', function () {
+                logoutModal.style.display = 'none';
+            });
+
+            document.querySelector('#confirmLogout').addEventListener('click', function () {
+                window.location.href = '/logout'; 
+            });
 
 
+        </script>
 
         <%- include('footer') -%>

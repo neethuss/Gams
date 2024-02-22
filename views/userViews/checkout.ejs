@@ -24,7 +24,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8">
-                        
+
                         <div id="defaultAddress" class="checkout-section">
                             <h2 class="checkout-title">Shipping Address</h2>
                             <% if(address){ %>
@@ -146,12 +146,14 @@
 
                                                             <% if(cart.discountAmount==0){ %>
 
-                                                                <%}else{%> 
-                                                                    <td style="display: none;" id="couponId"><%= couponId %></td>
-                                                                    
-                                                                    <%}%>
-
+                                                                <%}else{%>
+                                                    <td style="display: none;" id="couponId">
+                                                        <%= couponId %>
                                                     </td>
+
+                                                    <%}%>
+
+                                                        </td>
 
                                                 </tr>
 
@@ -288,6 +290,29 @@
             </div>
 
         </div>
+
+        <div id="walletPaymentModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Are you sure you want to debit the amount from the wallet?</p>
+                <div class="modal-buttons">
+                    <button id="confirmWalletPayment">Yes</button>
+                    <button id="cancelWalletPayment">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="logoutModal" class="modal">
+          <div class="modal-content">
+              <span class="close">&times;</span>
+              <p>Are you sure you want to logout?</p>
+              <div class="modal-buttons">
+                  <button id="confirmLogout">Yes</button>
+                  <button id="cancelLogout">Cancel</button>
+              </div>
+          </div>
+      </div>
+      
     </main><!-- End .main -->
 
 
@@ -301,7 +326,7 @@
         document.getElementById('applyCouponButton').addEventListener('click', function () {
             let couponCode = document.getElementById('couponCodeInput').value;
             let cartTotal = document.getElementById('cartTotal').innerText;
-            cartTotal = parseFloat(cartTotal.replace("Rs. ", "")); 
+            cartTotal = parseFloat(cartTotal.replace("Rs. ", ""));
 
             fetch('/couponApply', {
                 method: 'POST',
@@ -334,9 +359,9 @@
                         const total = document.getElementById('totalPrice')
                         total.textContent = `Rs. ${data.total.toFixed(2)}`;
                     }
-                console.log(data.couponId);
-                   couponIds = data.couponId
-                 
+                    console.log(data.couponId);
+                    couponIds = data.couponId
+
 
                 })
                 .catch(error => {
@@ -365,10 +390,10 @@
 
     <script>
         function selectAddress(addressId) {
-            
+
             console.log('Selected address ID:', addressId);
 
-           
+
             fetch('/defaultAddress', {
                 method: 'POST',
                 headers: {
@@ -383,7 +408,7 @@
                     return response.json();
                 })
                 .then(data => {
-                    
+
                     console.log('Server response:', data);
 
                     const addressInfo = document.querySelector('.address-info');
@@ -408,42 +433,49 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            console.log('sjfhuig');
-
+            var walletPaymentModal = document.getElementById('walletPaymentModal');
+            var confirmWalletPaymentButton = document.getElementById('confirmWalletPayment');
+            var cancelWalletPaymentButton = document.getElementById('cancelWalletPayment');
+            var closeWalletPaymentButton = document.querySelector('#walletPaymentModal .close');
             var placeOrderButton = document.getElementById('placeOrderButton');
-            console.log('booottn');
 
             if (placeOrderButton) {
                 placeOrderButton.addEventListener('click', function (event) {
-                    console.log("Place Order button clicked");
-                    console.log('ksdfuhf');
                     var paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
-
                     var addressInfo = document.querySelector('.address-info');
-
-
-                    const paymentMethodValue = paymentMethod ? paymentMethod.value : null;
-                    console.log("Selected Payment Method:", paymentMethodValue);
+                    var paymentMethodValue = paymentMethod ? paymentMethod.value : null;
 
                     if (!addressInfo) {
                         alert('Please provide a delivery address before placing an order');
                         event.preventDefault();
-                    }
-
-                    else if (!paymentMethod) {
+                    } else if (!paymentMethod) {
                         alert('Please select a payment method before placing an order');
                         event.preventDefault();
                     } else {
                         if (paymentMethodValue === 'online') {
                             initiateRazorpayPayment();
                         } else if (paymentMethodValue === 'wallet') {
-                            walletPayment()
+                            walletPaymentModal.style.display = "block";
                         } else {
                             payment(paymentMethodValue);
                         }
                     }
                 });
             }
+
+            confirmWalletPaymentButton.addEventListener('click', function () {
+                walletPayment();
+            });
+
+
+            cancelWalletPaymentButton.addEventListener('click', function () {
+                walletPaymentModal.style.display = "none";
+            });
+
+            closeWalletPaymentButton.addEventListener('click', function () {
+                walletPaymentModal.style.display = "none"; 
+            });
+
         });
 
 
@@ -495,34 +527,23 @@
         }
 
         function walletPayment() {
-            let totalPrice = document.getElementById('totalPrice').innerText
+            let totalPrice = document.getElementById('totalPrice').innerText;
             totalPrice = totalPrice.replace("Rs. ", "").replace(".00", "");
-            console.log(couponIds,'newwww');
 
-            if (window.confirm("Are you sure you want to debit the amount from the wallet?")) {
-
-                fetch('/walletPayment', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ totalPrice: totalPrice })
-
-                }).then(response => {
-                    if (!response.ok) {
-                        alert('Not enough amount in the wallet')
-                    } else {
-
-                        payment('wallet')
-
-                    }
-                })
-            } else {
-                console.log("User cancelled wallet payment.");
-
-            }
+            fetch('/walletPayment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ totalPrice: totalPrice })
+            }).then(response => {
+                if (!response.ok) {
+                    alert('Not enough amount in the wallet');
+                } else {
+                    payment('wallet');
+                }
+            });
         }
-
 
 
         function payment(paymentMethodValue) {
@@ -542,6 +563,34 @@
     </script>
 
 
+    <script>
+        const logoutIcon = document.querySelector('#logoutIcon');
+            const logoutModal = document.querySelector('#logoutModal');
+            const closeButton = document.querySelector('.close');
+
+            logoutIcon.addEventListener('click', function () {
+                logoutModal.style.display = 'block';
+            });
+
+            closeButton.addEventListener('click', function () {
+                logoutModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function (event) {
+                if (event.target == logoutModal) {
+                    logoutModal.style.display = 'none';
+                }
+            });
+
+            document.querySelector('#cancelLogout').addEventListener('click', function () {
+                logoutModal.style.display = 'none';
+            });
+
+            document.querySelector('#confirmLogout').addEventListener('click', function () {
+                window.location.href = '/logout'; 
+            });
+
+        </script>
 
 
 

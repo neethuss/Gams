@@ -5,9 +5,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;500;900&display=swap" rel="stylesheet">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GAMS</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
@@ -39,6 +36,7 @@
   
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/plugins/nouislider/nouislider.css">
+  <link rel="stylesheet" href="/assets/css/modal.css">
   <style>
       .centered-box {
       text-align: center;
@@ -85,8 +83,8 @@
             <i class="icon-bars"></i>
           </button>
 
-          <a href="index.html" class="logo">
-            <img src="assets/images/logo.png" alt="Molla Logo" width="105" height="25">
+          <a href="/" class="logo">
+            <img src="/uploads/logo-resized.png" alt="Molla Logo" width="50px" >
           </a>
 
           <nav class="main-nav">
@@ -115,11 +113,26 @@
           <ul class="menu sf-arrows">
 
 
-            <li>
-              <a href="/cart" class="sf-with-ul">Go to Cart </a>
+            <li style="width: 80px; ">
+              <a href="/profile"><img src="/uploads/user profile.png" alt=""></a>
+          </li>
+
+          <li style="width: 80px; ">
+              <a href="/wishlist"><img src="/uploads/wishlist-icon.png" alt=""></a>
+          </li>
+
+          <li class="cart-icon-container">
+            <a href="/cart" style="padding-bottom: 17px;">
+              <img src="/uploads/shopping-cart-icon.webp" alt="Shopping Cart">
+              <span class="cart-badge"><%= cartQuantity %></span>
+            </a>
+          </li>
+
+          <li style="width: 80px;">
+            <a id="logoutIcon" href="#"><img src="/uploads/logout-icon.png" alt=""></a>
+          </li>
 
 
-            </li>
 
           </ul>
         </div>
@@ -142,9 +155,74 @@
       </div>
       <a href="/walletHistory"><button class="wallet-history-btn">Wallet History</button></a>
     </div>
+
+    <div id="logoutModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Are you sure you want to logout?</p>
+        <div class="modal-buttons">
+          <button id="confirmLogout">Yes</button>
+          <button id="cancelLogout">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+
   </div>
   
+  <style>
+    .cart-icon-container {
+      position: relative;
+      width: 100px;
+    }
 
+    .cart-icon-container a {
+      display: block;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      background-color:  #c73232a1;
+      color: white;
+      border-radius: 50%;
+      padding: 5px 8px;
+      font-size: 12px;
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+
+<script>
+  const logoutIcon = document.querySelector('#logoutIcon');
+  const logoutModal = document.querySelector('#logoutModal');
+  const closeButton = document.querySelector('.close');
+
+  logoutIcon.addEventListener('click', function () {
+    logoutModal.style.display = 'block';
+  });
+
+  closeButton.addEventListener('click', function () {
+    logoutModal.style.display = 'none';
+  });
+
+  window.addEventListener('click', function (event) {
+    if (event.target == logoutModal) {
+      logoutModal.style.display = 'none';
+    }
+  });
+
+  document.querySelector('#cancelLogout').addEventListener('click', function () {
+    logoutModal.style.display = 'none';
+  });
+
+  document.querySelector('#confirmLogout').addEventListener('click', function () {
+    window.location.href = '/logout';
+  });
+
+
+</script>
 
   <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.bundle.min.js"></script>

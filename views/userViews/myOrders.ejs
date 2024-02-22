@@ -39,7 +39,7 @@
                   <% }); %>
             </td>
 
-           
+
 
 
             <td>
@@ -111,110 +111,234 @@
                                 </td>
                                 <%} %>
 
-                                <td>
-                                  <a href="/orderDetails/<%=order._id%>" style=" cursor: pointer; text-decoration: underline; ">View Details</a>
-                                </td>
+                                  <td>
+                                    <a href="/orderDetails/<%=order._id%>"
+                                      style=" cursor: pointer; text-decoration: underline; ">View Details</a>
+                                  </td>
           </tr>
 
           <% }) %>
       </tbody>
     </table>
 
-    
+
     <div class="pagination" style="display: flex; align-items: center;justify-content: center;">
       <nav aria-label="Page navigation" class="pagination-container" style="margin-top:30px">
         <ul class="pagination justify-content-center">
-        
-         <li class="page-item <%= page == 1 ? 'disabled' : '' %>">
-          <a class="page-link" href="?page=<%= page - 1 %>" aria-label="Previous">
-              <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
-          </a>
-      </li>
-             
-              <% for (let i=1; i <=totalPages; i++) { %>
-                <li class="page-item <%= page == i ? 'active' : '' %>">
-                  <a class="page-link" href="?page=<%= i %>">
-                    <%= i %>
-                  </a>
-                </li>
-                <% } %>
 
-                 
-                  <li class="page-item <%= page == totalPages ? 'disabled' : '' %>">
-                    <a class="page-link" href="?page=<%= page + 1 %>" aria-label="Next">
-                      Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
-                    </a>
-                  </li>
+          <li class="page-item <%= page == 1 ? 'disabled' : '' %>">
+            <a class="page-link" href="?page=<%= page - 1 %>" aria-label="Previous">
+              <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+            </a>
+          </li>
+
+          <% for (let i=1; i <=totalPages; i++) { %>
+            <li class="page-item <%= page == i ? 'active' : '' %>">
+              <a class="page-link" href="?page=<%= i %>">
+                <%= i %>
+              </a>
+            </li>
+            <% } %>
+
+
+              <li class="page-item <%= page == totalPages ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= page + 1 %>" aria-label="Next">
+                  Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                </a>
+              </li>
         </ul>
       </nav>
     </div>
 
 
+    <div id="cancelModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Are you sure you want to cancel this order?</p>
+        <div class="modal-buttons">
+          <button id="confirmCancel">Yes</button>
+          <button id="cancelCancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="returnModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Are you sure you want to return this order?</p>
+        <div class="modal-buttons">
+          <button id="confirmReturn">Yes</button>
+          <button id="cancelReturn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="logoutModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Are you sure you want to logout?</p>
+        <div class="modal-buttons">
+          <button id="confirmLogout">Yes</button>
+          <button id="cancelLogout">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+
 
   </div>
+
+
+
 
 
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
   <script>
+    // Function to show a success toast message
+    function showSuccessToast(message) {
+      Toastify({
+        text: message,
+        duration: 5000,
+        close: true,
+        gravity: "top",
+        position: "center",
+        backgroundColor: "green",
+      }).showToast();
+    }
 
-    document.querySelectorAll('.cancelOrderBtn').forEach((btn) => {
-      btn.addEventListener('click', function () {
-
-        var id = document.getElementById('orderId').value;
-        fetch('/cancelOrder', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            id: id
-          })
-        })
-          .then(response => response.json())
-          .then(data => {
-          
-            if (data.message == "yes") {
-              window.location.reload();
-            }
-        
-
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
+    // Check if there's a success message in local storage
+    document.addEventListener("DOMContentLoaded", function () {
+      var successMessage = localStorage.getItem("successMessage");
+      if (successMessage) {
+        showSuccessToast(successMessage);
+        localStorage.removeItem("successMessage"); // Remove the message after displaying
+      }
     });
-  </script>
 
-  <script>
-    document.querySelectorAll('.returnOrderBtn').forEach((btn) => {
+    // Code for canceling orders
+    var modal = document.getElementById("cancelModal");
+    var cancelButtons = document.querySelectorAll(".cancelOrderBtn");
+    var span = document.getElementsByClassName("close")[0];
+
+    cancelButtons.forEach((btn) => {
       btn.addEventListener('click', function () {
-        var id = document.getElementById('orderId').value;
-        fetch('/returnOrder', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            id: id
-          })
-        })
-          .then(response => response.json())
-          .then(data => {
-           
-            if (data.message == "yes") {
-              window.location.reload();
-            }
-           
+        modal.style.display = "block";
+      });
+    });
 
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    document.getElementById('cancelCancel').onclick = function () {
+      modal.style.display = "none";
+    }
+
+    document.getElementById('confirmCancel').onclick = function () {
+      var id = document.getElementById('orderId').value;
+      fetch('/cancelOrder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: id
+        })
       })
-    })
+        .then(response => response.json())
+        .then(data => {
+          if (data.message == "yes") {
+            localStorage.setItem("successMessage", "Order canceled successfully!"); // Store success message
+            window.location.reload();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      modal.style.display = "none";
+    }
+
+    // Code for returning orders
+    var returnModal = document.getElementById("returnModal");
+    var returnButtons = document.querySelectorAll(".returnOrderBtn");
+    var returnSpan = document.querySelector("#returnModal .close");
+
+    returnButtons.forEach((btn) => {
+      btn.addEventListener('click', function () {
+        returnModal.style.display = "block";
+      });
+    });
+
+    returnSpan.onclick = function () {
+      returnModal.style.display = "none";
+    }
+
+    document.getElementById('cancelReturn').onclick = function () {
+      returnModal.style.display = "none";
+    }
+
+    document.getElementById('confirmReturn').onclick = function () {
+      var id = document.getElementById('orderId').value;
+      fetch('/returnOrder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: id
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.message == "yes") {
+            localStorage.setItem("successMessage", "Order returned successfully!"); // Store success message
+            window.location.reload();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      returnModal.style.display = "none";
+    }
+
   </script>
+
+
+<script>
+  const logoutIcon = document.querySelector('#logoutIcon');
+  const logoutModal = document.querySelector('#logoutModal');
+  const closeButton = document.querySelector('.close');
+
+  logoutIcon.addEventListener('click', function () {
+    logoutModal.style.display = 'block';
+  });
+
+  closeButton.addEventListener('click', function () {
+    logoutModal.style.display = 'none';
+  });
+
+  window.addEventListener('click', function (event) {
+    if (event.target == logoutModal) {
+      logoutModal.style.display = 'none';
+    }
+  });
+
+  document.querySelector('#cancelLogout').addEventListener('click', function () {
+    logoutModal.style.display = 'none';
+  });
+
+  document.querySelector('#confirmLogout').addEventListener('click', function () {
+    window.location.href = '/logout';
+  });
+
+
+</script>
+
+  <!-- Add this line in your HTML file to include the Toastify library -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
 
 
   </body>

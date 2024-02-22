@@ -1,6 +1,7 @@
 const userCollection = require("../../models/userModel");
 const addressCollection = require("../../models/addressModel");
 const walletCollection = require("../../models/walletModel");
+const cartCollection = require('../../models/cartModel')
 
 
 //get method for rendering profile page 
@@ -20,8 +21,11 @@ const getProfile = async (req, res) => {
           .populate("userAddress");
       }
 
+      const cart = await cartCollection.findOne({userId:req.session.user._id})
+      const cartQuantity = cart.products.length
+
       const addresses = await addressCollection.find({ userId: userId });
-      res.render("userViews/profileViews/profile", { user, addresses });
+      res.render("userViews/profileViews/profile", { user, addresses,cartQuantity });
     }
   } catch (error) {
     console.log(error);
@@ -210,7 +214,11 @@ const getWallet = async (req, res) => {
       const user = req.session.user;
       const userId = user._id;
       const wallet = await walletCollection.findOne({ userId: userId });
-      res.render("userViews/profileViews/wallet", { wallet });
+
+      const cart = await cartCollection.findOne({userId:req.session.user._id})
+      const cartQuantity = cart.products.length
+
+      res.render("userViews/profileViews/wallet", { wallet,cartQuantity });
     }
   } catch (error) {
     console.log(error);
@@ -227,14 +235,18 @@ const getWalletHistory = async (req, res) => {
       const userId = user._id;
       const wallet = await walletCollection.findOne({ userId: userId });
 
+      const cart = await cartCollection.findOne({userId:req.session.user._id})
+      const cartQuantity = cart.products.length
+
       if (wallet) {
         wallet.walletHistory.sort((a, b) => b.date - a.date);
 
         res.render("userViews/profileViews/walletHistory", {
           wallet: wallet.walletHistory,
+          cartQuantity
         });
       } else {
-        res.render("userViews/profileViews/walletHistory", { wallet: null });
+        res.render("userViews/profileViews/walletHistory", { wallet: null,cartQuantity });
       }
     }
   } catch (error) {

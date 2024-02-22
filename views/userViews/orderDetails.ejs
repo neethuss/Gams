@@ -10,7 +10,7 @@
   <meta name="keywords" content="HTML5 Template">
   <meta name="description" content="Molla - Bootstrap eCommerce Template">
   <meta name="author" content="p-themes">
-  
+
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo-resized.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo-resized.png">
@@ -24,23 +24,39 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
- 
+
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/main.min.css">
-  
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-  
+
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/css/modal.css">
 
 
 </head>
 <style>
   .gradient-custom * {
     font-size: 15px;
+  }
+
+  .cart-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #c73232a1;
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
   }
 </style>
 
@@ -84,15 +100,29 @@
 
 
 
-            <div class="dropdown cart-dropdown">
-              <a href="/cart" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false" data-display="static">
-                <i class="icon-shopping-cart"></i>
+            <ul style="display: flex; justify-content: space-between;align-items: center;">
+              <li style="width: 20px; margin-right: 20px;">
+                <a href="/profile"><img src="/uploads/user profile.png" alt=""></a>
+              </li>
 
-              </a>
+              <li style="width: 20px; margin-right: 20px;">
+                <a href="/wishlist"><img src="/uploads/wishlist-icon.png" alt=""></a>
+              </li>
 
+              <li style="position: relative; width: 40px; margin-right: 20px;">
+                <a href="/cart" style="display: inline-block;">
+                  <img src="/uploads/shopping-cart-icon.webp" alt="">
+                  <span class="cart-badge">
+                    <%= cartQuantity %>
+                  </span>
+                </a>
+              </li>
 
-            </div>
+              <li style="width: 20px;">
+                <a id="logoutIcon" href="#"><img src="/uploads/logout-icon.png" alt=""></a>
+              </li>
+
+            </ul>
           </div>
         </div>
       </div>
@@ -119,11 +149,15 @@
                         <%= order.status %>
                       </span></h5>
 
+                      <h5 class="text-muted mb-0">Payment Method:<span style="color: #a8729a;">
+                        <%= order.paymentMethod %>
+                      </span></h5>
+
                   </div>
 
                 </div>
                 <div class="card-body p-4">
-                  
+
                   <% let totalOrderPrice=0; %>
                     <% order.products.forEach(product=> { %>
                       <% totalOrderPrice +=product.totalPrice; %>
@@ -184,20 +218,22 @@
 
                             <div>
 
+                        
                               <div>
-                                <p class="text-muted mb-0"><span class="fw-bold me-4">Payment Method:</span>
-                                  <%= order.paymentMethod %>
-                                </p>
-                              </div>
-                              <div>
-                                <p class="text-muted mb-0"><span class="fw-bold me-4">Total:</span>Rs. <%=
+                                <p class="text-muted mb-0"><span class="fw-medium me-4">Total:</span>Rs. <%=
                                     totalOrderPrice %>
                                 </p>
                               </div>
 
                               <div>
-                                <p class="text-muted mb-0"><span class="fw-bold me-4">Discount:</span>Rs.
+                                <p class="text-muted mb-0"><span class="fw-medium me-4">Discount:</span>Rs.
                                   <%= order.discountAmount %>
+                                </p>
+                              </div>
+
+                              <div style="padding-top: 15px;">
+                                <p class="text-muted mb-0" style="font-weight: bold;"><span class="fw-medium me-4">Payment Total:</span>Rs.
+                                  <%= order.payTotal %>/-
                                 </p>
                               </div>
                             </div>
@@ -209,17 +245,55 @@
 
 
                 </div>
-                <div class="card-footer border-0 px-4 py-5"
-                  style="background-color: #696368; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-                  <h5 class="d-flex align-items-center justify-content-end text-white  mb-0">TOTAL: <span
-                      class="h2 mb-0 ms-2">Rs. <%= order.payTotal %>/-</span></h5>
-                </div>
+                
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      <div id="logoutModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>Are you sure you want to logout?</p>
+          <div class="modal-buttons">
+            <button id="confirmLogout">Yes</button>
+            <button id="cancelLogout">Cancel</button>
+          </div>
+        </div>
+
+      </div>
+
     </main>
+
+    <script>
+      const logoutIcon = document.querySelector('#logoutIcon');
+      const logoutModal = document.querySelector('#logoutModal');
+      const closeButton = document.querySelector('.close');
+
+      logoutIcon.addEventListener('click', function () {
+        logoutModal.style.display = 'block';
+      });
+
+      closeButton.addEventListener('click', function () {
+        logoutModal.style.display = 'none';
+      });
+
+      window.addEventListener('click', function (event) {
+        if (event.target == logoutModal) {
+          logoutModal.style.display = 'none';
+        }
+      });
+
+      document.querySelector('#cancelLogout').addEventListener('click', function () {
+        logoutModal.style.display = 'none';
+      });
+
+      document.querySelector('#confirmLogout').addEventListener('click', function () {
+        window.location.href = '/logout';
+      });
+
+
+    </script>
 
     <%- include('footer') %>
