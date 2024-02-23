@@ -25,9 +25,10 @@ const getProductManagement = async (req, res) => {
 const getAddProduct = async (req, res) => {
   try {
     if (req.session.admin) {
+      const errorMsg = req.flash('error')
       const categories = await categoryCollection.find();
 
-      res.render("adminViews/addProduct", { categories });
+      res.render("adminViews/addProduct", { categories ,errorMsg});
     } else {
       res.render("/adminViews/login");
     }
@@ -56,7 +57,8 @@ const postAddProduct = async (req, res) => {
       product_name: { $regex: new RegExp("^" + productName + "$", "i") },
     });
     if (check) {
-      res.redirect("/admin/addProduct", { msg: "Product already exists" });
+      req.flash('error','Product already exists')
+      res.redirect("/admin/addProduct");
     } else {
       productData = {
         product_id: uuid.v4(),

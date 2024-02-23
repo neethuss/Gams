@@ -141,6 +141,25 @@
       return true;
   }
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+  const errorMsg = '<%= errorMsg.join("<br>") %>'
+
+  if (errorMsg) {
+    Toastify({
+      text: errorMsg,
+      duration: 3000,
+      gravity: "top",
+      position: "center",
+      className: 'toastify-error',
+      backgroundColor: 'red',
+    }).showToast();
+  }
+ 
+
+</script>
 </body>
 
 </html>
