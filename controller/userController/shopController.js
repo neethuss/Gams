@@ -54,8 +54,6 @@ const getShop = async (req, res) => {
 const getSearchProduct = async (req, res) => {
   try {
     const search = req.query.search;
-    const sortOption = req.query.sortOption || null;
-    const category = req.query.category || null;
 
     const page = parseInt(req.query.page) || 1;
     const perPage = 6;
@@ -70,15 +68,17 @@ const getSearchProduct = async (req, res) => {
         (product) =>
             product.unlist &&
             product.product_name.toLowerCase().includes(search.toLowerCase()) &&
-            (!category || (category && product.product_category.category_name === category)) // Check if the product belongs to the selected category
+            (!category || (category && product.product_category.category_name === category)) 
     );
-
 
     const totalPages = Math.ceil(searchedProducts.length / perPage);
 
     const startIndex = (page - 1) * perPage;
     const endIndex = Math.min(startIndex + perPage, searchedProducts.length);
     const currentProducts = searchedProducts.slice(startIndex, endIndex);
+
+    const sortOption = req.query.sortOption || null;
+    const category = req.query.category || null;
 
     const cart = await cartCollection.findOne({userId:req.session.user._id})
     const cartQuantity = cart.products.length
