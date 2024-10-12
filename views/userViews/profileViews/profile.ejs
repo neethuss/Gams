@@ -2,453 +2,370 @@
 <html lang="en">
 
 <head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;500;900&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GAMS</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo-resized.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo-resized.png">
-  <link rel="manifest" href="/assets/images/icons/site.html">
-  <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
-  <link rel="shortcut icon" href="/uploads/logo-resized.png">
-  <meta name="msapplication-TileColor" content="#cc9966">
-  <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
-  <link rel="stylesheet" href="/assets/css/plugins/magnific-popup/magnific-popup.css">
-
-  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/plugins/nouislider/nouislider.css">
-  <link rel="stylesheet" href="/assets/css/modal.css">
-
+  <title>GAMS - User Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
-    .custom-navbar {
-      background-color: #123456;
-
-    }
-
-
     body {
-      margin-top: 20px;
-      color: #1a202c;
-      text-align: left;
-      background-color: #e2e8f0;
+      font-family: auto;
+      margin: 0;
+      padding: 0;
+      background-color: rgb(83, 83, 83);
+      color: #333;
     }
 
-    .main-body {
-      padding: 15px;
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
     }
 
-    .card {
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+    .header {
+      background-color: transparent;
+      color: #fff;
     }
 
-    .card {
-      position: relative;
+    .header-content {
       display: flex;
-      flex-direction: column;
-      min-width: 0;
-      word-wrap: break-word;
-      background-color: #fff;
-      background-clip: border-box;
-      border: 0 solid rgba(0, 0, 0, .125);
-      border-radius: .25rem;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .card-body {
-      flex: 1 1 auto;
-      min-height: 1px;
-      padding: 1rem;
+    .logo img {
+      width: 50px;
     }
 
-    .gutters-sm {
-      margin-right: -8px;
-      margin-left: -8px;
+    .nav-menu {
+      list-style-type: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
     }
 
-    .gutters-sm>.col,
-    .gutters-sm>[class*=col-] {
-      padding-right: 8px;
-      padding-left: 8px;
+    .nav-menu li a {
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.3s;
+      font-family: auto;
     }
 
-    .mb-3,
-    .my-3 {
-      margin-bottom: 1rem !important;
+    .nav-menu li a:hover {
+      color: #ddd;
     }
 
-    .bg-gray-300 {
-      background-color: #e2e8f0;
+    .profile-section {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
     }
 
-    .h-100 {
-      height: 100% !important;
+    .profile-card {
+      background-color: rgb(61, 61, 61);
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      color: #fff;
+      display: flex;
+      gap: 30px;
+      max-width: 800px;
+      width: 100%;
     }
 
-    .shadow-none {
-      box-shadow: none !important;
+    .profile-left,
+    .profile-right {
+      flex: 1;
+      width: 50%;
+
+    }
+
+    .profile-left {
+      text-align: center;
+    }
+
+    .profile-right {
+      display: flex;
+      flex: 1;
+      width: 50%;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-image {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .profile-image img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #333;
+    }
+
+    .profile-details h2 {
+      margin-bottom: 20px;
+      color: #fff;
+      text-align: center;
+    }
+
+    .profile-info {
+      margin-bottom: 15px;
+    }
+
+    .profile-info strong {
+      display: inline-block;
+      width: 120px;
+      color: #ddd;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #333;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    .btn:hover {
+      background-color: #555;
+    }
+
+    .addresses {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+    color: #fff;
+  }
+
+  .address-card {
+    background-color: rgb(61, 61, 61);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: calc(33.33% - 20px);
+    min-width: 250px;
+    max-width: 350px;
+  }
+
+  .address-card h3 {
+    margin-top: 0;
+    color: #fff;
+    border-bottom: 1px solid #555;
+    padding-bottom: 10px;
+  }
+
+  .address-actions {
+    margin-top: 15px;
+  }
+
+  .address-actions a {
+    margin-right: 10px;
+  }
+
+  @media (max-width: 1200px) {
+    .address-card {
+      width: calc(50% - 20px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .address-card {
+      width: 100%;
+    }
+  }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 300px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .modal-buttons {
+      margin-top: 20px;
+    }
+
+    .modal-buttons button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #confirmLogout {
+      background-color: #d9534f;
+      color: white;
+    }
+
+    #cancelLogout {
+      background-color: #5bc0de;
+      color: white;
     }
   </style>
 </head>
 
 <body>
-
-
-
   <header class="header">
-
-
-    <div class="header-middle sticky-header">
-      <div class="container">
-        <div class="header-left">
-          <button class="mobile-menu-toggler">
-            <span class="sr-only">Toggle mobile menu</span>
-            <i class="icon-bars"></i>
-          </button>
-
-          <a href="/" class="logo">
-            <img src="/uploads/logo-resized.png" alt="Molla Logo" width="50px">
-          </a>
-
-          <nav class="main-nav">
-            <ul class="menu sf-arrows">
-              <li class="megamenu-container active">
-                <a href="/" class="sf-with-ul">Home</a>
-
-
-              </li>
-              <li>
-                <a href="/shop" class="sf-with-ul">Shop</a>
-
-
-              </li>
-              <li>
-                <a href="" class="sf-with-ul">About Us</a>
-
-
-              </li>
-
-            </ul>
-          </nav>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <img src="/uploads/logo-resized.png" alt="GAMS Logo">
         </div>
-
-        <div class="header-right">
-
-
-          <div>
-            <ul class="menu sf-arrows">
-
-
-              <li>
-                <a href="/wallet" class="sf-with-ul">Wallet </a>
-
-
-              </li>
-              <li style="width: 80px; ">
-                <a href="/profile"><img src="/uploads/user profile.png" alt=""></a>
-              </li>
-
-              <li style="width: 90px; ">
-                <a href="/wishlist"><img src="/uploads/my-wish-list.png" alt=""></a>
-              </li>
-
-              <li class="cart-icon-container">
-                <a href="/cart" style="padding-bottom: 17px;">
-                  <img src="/uploads/shopping-cart-icon.webp" alt="Shopping Cart">
-                  <span class="cart-badge">
-                    <%= cartQuantity %>
-                  </span>
-                </a>
-              </li>
-
-              <li style="width: 80px;">
-                <a id="logoutIcon" href="#"><img src="/uploads/logout-icon.png" alt=""></a>
-              </li>
-
-            </ul>
-          </div>
-        </div>
+        <nav>
+          <ul class="nav-menu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/shop">Shop</a></li>
+            <li><a href="/wallet">Wallet</a></li>
+            <li><a href="/wishlist">Wishlist</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="#" id="logoutIcon">Logout</a></li>
+          </ul>
+        </nav>
       </div>
     </div>
   </header>
 
-
-
-  <div class="container">
-    <div class="main-body">
-
-
-      <div class="row gutters-sm">
-        <div class="col-md-4 mb-3">
-          <div class="card">
-            <div class="card-body">
-              <div class="d-flex flex-column align-items-center text-center">
-                <img src="/uploads/user profile.png" alt="Admin" class="rounded-circle" width="150">
-                <div class="mt-3">
-                  <h4>
-                    <%=user.username%>
-                  </h4>
-
-                  <div class="row">
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
+  <main class="container">
+    <section class="profile-section">
+      <div class="profile-card">
+        <div class="profile-left">
+          <div class="profile-image">
+            <img src="/uploads/user profile.png" alt="<%= user.username %>">
           </div>
-
-
+          <h2>
+            <%= user.username %>
+          </h2>
+          <a href="/editprofile/<%= user._id %>" class="btn">Edit Profile</a>
         </div>
-        <div class="col-md-8">
-          <div class="card mb-3">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-3">
-                  <h6 class="mb-0">Name</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                  <%=user.username%>
-                </div>
-              </div>
-              <hr>
-
-              <div class="row">
-                <div class="col-sm-3">
-                  <h6 class="mb-0">Email</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                  <%=user.email%>
-                </div>
-              </div>
-              <hr>
-
-              <div class="row">
-                <div class="col-sm-3">
-                  <h6 class="mb-0">Phone</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                  <%=user.phone%>
-                </div>
-              </div>
-              <hr>
-
-              <div class="row">
-                <div class="col-sm-3">
-                  <h6 class="mb-0">ReferalCode</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                  <a href="/referalLogout">Refer your code <u>
-                      <%=user.referalCode%>
-                    </u> to others and get Rs.250</a>
-
-                </div>
-              </div>
-              <hr>
-
-              <div class="row">
-                <div class="col-sm-3">
-                  <h6 class="mb-0">Address</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                  <% if (user.userAddress && user.userAddress.name) { %>
-                    <%=user.userAddress.name%>,<%=user.userAddress.address%>,<%=user.userAddress.pincode%>,
-                          <%=user.userAddress.district%>,<%=user.userAddress.state%>,<%=user.userAddress.country%><br>
-                                phone:<%=user.userAddress.phone%>
-                                  <% } else { %>
-                                    No address available.
-                                    <% } %>
-
-                </div>
-
-              </div>
-              <hr>
-              <div class="d-flex justify-content-center">
-                <div class="col-sm-12">
-                  <a class="btn btn-info " href="/editprofile/<%=user._id%>">Edit profile</a>
-                  <a class="btn btn-info " href="/addAddress">Add Address</a>
-                </div>
-
-              </div>
+        <div class="profile-right">
+          <div class="profile-details">
+            <div class="profile-info">
+              <strong>Email:</strong>
+              <%= user.email %>
+            </div>
+            <div class="profile-info">
+              <strong>Phone:</strong>
+              <%= user.phone %>
+            </div>
+            <div class="profile-info">
+              <strong>Referal Code:</strong>
+              <%= user.referalCode %>
+            </div>
+            <p>Refer your code to others and get Rs.250</p>
+            <div class="profile-actions">
+              <a href="/addAddress" class="btn">Add Address</a>
             </div>
           </div>
         </div>
       </div>
+    </section>
 
+    <section class="addresses" style="color: #fff;" >
+      <% addresses.forEach((address, index)=> { %>
+        <div class="address-card" >
+          <h3>Address <%= index + 1 %>
+          </h3>
+          <p>
+            <%= address.name %>
+          </p>
+          <p>
+            <%= address.address %>, <%= address.pincode %>
+          </p>
+          <p>
+            <%= address.district %>, <%= address.state %>, <%= address.country %>
+          </p>
+          <p>Phone: <%= address.phone %>
+          </p>
+          <div class="address-actions">
+            <a href="/editAddress/<%= address._id %>" class="btn">Edit</a>
+            <a href="/deleteAddress/<%= address._id %>" class="btn">Delete</a>
+          </div>
+        </div>
+        <% }) %>
+    </section>
+  </main>
+
+  <div id="logoutModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Are you sure you want to logout?</p>
+      <div class="modal-buttons">
+        <button id="confirmLogout">Yes</button>
+        <button id="cancelLogout">Cancel</button>
+      </div>
     </div>
-
   </div>
 
-  <div class="row" id="viewAddress">
-    <% addresses.forEach((address, index)=> { %>
-      <div class="col-md-4 mb-3">
-        <div class="card" style="margin-left: 20px;">
-          <div class="card-header bg-dark text-white">
-            <input type="radio" name="selectedAddress" value="<%= address._id %>" <% if(user.userAddress &&
-              user.userAddress.toString()===address._id) { %>checked<% } %> onclick="selectAddress('<%= address._id %>
-                ')">
-                <label for="userAddress<%= index %>">
-                  <span class="ml-2">Address <%= index + 1 %></span>
-                </label>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">
-              <%= address.name.charAt(0).toUpperCase() + address.name.slice(1).toLowerCase() %>
-            </h5>
-            <p class="card-text">
-              <%= address.address %>, <%= address.pincode %>, <%= address.district %>, <%= address.state %>, <%=
-                        address.country %><br>
-                        Phone: <%= address.phone %>
-            </p>
-            <div class="d-flex">
+  <script>
+    const logoutIcon = document.querySelector('#logoutIcon');
+    const logoutModal = document.querySelector('#logoutModal');
+    const closeButton = document.querySelector('.close');
+    const confirmLogout = document.querySelector('#confirmLogout');
+    const cancelLogout = document.querySelector('#cancelLogout');
 
-              <a href="/editAddress/<%= address._id %>"><img src="/uploads/edit.png" width="10%" alt=""></a>
-              <a href="/deleteAddress/<%= address._id %>"><img src="/uploads/delete.png" width="10%" alt=""></a>
+    logoutIcon.addEventListener('click', function () {
+      logoutModal.style.display = 'block';
+    });
 
-            </div>
-          </div>
-        </div>
-      </div>
-      <% }) %>
+    closeButton.addEventListener('click', function () {
+      logoutModal.style.display = 'none';
+    });
 
-        <div id="logoutModal" class="modal">
-          <div class="modal-content">
-            <span class="close">&times;</span>
-            <p>Are you sure you want to logout?</p>
-            <div class="modal-buttons">
-              <button id="confirmLogout">Yes</button>
-              <button id="cancelLogout">Cancel</button>
-            </div>
-          </div>
+    cancelLogout.addEventListener('click', function () {
+      logoutModal.style.display = 'none';
+    });
 
-        </div>
+    confirmLogout.addEventListener('click', function () {
+      window.location.href = '/logout';
+    });
 
-        <style>
-          .cart-icon-container {
-            position: relative;
-            width: 100px;
-          }
-
-          .cart-icon-container a {
-            display: block;
-          }
-
-          .cart-badge {
-            position: absolute;
-            top: -30px;
-            right: -30px;
-            background-color: #c73232a1;
-            color: white;
-            border-radius: 50%;
-            padding: 5px 8px;
-            font-size: 12px;
-            width: 20px;
-            height: 20px;
-          }
-        </style>
-
-
-        <script>
-          function selectAddress(addressId) {
-
-            console.log('Selected address ID:', addressId);
-
-
-            fetch('/defaultAddress', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ defaultAddress: addressId }),
-            })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error('Network response was not ok');
-                }
-                return response.json();
-              })
-              .then(data => {
-
-                console.log('Server response:', data);
-
-                window.location.href = '/profile'
-
-              })
-              .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
-              });
-          }
-        </script>
-
-
-        <script>
-          const logoutIcon = document.querySelector('#logoutIcon');
-          const logoutModal = document.querySelector('#logoutModal');
-          const closeButton = document.querySelector('.close');
-
-          logoutIcon.addEventListener('click', function () {
-            logoutModal.style.display = 'block';
-          });
-
-          closeButton.addEventListener('click', function () {
-            logoutModal.style.display = 'none';
-          });
-
-          window.addEventListener('click', function (event) {
-            if (event.target == logoutModal) {
-              logoutModal.style.display = 'none';
-            }
-          });
-
-          document.querySelector('#cancelLogout').addEventListener('click', function () {
-            logoutModal.style.display = 'none';
-          });
-
-          document.querySelector('#confirmLogout').addEventListener('click', function () {
-            window.location.href = '/logout';
-          });
-
-
-        </script>
-
-
-
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-          crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-          crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-          crossorigin="anonymous"></script>
-
-        <!-- Plugins JS File -->
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
-        <script src="assets/js/jquery.hoverIntent.min.js"></script>
-        <script src="assets/js/jquery.waypoints.min.js"></script>
-        <script src="assets/js/superfish.min.js"></script>
-        <script src="assets/js/owl.carousel.min.js"></script>
-        <script src="assets/js/bootstrap-input-spinner.js"></script>
-        <script src="assets/js/jquery.magnific-popup.min.js"></script>
-        <script src="assets/js/wNumb.js"></script>
-        <script src="assets/js/nouislider.min.js"></script>
-        <!-- Main JS File -->
-        <script src="assets/js/main.js"></script>
-
-
+    window.addEventListener('click', function (event) {
+      if (event.target == logoutModal) {
+        logoutModal.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 
 </html>

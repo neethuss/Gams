@@ -1,96 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>
-    GAMS - Admin
-  </title>
-  
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo-resized.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo-resized.png">
-  <link rel="manifest" href="/assets/images/icons/site.html">
-  <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
-  <link rel="shortcut icon" href="/uploads/logo-resized.png">
-  <meta name="apple-mobile-web-app-title" content="Molla">
-  <meta name="application-name" content="Molla">
-  <meta name="msapplication-TileColor" content="#cc9966">
-  <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
-  <meta name="theme-color" content="#ffffff">
- 
-  
-  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-  
-  <link rel="stylesheet" href="/assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gams admin login</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: auto;
+        }
+        .background {
+            background-image: url('');
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: black;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(1px);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-header {
+            text-align: center; 
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        .btn {
+            width: 40%;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            background-color: transparent;
+            color: white;
+            cursor: pointer;
+            border: 1px solid gray;
+            border-radius: 16px;
+            transition: background-color 0.3s;
+            margin: 0 auto;
+        }
+
+        .btn-container{
+          display: flex;
+          justify-items: center;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: #ff6b6b;
+            font-size: 0.875rem;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        #signup-link {
+            text-align: center;
+            margin-top: 1rem;
+            color: white;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="page-wrapper">
-
-
-    <main class="main">
-
-
-      <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
-        style="background-image: url()">
-        <div class="container">
-          <div class="form-box">
-            <div class="form-tab">
-              <ul class="nav nav-pills nav-fill" role="tablist">
-
-                <li class="nav-item">
-                  <a class="nav-link active" id="register-tab-2" data-toggle="tab" href="#register-2" role="tab"
-                    aria-controls="register-2" aria-selected="true">Admin Login</a>
-                </li>
-              </ul>
-              <div class="tab-content">
-
-                <div class="tab-pane fade show active" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
-                  <form action="/admin" method="post">
-                    <div class="form-group">
-                      <label for="register-email-2">Your email address *</label>
-                      <input type="email" class="form-control" id="register-email-2" name="email" >
-                    </div>
-
-                    <div class="form-group">
-                      <label for="register-password-2">Password *</label>
-                      <input type="password" class="form-control" id="register-password-2" name="password">
-                    </div>
-
-                    <div class="form-footer">
-                      <button type="submit" class="btn btn-outline-primary-2">
-                        <span>LOGIN</span>
-                        <i class="icon-long-arrow-right"></i>
-                      </button>
-
-
-                    </div>
-                  </form>
-                  
-                </div>
-              </div>
-            </div>
+    <div class="background">
+        <div class="form-container">
+          <div class="form-header">
+            GAMS ADMIN LOGIN
           </div>
+            <form action="/admin" method="post" onsubmit="return validateForm()">
+                <div class="form-group">
+                    <label for="register-email-2">Your email address *</label>
+                    <input type="text" class="form-control" id="register-email-2" name="email">
+                    <span id="emailError" class="error"></span>
+                </div>
+                <div class="form-group">
+                    <label for="register-password-2">Password *</label>
+                    <input type="password" class="form-control" id="register-password-2" name="password">
+                    <span id="passwordError" class="error"></span>
+                </div>
+               <div class="btn-container">
+                <button type="submit" class="btn">LOGIN</button>
+               </div>
+            </form>
         </div>
-      </div>
-    </main>
+    </div>
 
-  </div>
+    <script>
+        function validateForm() {
+            document.getElementById('emailError').textContent = "";
+            document.getElementById('passwordError').textContent = "";
 
- 
-  <script src="/assets/js/jquery.min.js"></script>
-  <script src="/assets/js/bootstrap.bundle.min.js"></script>
-  <script src="/assets/js/jquery.hoverIntent.min.js"></script>
-  <script src="/assets/js/jquery.waypoints.min.js"></script>
-  
+            const email = document.getElementById('register-email-2').value.trim();
+            const password = document.getElementById('register-password-2').value.trim();
 
-  <script src="/assets/js/main.js"></script>
+            if (email === "") {
+                document.getElementById('emailError').textContent = "Email cannot be empty";
+                return false;
+            }
+            if (!/^\S+@\S+\.\S+$/.test(email)) {
+                document.getElementById('emailError').textContent = "Invalid email format";
+                return false;
+            }
+            if (password === "") {
+                document.getElementById('passwordError').textContent = "Password cannot be empty";
+                return false;
+            }
+            if (password.length < 6) {
+                document.getElementById('passwordError').textContent = "Password must contain at least 6 characters";
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
-
-
-
 </html>

@@ -1,234 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Edit Address</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Delivery Address</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: auto;
+            background-image: url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: rgb(83, 83, 83);
             margin: 0;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
-
         .container {
-            background-color: #fff;
-            padding: 20px;
+            background-color: rgb(61, 61, 61);
+            padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
-
         h1 {
             text-align: center;
+            color: #fff;
+            margin-bottom: 1.5rem;
         }
-
         form {
-            max-width: 500px;
-            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
-
+        .form-group {
+            flex: 1 1 calc(50% - 0.5rem);
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group.full-width {
+            flex-basis: 100%;
+        }
         label {
             font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #fff;
         }
-
-        input[type="text"],
-        input[type="number"] {
+        input[type="text"] {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
+            padding: 0.75rem;
             box-sizing: border-box;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: transparent;
+            color: #fff;
         }
-
+        .submit-group {
+            flex-basis: 100%;
+            margin-top: 1rem;
+        }
         input[type="submit"] {
             background-color: #007bff;
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 0.75rem;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            width: 100%;
         }
-
         input[type="submit"]:hover {
             background-color: #0056b3;
         }
-
         .error {
-            color: red;
+            color: #d9534f;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
         }
     </style>
 </head>
-
 <body>
-
-    <h1>Edit Address</h1>
     <div class="container">
+        <h1>Edit Delivery Address</h1>
         <form action="/editAddress/<%=address._id%>" method="post" onsubmit="return validateForm()">
             <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" value="<%= address.name %>" class="form-control">
+                <input type="text" id="name" name="name" value="<%= address.name %>" required>
                 <span id="nameError" class="error"></span>
             </div>
-
-            <div class="form-group">
-                <label for="address">Address:</label>
-                <input type="text" id="address" name="address" value="<%= address.address %>" class="form-control">
-                <span id="addressError" class="error"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="district">District:</label>
-                <input type="text" id="district" name="district" value="<%= address.district %>" class="form-control">
-                <span id="districtError" class="error"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="state">State:</label>
-                <input type="text" id="state" name="state" value="<%= address.state %>" class="form-control">
-                <span id="stateError" class="error"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="country">Country:</label>
-                <input type="text" id="country" name="country" value="<%= address.country %>" class="form-control">
-                <span id="countryError" class="error"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="pincode">Pincode:</label>
-                <input type="text" id="pincode" name="pincode" value="<%= address.pincode %>" class="form-control">
-                <span id="pincodeError" class="error"></span>
-            </div>
-
             <div class="form-group">
                 <label for="phone">Phone Number:</label>
-                <input type="text" id="phone" name="phone" value="<%= address.phone %>" class="form-control" required>
+                <input type="text" id="phone" name="phone" value="<%= address.phone %>" required>
                 <span id="phoneError" class="error"></span>
             </div>
-
-            <input type="submit" value="Submit" class="btn btn-primary">
+            <div class="form-group full-width">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" value="<%= address.address %>" required>
+                <span id="addressError" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label for="district">District:</label>
+                <input type="text" id="district" name="district" value="<%= address.district %>" required>
+                <span id="districtError" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" value="<%= address.state %>" required>
+                <span id="stateError" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" value="<%= address.country %>" required>
+                <span id="countryError" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label for="pincode">Pincode:</label>
+                <input type="text" id="pincode" name="pincode" value="<%= address.pincode %>" required>
+                <span id="pincodeError" class="error"></span>
+            </div>
+            <div class="submit-group">
+                <input type="submit" value="Update Address">
+            </div>
         </form>
     </div>
 
+    <script>
+        function validateForm() {
+            const fields = {
+                name: document.getElementById("name").value.trim(),
+                address: document.getElementById("address").value.trim(),
+                district: document.getElementById("district").value.trim(),
+                state: document.getElementById("state").value.trim(),
+                country: document.getElementById("country").value.trim(),
+                pincode: document.getElementById("pincode").value.trim(),
+                phone: document.getElementById("phone").value.trim()
+            };
 
-  <script>
-    function validateForm() {
+            const errors = {};
+            let isValid = true;
 
-      document.getElementById('nameError').textContent = ""
-      document.getElementById('addressError').textContent = ""
-      document.getElementById('districtError').textContent = ""
-      document.getElementById('stateError').textContent = ""
-      document.getElementById('countryError').textContent = ""
-      document.getElementById('pincodeError').textContent = ""
-      document.getElementById('phoneError').textContent = ""
+            // Reset error messages
+            Object.keys(fields).forEach(field => {
+                document.getElementById(`${field}Error`).textContent = "";
+            });
 
-      const name = document.getElementById("name").value.trim();
-      const address = document.getElementById("address").value.trim();
-      const district = document.getElementById("district").value.trim();
-      const state = document.getElementById("state").value.trim();
-      const country = document.getElementById("country").value.trim();
-      const pincode = document.getElementById("pincode").value.trim();
-      const phone = document.getElementById("phone").value.trim();
+            // Validate name
+            if (fields.name === "") {
+                errors.name = "Name is required";
+            } else if (fields.name.length < 4) {
+                errors.name = "Name must be at least 4 characters";
+            } else if (!/^[a-zA-Z\s]+$/.test(fields.name)) {
+                errors.name = "Enter a valid name (letters and spaces only)";
+            }
 
-      if (name === "") {
-        document.getElementById('nameError').textContent = "name cannot be empty"
-        return false
-      }
+            // Validate address
+            if (fields.address === "") {
+                errors.address = "Address is required";
+            } else if (!/^[a-zA-Z0-9\s,.-]+$/.test(fields.address)) {
+                errors.address = "Enter a valid address";
+            }
 
-      if (name.length < 4) {
-        document.getElementById("nameError").textContent = "name must be at least 4 characters";
-        return false;
-      }
+            // Validate district, state, and country
+            ['district', 'state', 'country'].forEach(field => {
+                if (fields[field] === "") {
+                    errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+                } else if (!/^[a-zA-Z\s]+$/.test(fields[field])) {
+                    errors[field] = `Enter a valid ${field} (letters and spaces only)`;
+                }
+            });
 
-      if (!/^[a-zA-Z]+$/.test(name)) {
-        document.getElementById("nameError").textContent = "name cannot contain numbers or symbols";
-        return false;
-      }
+            // Validate pincode
+            if (fields.pincode === "") {
+                errors.pincode = "Pincode is required";
+            } else if (fields.pincode.length !== 6 || !/^\d+$/.test(fields.pincode)) {
+                errors.pincode = "Enter a valid 6-digit pincode";
+            }
 
-      if (address === "") {
-        document.getElementById('addressError').textContent = "address cannot be empty"
-        return false
-      }
+            // Validate phone
+            if (fields.phone === "") {
+                errors.phone = "Phone number is required";
+            } else if (fields.phone.length !== 10 || !/^\d+$/.test(fields.phone)) {
+                errors.phone = "Enter a valid 10-digit phone number";
+            }
 
-      if (!/^([a-zA-Z]+\s)+[a-zA-Z]+$/.test(address)) {
-        document.getElementById("addressError").textContent = "Invalid address format";
-        return false;
-      }
+            // Display errors
+            Object.keys(errors).forEach(field => {
+                if (errors[field]) {
+                    document.getElementById(`${field}Error`).textContent = errors[field];
+                    isValid = false;
+                }
+            });
 
-      if (district === "") {
-        document.getElementById('districtError').textContent = "district name cannot be empty"
-        return false
-      }
-
-      if (!/^[a-zA-Z]+$/.test(district)) {
-        document.getElementById("districtError").textContent = " district name cannot contain numbers or symbols";
-        return false;
-      }
-
-      if (state === "") {
-        document.getElementById('stateError').textContent = "state name cannot be empty"
-        return false
-      }
-
-      if (!/^[a-zA-Z]+$/.test(state)) {
-        document.getElementById("stateError").textContent = " state name cannot contain numbers or symbols";
-        return false;
-      }
-
-      if (country === "") {
-        document.getElementById('nameError').textContent = "country name cannot be empty"
-        return false
-      }
-
-      if (!/^[a-zA-Z]+$/.test(country)) {
-        document.getElementById("countryError").textContent = "country name cannot contain numbers or symbols";
-        return false;
-      }
-
-      if (pincode === "") {
-        document.getElementById('pincodeError').textContent = "pincode cannot be empty"
-        return false
-      }
-
-      if (pincode.length != 6) {
-        document.getElementById('pincodeError').textContent = "Incorrect pincode"
-        return false
-      }
-
-      if (!/^\d+$/.test(pincode)) {
-        document.getElementById("pincodeError").textContent = "pincode cant contain letters";
-        return false
-      }
-
-
-      if (phone === "") {
-        document.getElementById('phoneError').textContent = "phone number cannot be empty"
-        return false
-      }
-
-      if (phone.length !== 10) {
-        document.getElementById("phoneError").textContent = "Phone number must contain 10 digits";
-        return false;
-      }
-
-      if (!/^\d+$/.test(phone)) {
-        document.getElementById("phoneError").textContent = "Phone number cant contain letters";
-        return false
-      }
-
-
-      return true;
-    }
-  </script>
+            return isValid;
+        }
+    </script>
 </body>
-
 </html>

@@ -1,278 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Add Address</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Delivery Address</title>
     <style>
-        
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: auto;
+            background-image: url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: rgb(83, 83, 83);
             margin: 0;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
-
         .container {
-            background-color: #fff;
-            padding: 20px;
+            background-color: rgb(61, 61, 61);;
+            padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
-
         h1 {
             text-align: center;
+            color: #fff;
+            margin-bottom: 1.5rem;
         }
-
         form {
-            max-width: 500px;
-            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
-
+        .form-group {
+            flex: 1 1 calc(50% - 0.5rem);
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group.full-width {
+            flex-basis: 100%;
+        }
         label {
             font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #fff;
         }
-
-        input[type="text"],
-        input[type="number"] {
+        input[type="text"] {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
+            padding: 0.75rem;
             box-sizing: border-box;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: transparent;
+            color: #fff;
         }
-
+        .submit-group {
+            flex-basis: 100%;
+            margin-top: 1rem;
+        }
         input[type="submit"] {
             background-color: #007bff;
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 0.75rem;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            width: 100%;
         }
-
         input[type="submit"]:hover {
             background-color: #0056b3;
         }
-        
-
-
-
-.custom-navbar {
-   background-color: #123456; 
-}
-     body {
-    background-image: url('http://www.pixelstalk.net/wp-content/uploads/2016/04/Grey-backgrounds-for-desktop.jpg'); /* Replace 'path_to_your_image.jpg' with the actual path to your image file */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-.price-pro {
-    color: #920808;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-
-        .navbar-brand {
-            color: #000;
+        .error {
+            color: #d9534f;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
         }
-
-        .navbar-toggler-icon {
-            background-color: #000;
-        }
-
-        .product-images img {
-            width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .product-info h4 {
-            color: #000;
-        }
-
-        .price-pro {
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
-
-        .product-description {
-            color: #ccc;
-            font-size: 1.1rem;
-        }
-
-        .btn-add-to-cart,
-        .btn-buy-now {
-            background-color: #ff8800;
-            color: #fff;
-            border: none;
-            margin-top: 10px;
-            font-size: 1.2rem;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .btn-add-to-cart:hover,
-        .btn-buy-now:hover {
-            background-color: #cc6e00;
-        }
-
-        .message {
-            display: none;
-            background-color: #28a745;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-        }
-        .product-images img {
-    width: 250px; 
-    height: 250px; 
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-
     </style>
-    
 </head>
-
 <body>
-
-
-
-
-    <h1>Add Delivery Address</h1>
-    <form action="/addAddress" method="post" onsubmit="return validateForm()">
-        <label for="houseName">Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
-
-        <label for="street">Address:</label>
-        <input type="text" id="address" name="address" required><br><br>
-
-        <label for="city">District:</label>
-        <input type="text" id="district" name="district" required><br><br>
-
-        <label for="state">State:</label>
-        <input type="text" id="state" name="state" required><br><br>
-
-        <label for="pincode">Country:</label>
-        <input type="text" id="country" name="country" required><br><br>
-
-        <label for="pincode">Pincode:</label>
-        <input type="text" id="pincode" name="pincode" required><br><br>
-
-        <label for="pincode">Phone Number:</label>
-        <input type="text" id="phone" name="phone" required><br><br>
-
-        <input type="submit" value="Submit">
-    </form>
+    <div class="container">
+        <h1>Add Delivery Address</h1>
+        <form action="/addAddress" method="post" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <span id="nameError" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" required>
+                <span id="phoneError" class="error"></span>
+            </div>
+            <div class="form-group full-width">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required>
+                <span id="addressError" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label for="district">District:</label>
+                <input type="text" id="district" name="district" required>
+                <span id="districtError" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" required>
+                <span id="stateError" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" required>
+                <span id="countryError" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label for="pincode">Pincode:</label>
+                <input type="text" id="pincode" name="pincode" required>
+                <span id="pincodeError" class="error"></span>
+            </div>
+            <div class="submit-group">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
 
     <script>
         function validateForm() {
-            
-            var name = document.getElementById("name").value.trim();
-            var address = document.getElementById("address").value.trim();
-            var district = document.getElementById("district").value.trim();
-            var state = document.getElementById("state").value.trim();
-            var country = document.getElementById("country").value.trim();
-            var pincode = document.getElementById("pincode").value.trim();
-            var phone = document.getElementById("phone").value.trim();
+            const fields = {
+                name: document.getElementById("name").value.trim(),
+                address: document.getElementById("address").value.trim(),
+                district: document.getElementById("district").value.trim(),
+                state: document.getElementById("state").value.trim(),
+                country: document.getElementById("country").value.trim(),
+                pincode: document.getElementById("pincode").value.trim(),
+                phone: document.getElementById("phone").value.trim()
+            };
 
-            
-            if (name === "") {
-                alert("name must be filled out");
-                return false;
+            const errors = {};
+            let isValid = true;
+
+            // Reset error messages
+            Object.keys(fields).forEach(field => {
+                document.getElementById(`${field}Error`).textContent = "";
+            });
+
+            // Validate name
+            if (fields.name === "") {
+                errors.name = "Name is required";
+            } else if (fields.name.length < 4) {
+                errors.name = "Name must be at least 4 characters";
+            } else if (!/^[a-zA-Z\s]+$/.test(fields.name)) {
+                errors.name = "Enter a valid name (letters and spaces only)";
             }
 
-            
-            if (address === "") {
-                alert("address must be filled out");
-                return false;
+            // Validate address
+            if (fields.address === "") {
+                errors.address = "Address is required";
+            } else if (!/^[a-zA-Z0-9\s,.-]+$/.test(fields.address)) {
+                errors.address = "Enter a valid address";
             }
 
-            
-            if (district === "") {
-                alert("district must be filled out");
-                return false;
+            // Validate district, state, and country
+            ['district', 'state', 'country'].forEach(field => {
+                if (fields[field] === "") {
+                    errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+                } else if (!/^[a-zA-Z\s]+$/.test(fields[field])) {
+                    errors[field] = `Enter a valid ${field} (letters and spaces only)`;
+                }
+            });
+
+            // Validate pincode
+            if (fields.pincode === "") {
+                errors.pincode = "Pincode is required";
+            } else if (fields.pincode.length !== 6 || !/^\d+$/.test(fields.pincode)) {
+                errors.pincode = "Enter a valid 6-digit pincode";
             }
 
-            
-            if (state === "") {
-                alert("State must be filled out");
-                return false;
+            // Validate phone
+            if (fields.phone === "") {
+                errors.phone = "Phone number is required";
+            } else if (fields.phone.length !== 10 || !/^\d+$/.test(fields.phone)) {
+                errors.phone = "Enter a valid 10-digit phone number";
             }
 
-            if (country === "") {
-                alert("country must be filled out");
-                return false;
-            }
+            // Display errors
+            Object.keys(errors).forEach(field => {
+                if (errors[field]) {
+                    document.getElementById(`${field}Error`).textContent = errors[field];
+                    isValid = false;
+                }
+            });
 
-            if (pincode === "") {
-                alert("pincode must be filled out");
-                return false;
-            }
-
-            if (phone === "") {
-                alert("phone must be filled out");
-                return false;
-            }
-
-            if (name.length < 4) {
-                alert("name must be at least 4 characters")
-                return false;
-            }
-
-            if (!/^[a-zA-Z]+$/.test(name)) {
-                alert("Enter valid name")
-                return false;
-            }
-
-            
-            if (!/^[a-zA-Z]+$/.test(address)) {
-                alert("Enter valid address")
-                return false;
-            }
-
-            if (!/^[a-zA-Z]+$/.test(district)) {
-                alert("Enter valid district")
-                return false;
-            }
-
-            if (!/^[a-zA-Z]+$/.test(state)) {
-                alert("Enter valid state")
-                return false;
-            }
-
-            if (!/^[a-zA-Z]+$/.test(country)) {
-                alert("Enter valid country")
-                return false;
-            }
-
-            if (pincode.length !== 6 || !/^\d+$/.test(pincode)) {
-                alert("Enter valid pincode")
-                return false;
-            }
-
-            if (phone.length !== 10 || !/^\d+$/.test(phone)) {
-                alert("Enter valid phone number")
-                return false;
-            }
-
-            return true; 
+            return isValid;
         }
     </script>
 </body>
-
 </html>

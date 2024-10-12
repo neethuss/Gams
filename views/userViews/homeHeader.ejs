@@ -12,6 +12,8 @@
   <meta name="description" content="Molla - Bootstrap eCommerce Template">
   <meta name="author" content="p-themes">
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMrY60H1a9H50bhD2H6QHhHD2I4W6AYXZ3+eZ9" crossorigin="anonymous">
+
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo-resized.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo-resized.png">
@@ -35,7 +37,8 @@
   <link rel="stylesheet" href="/assets/css/toastify.css">
   <link rel="stylesheet" href="/assets/css/home.css">
   <link rel="stylesheet" href="/assets/css/modal.css">
-  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+
 </head>
 
 <body>
@@ -53,7 +56,7 @@
               <img src="/uploads/logo-resized.png" alt="Molla Logo" width="105" height="25">
             </a>
 
-            <nav class="main-nav">
+            <nav class="main-nav" style="font-family: auto;">
               <ul class="menu sf-arrows">
                 <li class="megamenu-container active">
                   <a href="/" class="sf-with-ul">Home</a>
@@ -86,11 +89,11 @@
                   <a href="/login">Login</a>
                 </div>
               <%}else{%>
-                <a style="color: rgb(235, 118, 97); margin-left: 12px;" href="/profile">Account</a>
-                <a style="color: rgb(235, 118, 97); margin-left: 12px;" href="/cart">MyCart</a>
-                <a style="color: rgb(235, 118, 97); margin-left: 12px;" href="/wishlist">Wishlist</a>
-                <a style="color: rgb(235, 118, 97); margin-left: 12px;" href="/myOrders">Orders</a>
-                <a id="logoutIcon" style="margin-left: 12px;" href="#">Logout</a>
+                <a style="color: #fff; margin-left: 12px; font-size: 20px;" href="/profile"><i class="bi bi-person-circle"></i></a>
+                <a style="color: #fff; margin-left: 12px; font-size: 20px;" href="/cart"><i class="bi bi-cart-check-fill"></i></a>
+                <a style="color: #fff; margin-left: 12px; font-size: 20px;" href="/wishlist"><i class="bi bi-heart-fill"></i></a>
+                <a style="color: #fff; margin-left: 12px; font-size: 20px;" href="/myOrders"><i class="bi bi-bag-check-fill"></i></a>
+                <a id="logoutIcon" style="color: #fff; margin-left: 24px; font-size: 18px;" href="#">Logout</a>
               <%} %>
             </div>
 
@@ -98,4 +101,6 @@
           </div>
         </div>
       </div>
+
+
     </header>
