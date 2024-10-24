@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/toastify.css">
+
     <title>Gams admin login</title>
     <style>
         body, html {
@@ -71,7 +73,7 @@
           justify-items: center;
         }
         .btn:hover {
-            background-color: #0056b3;
+            background-color: #e47676;;
         }
         .error {
             color: #ff6b6b;
@@ -142,5 +144,32 @@
             return true;
         }
     </script>
+
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+      const successMsg = '<%= successMsg.length ? successMsg[0] : "" %>';
+    if (successMsg) {
+        Toastify({
+            text: successMsg,
+            duration: 3000,
+            className: 'toastify-success',
+            gravity: "top",
+            position: "center",
+            backgroundColor: 'green',
+        }).showToast();
+    }
+
+    const errorMsg = '<%= errorMsg.length ? errorMsg[0] : "" %>';
+    if (errorMsg) {
+        Toastify({
+            text: errorMsg,
+            duration: 3000,
+            className: 'toastify-error',
+            gravity: "top",
+            position: "center",
+            backgroundColor: '#ff6b6b',
+        }).showToast();
+    }
+</script>
 </body>
 </html>

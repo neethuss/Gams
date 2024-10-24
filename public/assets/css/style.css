@@ -5723,8 +5723,8 @@ p {
   font-size: 1.4rem;
   line-height: 1.5;
   letter-spacing: -0.01em;
-  min-width: 170px;
-  border-radius: 0;
+  min-width: 110px;
+  border-radius: 1rem;
   white-space: normal;
   transition: all 0.3s;
 }

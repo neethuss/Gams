@@ -75,27 +75,33 @@
                       </td>
 
                       <td>
-                        <div class="dropdown">
-                          <button class="btn btn-secondary dropdown-toggle" type="button" id="statusDropdown"
-                            data-bs-toggle="dropdown" aria-expanded="true">
-                            Change Status
+                        <% if (order.status === 'Delivered') { %>
+                          <button class="btn btn-secondary dropdown-toggle" type="button" disabled>
+                            Delivered
                           </button>
-                          <ul class="dropdown-menu" aria-labelledby="statusDropdown">
-                            <li><a class="dropdown-item"
-                                href="/admin/updateOrderStatus/<%= order._id %>/Order Confirmed"
-                                onclick="updateOrderStatus('<%= order._id %>', 'Order Confirmed')">Order
-                                Confirmed</a></li>
-                            <li><a class="dropdown-item" href="/admin/updateOrderStatus/<%= order._id %>/Shipped"
-                                onclick="updateOrderStatus('<%= order._id %>', 'Shipped')">Shipped</a></li>
-                            <li><a class="dropdown-item"
-                                href="/admin/updateOrderStatus/<%= order._id %>/Out For Delivery"
-                                onclick="updateOrderStatus('<%= order._id %>', 'Out For Delivery')">Out For
-                                Delivery</a></li>
-                            <li><a class="dropdown-item" href="/admin/updateOrderStatus/<%= order._id %>/Delivered"
-                                onclick="updateOrderStatus('<%= order._id %>', 'Delivered')">Delivered</a></li>
-                          </ul>
-                        </div>
+                        <% } else { %>
+                          <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="statusDropdown"
+                              data-bs-toggle="dropdown" aria-expanded="true">
+                              Change Status
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="statusDropdown">
+                              <li><a class="dropdown-item"
+                                  href="/admin/updateOrderStatus/<%= order._id %>/Order Confirmed"
+                                  onclick="updateOrderStatus('<%= order._id %>', 'Order Confirmed')">Order
+                                  Confirmed</a></li>
+                              <li><a class="dropdown-item" href="/admin/updateOrderStatus/<%= order._id %>/Shipped"
+                                  onclick="updateOrderStatus('<%= order._id %>', 'Shipped')">Shipped</a></li>
+                              <li><a class="dropdown-item" href="/admin/updateOrderStatus/<%= order._id %>/Out For Delivery"
+                                  onclick="updateOrderStatus('<%= order._id %>', 'Out For Delivery')">Out For
+                                  Delivery</a></li>
+                              <li><a class="dropdown-item" href="/admin/updateOrderStatus/<%= order._id %>/Delivered"
+                                  onclick="updateOrderStatus('<%= order._id %>', 'Delivered')">Delivered</a></li>
+                            </ul>
+                          </div>
+                        <% } %>
                       </td>
+                      
 
                       <td>
                         <a href="/admin/orderDetails/<%=order._id%>">

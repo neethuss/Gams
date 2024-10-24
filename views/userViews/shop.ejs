@@ -324,10 +324,23 @@
             });
 
             document.querySelector('#confirmLogout').addEventListener('click', function () {
-                window.location.href = '/logout'; 
+                window.location.href = '/logout';
             });
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const searchToggle = document.querySelector('.search-toggle');
+                const searchWrapper = document.querySelector('.header-search-wrapper');
+
+                searchToggle.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    searchWrapper.classList.toggle('show');
+                });
+            });
+            []
 
 
         </script>
+
+
 
         <%- include('footer') -%>

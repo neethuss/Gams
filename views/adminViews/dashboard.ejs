@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="/assets2/img/apple-icon.png">
   <link rel="icon" type="image/png" href="/uploads/logo-resized.png">
+  <link rel="stylesheet" href="/assets/css/toastify.css">
+
   <title>
     GAMS - Admin
   </title>
@@ -155,7 +157,7 @@
           style="display: flex;justify-content: end;">
 
 
-          <a href="/admin/logout">Logout</a>
+          <a id="logoutIcon" href="#" class="nav-link">Logout</a>
 
 
         </div>
@@ -477,7 +479,32 @@
       </div>
     </div>
   </div>
+  
   </div>
+
+  <div id="logoutModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Logout Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to logout?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmLogout">Yes, Logout</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+     #logoutModal{
+        z-index: 1050;
+    }
+</style>
 
   <script src="/assets2/js/core/popper.min.js"></script>
   <script src="/assets2/js/core/bootstrap.min.js"></script>
@@ -766,6 +793,39 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 
   <script src="/assets2/js/material-dashboard.min.js?v=3.1.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script>
+    const successMsg = '<%= successMsg.length ? successMsg[0] : "" %>';
+    if (successMsg) {
+      Toastify({
+        text: successMsg,
+        duration: 3000,
+        className: 'toastify-success',
+        gravity: "top",
+        position: "center",
+        backgroundColor: 'green',
+      }).showToast();
+    }
+
+
+  </script>
+
+
+  <script>
+   document.addEventListener('DOMContentLoaded', function() {
+        const logoutIcon = document.querySelector('#logoutIcon');
+        const logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+        
+        logoutIcon.addEventListener('click', function() {
+            logoutModal.show();
+        });
+
+        document.querySelector('#confirmLogout').addEventListener('click', function() {
+            window.location.href = '/admin/logout';
+        });
+    });
+  </script>
+
 </body>
 
 </html>

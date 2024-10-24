@@ -482,7 +482,7 @@
 
         async function initiateRazorpayPayment() {
             let totalPrice = document.getElementById('totalPrice').innerText
-            totalPrice = (totalPrice.replace("Rs. ", ""))
+            totalPrice = (totalPrice.replace("Rs. ", "")).replace('.00', '')
             console.log(totalPrice);
 
             fetch('/razorpay', {
@@ -491,13 +491,13 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    totalPrice: Math.round(Number(totalPrice) * 100)
+                    totalPrice: totalPrice
                 })
             })
                 .then(response => response.json())
                 .then(order => {
                     var options = {
-                        "key": "rzp_test_zmLuPVfb5DbTL5",
+                        "key": "rzp_test_5rJ2OJElSbuZ87",
                         "amount": Number(totalPrice) * 100,
                         "currency": "INR",
                         "name": "GAMS",

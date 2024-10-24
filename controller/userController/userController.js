@@ -1,77 +1,82 @@
 const userCollection = require("../../models/userModel");
 const bannerCollection = require("../../models/bannerModel");
+const cartCollection = require('../../models/cartModel')
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
-
 
 //get method for rendering home page
 const getHome = async (req, res) => {
   try {
     const successMsg = req.flash("success");
     let user = null;
+    let cartQuantity = 0
     if (req.session.user) {
       user = req.session.user;
+      const cart = await cartCollection.findOne({
+        userId: req.session.user._id,
+      });
+      cartQuantity = cart ? cart.products.length : 0; 
     }
     const banners = await bannerCollection.find();
-    res.render("userViews/home", { user, successMsg, banners });
+    res.render("userViews/home", { user, successMsg, banners , cartQuantity});
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering home");
   }
 };
 
-
 //get method for rendering login page
 const getLogin = async (req, res) => {
   try {
-    const successMsg = req.flash("success");
-    const errorMsg = req.flash("error");
-    if (req.session.user) {
-     return res.redirect("/");
-    }
-    res.render("userViews/login", { successMsg, errorMsg });
+      const successMsg = req.flash("success");
+      const errorMsg = req.flash("error");
+      
+      if (req.session.user) {
+          return res.redirect("/");
+      }
+      
+      res.render("userViews/login", { 
+          successMsg, 
+          errorMsg 
+      });
   } catch (error) {
-    console.log(error);
-    res.status(500).send("Error while rendering login page");
+      console.log(error);
+      res.status(500).send("Error while rendering login page");
   }
 };
-
 
 //post method for login
 const postLogin = async (req, res) => {
   try {
-    const check = await userCollection.findOne({ email: req.body.email });
-    if (!check) {
-      req.flash("error", "User not found");
-      res.redirect("/login");
-    } else {
-      if (check.isBlocked) {
-        if (check) {
-          const isPasswordMatch = await bcrypt.compare(
-            req.body.password,
-            check.password
-          );
-          if (isPasswordMatch) {
-            req.session.user = check;
-
-            req.flash("success", "User logged in successfully");
-            res.redirect("/");
-          } else {
-            req.flash("error", "Incorrect Password");
-            res.redirect("/login");
-          }
-        } else {
+      const check = await userCollection.findOne({ email: req.body.email });
+      
+      if (!check) {
           req.flash("error", "User not found");
-          res.redirect("/login");
-        }
-      } else {
-        req.flash("error", "User is Blocked");
-        res.redirect("/login");
+          return res.redirect("/login");
       }
-    }
+      
+      if (!check.isBlocked) {
+          req.flash("error", "User is blocked");
+          return res.redirect("/login");
+      }
+      
+      const isPasswordMatch = await bcrypt.compare(
+          req.body.password, 
+          check.password
+      );
+      
+      if (isPasswordMatch) {
+          req.session.user = check;
+          req.flash("success", "User logged in successfully");
+          return res.redirect("/");
+      } else {
+          req.flash("error", "Incorrect password");
+          return res.redirect("/login");
+      }
   } catch (error) {
-    console.log(error);
-    res.status(500).send("Error while post login");
+      console.log(error);
+      req.flash("error", "An error occurred during login");
+      return res.redirect("/login");
   }
 };
 
@@ -87,7 +92,6 @@ const getSignup = async (req, res) => {
   }
 };
 
-
 // post method for signup
 const postSignup = async (req, res) => {
   try {
@@ -100,7 +104,7 @@ const postSignup = async (req, res) => {
     const check = await userCollection.find({ email: email });
     if (check.length > 0) {
       req.flash("error", "User already exists");
-      res.redirect('signup')
+      res.redirect("signup");
     } else {
       const referal = generateReaferal();
       console.log("Your referal is:", referal);
@@ -147,7 +151,6 @@ const postSignup = async (req, res) => {
   }
 };
 
-
 //generating otp
 let expireTime;
 const generateotp = () => {
@@ -165,7 +168,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
 //generating referal code
 function generateReaferal() {
   const characters =
@@ -180,7 +182,6 @@ function generateReaferal() {
 
   return randomCode;
 }
-
 
 //get method for resending otp
 const getResendOtp = async (req, res) => {
@@ -226,7 +227,6 @@ const getResendOtp = async (req, res) => {
     res.status(500).send("Error while resend otp");
   }
 };
-
 
 //get method for rendeing forgor password page
 const getForgotPassword = async (req, res) => {
@@ -281,7 +281,6 @@ const postForgotPassword = async (req, res) => {
   }
 };
 
-
 //get method for rendering a new password page for setting new password
 const getNewPassword = async (req, res) => {
   try {
@@ -291,8 +290,6 @@ const getNewPassword = async (req, res) => {
     res.status(500).send("Error while rendering new password page");
   }
 };
-
-
 
 //post method for new password
 const postNewPassword = async (req, res) => {
@@ -314,33 +311,16 @@ const postNewPassword = async (req, res) => {
   }
 };
 
-
 // get method for session destroy while applying a referel code
 const getReferalLogout = async (req, res) => {
-  // req.session.destroy((err) => {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     res.redirect("/signup");
-  //   }
-  // });
-  req.session.user = null
-         res.redirect("/signup");
+  req.session.user = null;
+  res.redirect("/signup");
 };
 
 //logout user session
 const getLogout = (req, res) => {
-  // req.session.destroy((err) => {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     res.redirect("/login");
-  //   }
-  // });
-   req.session.user = null
-         res.redirect("/login");
-
-
+  req.session.user = null;
+  res.redirect("/login");
 };
 
 module.exports = {

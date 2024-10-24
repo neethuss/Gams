@@ -34,14 +34,14 @@ const postLogin = async (req, res) => {
       if (check.password === req.body.password) {
         req.session.admin = check.email;
         req.flash("success", "Admin login successfully completed");
-        res.redirect("/admin/dashboard");
+        return res.redirect("/admin/dashboard");
       } else {
         req.flash("error", "Invalid admin credentials");
         res.redirect("/admin");
       }
     } else {
       req.flash("error", "Invalid admin credentials");
-      res.redirect("/admin");
+      return res.redirect("/admin");
     }
   } catch (error) {
     console.log(error);

@@ -233,6 +233,10 @@
         text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         text-align: center;
     }
+
+    #logoutModal{
+        z-index: 1050;
+    }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
@@ -250,6 +254,8 @@
             backgroundColor: 'green',
         }).showToast();
     }
+
+    
 
     document.addEventListener('DOMContentLoaded', function() {
         const logoutIcon = document.querySelector('#logoutIcon');

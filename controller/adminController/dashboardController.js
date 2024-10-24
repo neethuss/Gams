@@ -167,7 +167,10 @@ const getDashboard = async (req, res) => {
       paymentMethodLabels.push(stat._id);
       paymentMethodData.push(stat.totalPayments);
     });
-
+    console.log('Category Labels:', categorySalesLabel);
+    console.log('Category Data:', categorySalesData);
+    console.log('Payment Labels:', paymentMethodLabels);
+    console.log('Payment Data:', paymentMethodData);
     res.render("adminViews/dashboard", {
       successMsg,
       todaySalesAmount,
@@ -176,11 +179,11 @@ const getDashboard = async (req, res) => {
       newUsersCount,
       salesAmount,
       banners,
-      weeklySalesData,
-      categorySalesLabel,
-      categorySalesData,
-      paymentMethodLabels,
-      paymentMethodData,
+      weeklySalesData:weeklySalesData,
+      categorySalesLabel:categorySalesLabel,
+      categorySalesData:categorySalesData,
+      paymentMethodLabels:paymentMethodLabels,
+      paymentMethodData:paymentMethodData,
     });
   } catch (error) {
     console.log(error);
