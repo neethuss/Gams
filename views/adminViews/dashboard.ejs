@@ -517,8 +517,8 @@
   <script>
 
     var ctx = document.getElementById("chart-bars").getContext("2d");
-    var categorySalesLabel = <% - JSON.stringify(categorySalesLabel) %>;
-    var categorySalesData = <% - JSON.stringify(categorySalesData) %>;
+    var categorySalesLabel = <%- JSON.stringify(categorySalesLabel) %>;
+    var categorySalesData = <%- JSON.stringify(categorySalesData) %>;
 
 
 
@@ -695,8 +695,8 @@
   <script>
 
     var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
-    var paymentMethodLabels = <% - JSON.stringify(paymentMethodLabels) %>;
-    var paymentMethodData = <% - JSON.stringify(paymentMethodData) %>;
+    var paymentMethodLabels = <%- JSON.stringify(paymentMethodLabels) %>;
+    var paymentMethodData = <%- JSON.stringify(paymentMethodData) %>;
 
     new Chart(ctx3, {
       type: "bar",
