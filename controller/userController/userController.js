@@ -55,7 +55,7 @@ const postLogin = async (req, res) => {
           return res.redirect("/login");
       }
       
-      if (!check.isBlocked) {
+      if (check.isBlocked) {
           req.flash("error", "User is blocked");
           return res.redirect("/login");
       }

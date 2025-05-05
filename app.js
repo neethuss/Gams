@@ -38,8 +38,7 @@ app.use(flash())
 app.use('/',require('./routes/userRoutes'))
 app.use('/admin',require('./routes/adminRoutes'))
 
-// const port = process.env.PORT || 4000;
-const port =  4000;
+const port = process.env.PORT || 4000;
 
 const Banner = require('./models/bannerModel.js');
 

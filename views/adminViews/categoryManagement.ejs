@@ -8,7 +8,7 @@
                         <div class="bg-gradient-danger shadow-primary border-radius-lg pt-4 pb-3">
                             <h6 class="text-white text-capitalize ps-3">Category Management</h6>
                             <div class="d-flex align-items-center">
-                                
+
 
                                 <div class="ms-auto col-6 text-end">
                                     <a href="/admin/addCategory">
@@ -48,25 +48,25 @@
                                             <td>
                                                 <%= category.category_description %>
                                             </td>
-                                            <td><a href="/admin/editCategory/<%=category._id%>">
+                                            <td>
+                                                <a href="/admin/editCategory/<%= category._id %>">
                                                     <button class="btn btn-info btn-sm me-2">Edit</button>
                                                 </a>
-                                                <% if (!category.isBlocked) { %>
-                                                    <a href="/admin/blockCategory?category_name=<%=category.category_name%>"
-                                                        class="btn btn-danger">List</a>
 
-                                                    <% } else { %>
-                                                        <a href="/admin/blockCategory?category_name=<%=category.category_name%>"
-                                                            class="btn btn-success" id="blockUser">Unlist</a>
-
-                                                        <% } %>
+                                                <button class="btn btn-sm toggle-category-btn 
+                                                    <%= category.isBlocked ? 'btn-danger' : 'btn-success' %>"
+                                                    data-category="<%= category.category_name %>"
+                                                    data-isblocked="<%= category.isBlocked %>">
+                                                    <%= category.isBlocked ? 'Unlist' : 'List' %>
+                                                </button>
                                             </td>
+
                                         </tr>
 
                                         <%}) %>
                                 </tbody>
                             </table>
-                            
+
                             <div class="pagination"
                                 style="display: flex; align-items: center; justify-content: center;">
                                 <nav aria-label="Page navigation" class="pagination-container"
@@ -121,9 +121,44 @@
 
     </script>
 
-   
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.toggle-category-btn').click(function () {
+                const button = $(this);
+                const categoryName = button.data('category');
+                let isBlocked = button.data('isblocked');
+
+                $.ajax({
+                    url: '/admin/blockCategory',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ category_name: categoryName }),
+                    success: function () {
+                        let isBlocked = button.data('isblocked');
+    
+                        isBlocked = !isBlocked;
+    
+                        if (isBlocked) {
+                            button.removeClass('btn-success').addClass('btn-danger').text('Unlist');
+                        } else {
+                            button.removeClass('btn-danger').addClass('btn-success').text('List');
+                        }
+    
+                        button.data('isblocked', isBlocked);
+                    },
+                    
+                    error: function () {
+                        alert('Error: Could not update category status.');
+                    }
+                });
+            });
+        });
+    </script>
+
     </body>
 
     </html>

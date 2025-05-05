@@ -70,25 +70,25 @@
                                                 <%= coupon.expiryDate.toLocaleDateString() %>
                                             </td>
 
-                                            <td><a href="/admin/editCoupon/<%=coupon._id%>">
+                                            <td>
+                                                <a href="/admin/editCoupon/<%= coupon._id %>">
                                                     <button class="btn btn-info btn-sm me-2">Edit</button>
                                                 </a>
-                                                </a>
-                                                <% if (!coupon.unlist) { %>
-                                                    <a href="/admin/blockCoupon?id=<%=coupon._id%>"
-                                                        class="btn btn-danger">List</a>
-                                                    <% } else { %>
-                                                        <a href="/admin/blockCoupon?id=<%=coupon._id%>"
-                                                            class="btn btn-success" id="blockUser">Unlist</a>
-                                                        <% } %>
 
+                                                <button class="btn btn-sm toggle-coupon-btn 
+                                                <%= coupon.unlist ? 'btn-danger' : 'btn-success' %>"
+                                                    data-coupon="<%= coupon.couponName %>"
+                                                    data-unlist="<%= coupon.unlist %>">
+                                                    <%= coupon.unlist ? 'Unlist' : 'List' %>
+                                                </button>
                                             </td>
+
                                         </tr>
 
                                         <%})%>
                                 </tbody>
                             </table>
-                            
+
 
                             <div class="pagination"
                                 style="display: flex; align-items: center; justify-content: center;">
@@ -144,9 +144,42 @@
 
     </script>
 
-
    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.toggle-coupon-btn').click(function () {
+                const button = $(this);
+                const couponName = button.data('coupon');
+                let unlist = button.data('unlist');
+
+                $.ajax({
+                    url: '/admin/blockCoupon',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ couponName: couponName }),
+                    success: function () {
+                        let unlist = button.data('unlist');
+
+                        unlist = !unlist;
+
+                        if (unlist) {
+                            button.removeClass('btn-success').addClass('btn-danger').text('Unlist');
+                        } else {
+                            button.removeClass('btn-danger').addClass('btn-success').text('List');
+                        }
+
+                        button.data('unlist', unlist);
+                    },
+
+                    error: function () {
+                        alert('Error: Could not update coupon status.');
+                    }
+                });
+            });
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
     </body>
 

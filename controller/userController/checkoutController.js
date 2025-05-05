@@ -6,42 +6,39 @@ const couponCollection = require("../../models/couponModel");
 //get method for checkout page
 const getCheckout = async (req, res) => {
   try {
-    if (req.session.user) {
-      req.session.addressOrigin = "checkout";
-      const user = req.session.user;
-      const userId = user._id;
+    req.session.addressOrigin = "checkout";
+    const user = req.session.user;
+    const userId = user._id;
 
-      let currentDate = new Date()
+    let currentDate = new Date();
 
-      const coupons = await couponCollection.find({expiryDate:{$gt:currentDate}});
+    const coupons = await couponCollection.find({
+      expiryDate: { $gt: currentDate },unlist:true
+    });
 
-      const address = await userCollection
-        .findOne({ _id: userId })
-        .populate("userAddress");
-      const cart = await cartCollection
-        .findOne({ userId: userId })
-        .populate("products.product");
+    const address = await userCollection
+      .findOne({ _id: userId })
+      .populate("userAddress");
+    const cart = await cartCollection
+      .findOne({ userId: userId })
+      .populate("products.product");
 
-        const cartQuantity = cart.products.length
+    const cartQuantity = cart.products.length;
 
-      const addresses = await addressCollection.find({ userId: userId });
-      res.render("userViews/checkout", {
-        address: address.userAddress,
-        user,
-        cart,
-        addresses,
-        coupons,
-        cartQuantity
-      });
-    } else {
-      res.redirect("/login");
-    }
+    const addresses = await addressCollection.find({ userId: userId });
+    res.render("userViews/checkout", {
+      address: address.userAddress,
+      user,
+      cart,
+      addresses,
+      coupons,
+      cartQuantity,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering checkout page");
   }
 };
-
 
 //pos method for post coupon apply
 const postCouponApply = async (req, res) => {
@@ -107,7 +104,6 @@ const postCouponApply = async (req, res) => {
     res.status(500).send("Error while post coupon apply");
   }
 };
-
 
 module.exports = {
   getCheckout,

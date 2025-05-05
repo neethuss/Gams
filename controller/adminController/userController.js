@@ -1,56 +1,52 @@
-const userCollection = require('../../models/userModel')
-
+const userCollection = require("../../models/userModel");
 
 //get method for rendering user management page
 const getUserManagement = async (req, res) => {
   try {
-    if (req.session.admin) {
-      const perPage = 5; 
-      const page = parseInt(req.query.page) || 1;
+    const perPage = 5;
+    const page = parseInt(req.query.page) || 1;
 
-      const totalUsers = await userCollection.countDocuments();
-      const totalPages = Math.ceil(totalUsers / perPage);
+    const totalUsers = await userCollection.countDocuments();
+    const totalPages = Math.ceil(totalUsers / perPage);
 
-      const skip = (page - 1) * perPage;
+    const skip = (page - 1) * perPage;
 
-      const users = await userCollection.find().skip(skip).limit(perPage);
+    const users = await userCollection.find().skip(skip).limit(perPage);
 
-      res.render('adminViews/userManagement', { users, page, totalPages });
-    }
+    res.render("adminViews/userManagement", { users, page, totalPages });
   } catch (error) {
     console.log(error);
-    res.status(500).send('Error while rendering user management');
+    res.status(500).send("Error while rendering user management");
   }
 };
 
-
-//get method for blocking an user
-const getBlockUser = async (req, res) => {
+//post method for blocking an user
+const postBlockUser = async (req, res) => {
   try {
-    const users = await userCollection.findOne({ email: req.query.email });
-    const block = users.isBlocked;
-    if (block) {
-      await userCollection.updateOne(
-        { email: req.query.email },
-        { $set: { isBlocked: false } }
-      );
-    } else {
-      await userCollection.updateOne(
-        { email: req.query.email },
-        { $set: { isBlocked: true } }
-      );
+    
+    const email = req.body.email;
+    const user = await userCollection.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-    res.redirect("/admin/userManagement");
+
+    await userCollection.updateOne(
+      { email },
+      { $set: { isBlocked: !user.isBlocked } }
+    );
+
+    res.status(200).json({ message: 'User updated' });
+    
   } catch (error) {
     console.log(error);
-    res.status(500).send("Error occured");
+    res.status(500).json({ message: 'Error occurred' });
   }
+  
 };
-
-
 
 
 module.exports = {
   getUserManagement,
-  getBlockUser
-}
+  postBlockUser,
+};

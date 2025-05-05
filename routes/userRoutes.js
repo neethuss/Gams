@@ -36,51 +36,51 @@ router.post('/signupOtp',otpcontroller.postSignupOtp)
 
 router.get('/shop',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,shopController.getShop)
 
-router.get('/searchProduct',userBlockMiddleware.isBlocked,shopController.getSearchProduct)
-router.get('/filterByCategory',userBlockMiddleware.isBlocked,shopController.getFilterByCategory)
-router.get('/sortByPrice',userBlockMiddleware.isBlocked,shopController.getSortByPrice)
+router.get('/searchProduct',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,shopController.getSearchProduct)
+router.get('/filterByCategory',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,shopController.getFilterByCategory)
+router.get('/sortByPrice',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,shopController.getSortByPrice)
 
-router.get('/product/:proId',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,shopController.getProduct)
+router.get('/product/:proId',userSessionMiddleware.isUser,userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,shopController.getProduct)
 
-router.get('/wishlist',userBlockMiddleware.isBlocked,wishlistController.getWishlist)
+router.get('/wishlist',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,wishlistController.getWishlist)
 router.post('/wishlist',userBlockMiddleware.isBlocked,wishlistController.postWishlist)
-router.get('/removeWishlist/:id',userBlockMiddleware.isBlocked,wishlistController.getRemoveWishlist)
+router.get('/removeWishlist/:id',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,wishlistController.getRemoveWishlist)
 
-router.get('/cart',userBlockMiddleware.isBlocked,cartController.getCart)
+router.get('/cart',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,cartController.getCart)
 router.post('/cart',userBlockMiddleware.isBlocked,cartController.postCart)
 router.post('/updateCart',userBlockMiddleware.isBlocked,cartController.updateCart)
-router.get('/removeCart/:id',userBlockMiddleware.isBlocked,cartController.removeCart)
+router.get('/removeCart/:id',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,cartController.removeCart)
 
 router.post('/couponApply',userBlockMiddleware.isBlocked,checkoutcontroller.postCouponApply)
 
-router.get('/checkout',userBlockMiddleware.isBlocked,checkoutcontroller.getCheckout)
+router.get('/checkout',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,checkoutcontroller.getCheckout)
 
 router.post('/razorpay',userBlockMiddleware.isBlocked,orderController.postRazorpay)
 router.post('/walletPayment',userBlockMiddleware.isBlocked,orderController.postWalletPayment)
 
-router.get('/order/:pay',userBlockMiddleware.isBlocked,orderController.getOrder)
-router.get('/orderConfirmed',userBlockMiddleware.isBlocked,orderController.getOrderConfirmed)
-router.get('/myOrders',userBlockMiddleware.isBlocked,orderController.getMyOrders)
+router.get('/order/:pay',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,orderController.getOrder)
+router.get('/orderConfirmed',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,orderController.getOrderConfirmed)
+router.get('/myOrders',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,orderController.getMyOrders)
 router.post('/cancelOrder',userBlockMiddleware.isBlocked,orderController.cancelOrder)
 router.post('/returnOrder',userBlockMiddleware.isBlocked,orderController.returnOrder)
-router.get('/invoiceDownload',userBlockMiddleware.isBlocked,orderController.getInvoiceDownload)
-router.get('/orderDetails/:id',orderController.getOrderDetail)
+router.get('/invoiceDownload',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,orderController.getInvoiceDownload)
+router.get('/orderDetails/:id',userSessionMiddleware.isUser,orderController.getOrderDetail)
 
-router.get('/profile',userBlockMiddleware.isBlocked,profileController.getProfile)
-router.get('/editProfile/:id',userBlockMiddleware.isBlocked,profileController.getEditProfile)
+router.get('/profile',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getProfile)
+router.get('/editProfile/:id',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getEditProfile)
 router.post('/editProfile/:id',userBlockMiddleware.isBlocked,profileController.postEditProfile)
-router.get('/addAddress',userBlockMiddleware.isBlocked,profileController.getAddAddress)
+router.get('/addAddress',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getAddAddress)
 router.post('/addAddress',userBlockMiddleware.isBlocked,profileController.postAddAddress)
 router.post('/defaultAddress',profileController.postSetDefaultAddress)
-router.get('/editAddress/:addressId',userBlockMiddleware.isBlocked,profileController.getEditAddress)
+router.get('/editAddress/:addressId',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getEditAddress)
 router.post('/editAddress/:addressId',userBlockMiddleware.isBlocked,profileController.postEditAddress)
-router.get('/deleteAddress/:addressId',userBlockMiddleware.isBlocked,profileController.getDeleteAddress)
+router.get('/deleteAddress/:addressId',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getDeleteAddress)
 
-router.get('/wallet',userBlockMiddleware.isBlocked,profileController.getWallet)
-router.get('/walletHistory',userBlockMiddleware.isBlocked,profileController.getWalletHistory)
+router.get('/wallet',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getWallet)
+router.get('/walletHistory',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getWalletHistory)
 
-router.get('/referalLogout',userController.getReferalLogout)
+router.get('/referalLogout',userSessionMiddleware.isUser,userController.getReferalLogout)
 
-router.get('/logout',userController.getLogout)
+router.get('/logout',userSessionMiddleware.isUser,userController.getLogout)
 
 module.exports = router

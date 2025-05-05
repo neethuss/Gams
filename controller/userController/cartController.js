@@ -5,33 +5,27 @@ const userCollection = require("../../models/userModel");
 //get method for cart page
 const getCart = async (req, res) => {
   try {
-    if (req.session.user) {
-      const user = req.session.user;
-      const userId = user._id;
+    const user = req.session.user;
+    const userId = user._id;
 
-      let cart = await cartCollection
-        .findOne({ userId: userId })
-        .populate("products.product");
+    let cart = await cartCollection
+      .findOne({ userId: userId })
+      .populate("products.product");
 
-      if (cart && !cart.cartTotal) {
-        // Recalculate the cartTotal
+    if (cart && !cart.cartTotal) {
+      // Recalculate the cartTotal
 
-        const cartTotal = cart.products.reduce((total, product) => {
-          return total + product.product.product_price * product.quantity;
-        }, 0);
+      const cartTotal = cart.products.reduce((total, product) => {
+        return total + product.product.product_price * product.quantity;
+      }, 0);
 
-        cart.cartTotal = cartTotal;
+      cart.cartTotal = cartTotal;
 
-        await cart.save();
-      }
-      const cartQuantity = cart.products.length
-
-      res.render("userViews/cart", { cart, userId,cartQuantity });
-
-      
-    } else {
-      res.render("userViews/login");
+      await cart.save();
     }
+    const cartQuantity = cart.products.length;
+
+    res.render("userViews/cart", { cart, userId, cartQuantity });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering cart page");
@@ -55,7 +49,7 @@ const postCart = async (req, res) => {
         products: [{ product: productId, quantity: quantity }],
       };
       await cartCollection.insertMany(cart);
-      res.redirect('/cart')
+      res.redirect("/cart");
     } else {
       // If cart exists, check if the product is already in the car
 
@@ -69,14 +63,14 @@ const postCart = async (req, res) => {
         cart.products.push({ product: productId, quantity: quantity });
 
         await cart.save();
-        res.redirect('/cart')
+        res.redirect("/cart");
       } else {
         // If the product is already in the cart, update the quantity
 
         cart.products[existingProductIndex].quantity += parseInt(quantity);
 
         await cart.save();
-        res.redirect('/cart')
+        res.redirect("/cart");
       }
     }
   } catch (error) {
@@ -112,7 +106,6 @@ const updateCart = async (req, res) => {
 
       await cart.save();
 
-  
       const cartTotal = cart.products.reduce((total, product) => {
         return total + product.product.product_price * product.quantity;
       }, 0);
@@ -130,7 +123,6 @@ const updateCart = async (req, res) => {
     res.status(500).json({ error: "Error occurred" });
   }
 };
-
 
 //get method for remove a product from cart
 const removeCart = async (req, res) => {
@@ -150,7 +142,6 @@ const removeCart = async (req, res) => {
     res.status(500).send("Error occured while removing cart");
   }
 };
-
 
 module.exports = {
   getCart,

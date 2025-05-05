@@ -3,27 +3,29 @@ const couponCollection = require("../../models/couponModel");
 //get method for rendering coupon management page
 const getCouponManagement = async (req, res) => {
   try {
-    if (req.session.admin) {
-      const perPage = 5;
-      const page = parseInt(req.query.page) || 1; 
+    const perPage = 5;
+    const page = parseInt(req.query.page) || 1;
 
-      const successMsg = req.flash("success");
+    const successMsg = req.flash("success");
 
-      const totalCoupons = await couponCollection.countDocuments();
-      const totalPages = Math.ceil(totalCoupons / perPage);
+    const totalCoupons = await couponCollection.countDocuments();
+    const totalPages = Math.ceil(totalCoupons / perPage);
 
-      const skip = (page - 1) * perPage;
+    const skip = (page - 1) * perPage;
 
-      const coupons = await couponCollection.find().skip(skip).limit(perPage);
+    const coupons = await couponCollection.find().skip(skip).limit(perPage);
 
-      res.render("adminViews/couponManagement", { coupons, page, totalPages, successMsg });
-    }
+    res.render("adminViews/couponManagement", {
+      coupons,
+      page,
+      totalPages,
+      successMsg,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering coupon management");
   }
 };
-
 
 //get method for rendering add coupon page
 const getAddCoupon = async (req, res) => {
@@ -34,7 +36,6 @@ const getAddCoupon = async (req, res) => {
     res.status(500).send("Error while rendering add coupon");
   }
 };
-
 
 //post method for add coupon
 const postAddCoupon = async (req, res) => {
@@ -68,60 +69,49 @@ const postAddCoupon = async (req, res) => {
   }
 };
 
-
 //get method for edit coupon
 const getEditCoupon = async (req, res) => {
   try {
-    if (req.session.admin) {
-      const couponId = req.params.id;
-      const coupon = await couponCollection.findById(couponId);
+    const couponId = req.params.id;
+    const coupon = await couponCollection.findById(couponId);
 
-      res.render("adminViews/editCoupon", { coupon });
-    } else {
-      res.render("adminViews/login");
-    }
+    res.render("adminViews/editCoupon", { coupon });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering edit coupon page");
   }
 };
 
-
 //post method for edit category
 const postEditCoupon = async (req, res) => {
   try {
-    
-    if (req.session.admin) {
-      const couponId = req.params.id;
-    console.log(req.body,'hahdfj');
-      const couponCode = req.body.couponCode;
+    const couponId = req.params.id;
+    console.log(req.body, "hahdfj");
+    const couponCode = req.body.couponCode;
 
-     
+    const check = await couponCollection.findOne({
+      couponCode: couponCode,
+      _id: { $ne: couponId },
+    });
 
-      const check = await couponCollection.findOne({
-        couponCode:  couponCode ,
-        _id: { $ne: couponId }, 
+    if (check) {
+      return res.redirect("/admin/editCoupon", {
+        msg: "Coupon already exists",
       });
-
-      if (check) {
-        return res.redirect("/admin/editCoupon", {
-          msg: "Coupon already exists",
-        });
-      } else {
-        await couponCollection.findByIdAndUpdate(
-          couponId,
-          {
-            couponName: req.body.couponName,
-            couponCode: req.body.couponCode,
-            discountAmount: req.body.discountAmount,
-            minimumPurchaseAmount: req.body.minimumPurchaseAmount,
-            expiryDate: req.body.expiryDate,
-          },
-          { new: true }
-        );
-        req.flash("success", "Coupon details edited");
-        res.redirect("/admin/couponManagement");
-      }
+    } else {
+      await couponCollection.findByIdAndUpdate(
+        couponId,
+        {
+          couponName: req.body.couponName,
+          couponCode: req.body.couponCode,
+          discountAmount: req.body.discountAmount,
+          minimumPurchaseAmount: req.body.minimumPurchaseAmount,
+          expiryDate: req.body.expiryDate,
+        },
+        { new: true }
+      );
+      req.flash("success", "Coupon details edited");
+      res.redirect("/admin/couponManagement");
     }
   } catch (error) {
     console.log(error);
@@ -129,31 +119,30 @@ const postEditCoupon = async (req, res) => {
   }
 };
 
-
 //get method for unlist a coupon
-const getBlockCoupon = async (req, res) => {
+const postBlockCoupon = async (req, res) => {
   try {
-    const couponId = req.query.id
     const coupon = await couponCollection.findOne({
-      _id: couponId
+      couponName: req.body.couponName,
     });
     if (coupon) {
-      const block = coupon.unlist;
+  
+      const unlist = coupon.unlist;
 
-      if (block) {
-        await couponCollection.findByIdAndUpdate(
-          couponId,
-          { $set: { unlist:false } }
+      if (unlist) {
+        await couponCollection.updateOne(
+          { couponName: req.body.couponName },
+          { $set: { unlist: false } }
         );
       } else {
-        await couponCollection.findByIdAndUpdate(
-          couponId,
+        await couponCollection.updateOne(
+          { couponName: req.body.couponName },
           { $set: { unlist: true } }
         );
       }
     }
 
-    res.redirect("/admin/couponManagement");
+    res.status(200).json({ message: 'coupon updated' });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error occured");
@@ -167,5 +156,5 @@ module.exports = {
   postAddCoupon,
   getEditCoupon,
   postEditCoupon,
-  getBlockCoupon
+  postBlockCoupon,
 };

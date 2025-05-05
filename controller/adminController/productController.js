@@ -1,43 +1,38 @@
-const productCollection = require('../../models/productModel')
-const categoryCollection = require('../../models/categoryModel')
+const productCollection = require("../../models/productModel");
+const categoryCollection = require("../../models/categoryModel");
 const uuid = require("uuid");
 
 //get method for product management
 const getProductManagement = async (req, res) => {
   try {
-    const successMsg = req.flash("success")
-    if (req.session.admin) {
-      const products = await productCollection.find();
-      const category = await categoryCollection.find();
+    const successMsg = req.flash("success");
 
-      res.render("adminViews/productManagement", { products, category ,successMsg});
-    } else {
-      res.render("adminViews/login");
-    }
+    const products = await productCollection.find();
+    const category = await categoryCollection.find();
+
+    res.render("adminViews/productManagement", {
+      products,
+      category,
+      successMsg,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering admin product management page");
   }
 };
 
-
 //get method for add product
 const getAddProduct = async (req, res) => {
   try {
-    if (req.session.admin) {
-      const errorMsg = req.flash('error')
-      const categories = await categoryCollection.find();
+    const errorMsg = req.flash("error");
+    const categories = await categoryCollection.find();
 
-      res.render("adminViews/addProduct", { categories ,errorMsg});
-    } else {
-      res.render("/adminViews/login");
-    }
+    res.render("adminViews/addProduct", { categories, errorMsg });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering add product page");
   }
 };
-
 
 //post method for add product
 const postAddProduct = async (req, res) => {
@@ -48,7 +43,6 @@ const postAddProduct = async (req, res) => {
     });
     const productName = req.body.productName.toLowerCase();
 
-   
     const category = await categoryCollection.findOne({
       category_name: req.body.productCategory,
     });
@@ -57,7 +51,7 @@ const postAddProduct = async (req, res) => {
       product_name: { $regex: new RegExp("^" + productName + "$", "i") },
     });
     if (check) {
-      req.flash('error','Product already exists')
+      req.flash("error", "Product already exists");
       res.redirect("/admin/addProduct");
     } else {
       productData = {
@@ -69,7 +63,7 @@ const postAddProduct = async (req, res) => {
         product_image: img,
       };
       await productCollection.insertMany([productData]);
-      req.flash("success","Product added")
+      req.flash("success", "Product added");
       res.redirect("/admin/productManagement");
     }
   } catch (error) {
@@ -77,8 +71,6 @@ const postAddProduct = async (req, res) => {
     res.status(500).send("Error while post add product");
   }
 };
-
-
 
 //get method for edit product
 const getEditProduct = async (req, res) => {
@@ -94,7 +86,6 @@ const getEditProduct = async (req, res) => {
   }
 };
 
-
 //post method fot edit product
 const postEditProduct = async (req, res) => {
   try {
@@ -104,19 +95,19 @@ const postEditProduct = async (req, res) => {
     });
 
     if (req.files && req.files.length > 0) {
-    
       img = req.files.map((val) => {
         return val.filename;
       });
 
-      
-      const existingProduct = await productCollection.findById(req.params.proId);
-      
-      
+      const existingProduct = await productCollection.findById(
+        req.params.proId
+      );
+
       img = existingProduct.product_image.concat(img);
     } else {
-      
-      const existingProduct = await productCollection.findById(req.params.proId);
+      const existingProduct = await productCollection.findById(
+        req.params.proId
+      );
       img = existingProduct.product_image;
     }
 
@@ -129,10 +120,13 @@ const postEditProduct = async (req, res) => {
       _id: { $ne: proId },
     });
     if (check) {
-      return res.redirect("/admin/editProduct", { msg: "Product already exists" });
+      return res.redirect("/admin/editProduct", {
+        msg: "Product already exists",
+      });
     }
 
-    await productCollection.findByIdAndUpdate(proId,
+    await productCollection.findByIdAndUpdate(
+      proId,
       {
         product_name: req.body.productName,
         product_category: category._id,
@@ -142,35 +136,32 @@ const postEditProduct = async (req, res) => {
       },
       { new: true }
     );
-    req.flash("success","Product details edited")
-    res.redirect('/admin/productManagement');
+    req.flash("success", "Product details edited");
+    res.redirect("/admin/productManagement");
   } catch (error) {
     console.log(error);
     res.status(500).send("Error occurred");
   }
 };
 
-
 //get method for unlist a product
-const getBlockProduct = async (req, res) => {
+const postBlockProduct = async (req, res) => {
   try {
-    const proId = req.query.id
-    console.log(proId);
-    const product = await productCollection.findOne({_id:proId})
+    
+    const product = await productCollection.findOne({product_name:req.body.product_name});
 
     if (product) {
-
       const block = product.unlist;
       if (block) {
-        await productCollection.findByIdAndUpdate(proId,
-          { $set: { unlist: false } }
-        );
+        await productCollection.updateOne({product_name:req.body.product_name}, {
+          $set: { unlist: false },
+        });
       } else {
-        await productCollection.findByIdAndUpdate(proId,
-          { $set: { unlist: true } }
-        );
+        await productCollection.updateOne({product_name:req.body.product_name}, {
+          $set: { unlist: true },
+        });
       }
-      res.redirect("/admin/productManagement");
+      res.status(200).json({ message: 'product updated' });
     }
   } catch (error) {
     console.log(error);
@@ -178,26 +169,22 @@ const getBlockProduct = async (req, res) => {
   }
 };
 
-
 //get method for deleting an image in edit product
 const getDeleteImage = async (req, res) => {
   try {
-      const { index, id } = req.params;
-      const product = await productCollection.findById(id);
+    const { index, id } = req.params;
+    const product = await productCollection.findById(id);
 
-      const deletedImage = product.product_image.splice(index, 1);
-      
-    
-      await product.save();
+    const deletedImage = product.product_image.splice(index, 1);
 
-      res.redirect(`/admin/editProduct/${id}`);
+    await product.save();
+
+    res.redirect(`/admin/editProduct/${id}`);
   } catch (error) {
-      console.log(error);
-      res.status(500).send('Error occurred while deleting image');
+    console.log(error);
+    res.status(500).send("Error occurred while deleting image");
   }
 };
-
-
 
 module.exports = {
   getProductManagement,
@@ -205,6 +192,6 @@ module.exports = {
   postAddProduct,
   getEditProduct,
   postEditProduct,
-  getBlockProduct,
-  getDeleteImage
-}
+  postBlockProduct,
+  getDeleteImage,
+};

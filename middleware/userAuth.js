@@ -10,8 +10,7 @@ const isBlocked = async (req, res, next) => {
     
     const check = await userCollection.findOne({ email: userEmail });
 
-    if (req.session.user && check && !check.isBlocked) {
-      console.log('user is blocked');
+    if (req.session.user && check && check.isBlocked) {
       req.session.user = null
        res.status(500).render('userviews/login', { successMsg: [], errorMsg: ["User is Blocked"] });
 

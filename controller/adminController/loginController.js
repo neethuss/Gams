@@ -1,18 +1,15 @@
-const adminCollection = require('../../models/adminModel')
-
+const adminCollection = require("../../models/adminModel");
 
 //geat method for rendering admin login page
 const getLogin = (req, res) => {
-
   try {
-    if(req.session.admin){
-      return res.redirect('/admin/dashboard')
+    if (req.session.admin) {
+      return res.redirect("/admin/dashboard");
     }
     const successMsg = req.flash("success");
     const errorMsg = req.flash("error");
 
     if (req.session.admin) {
-
       res.render("adminViews/dashboard", { errorMsg, successMsg });
     } else {
       res.render("adminViews/login", { errorMsg, successMsg });
@@ -23,12 +20,10 @@ const getLogin = (req, res) => {
   }
 };
 
-
 //post method for post login
 const postLogin = async (req, res) => {
   try {
     const check = await adminCollection.findOne({ email: req.body.email });
-    
 
     if (check) {
       if (check.password === req.body.password) {
@@ -49,15 +44,14 @@ const postLogin = async (req, res) => {
   }
 };
 
-
 //get method for session destroy and logout
 const getLogout = (req, res) => {
-  req.session.admin = null
-  res.redirect('/admin')
+  req.session.admin = null;
+  res.redirect("/admin");
 };
 
 module.exports = {
   getLogin,
   postLogin,
-  getLogout
-}
+  getLogout,
+};

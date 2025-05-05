@@ -1,46 +1,40 @@
 const orderCollection = require("../../models/orderModel");
 
-
 //get method for rendering order management page
 const getOrederManagement = async (req, res) => {
   try {
-    if (req.session.admin) {
-      const successMsg = req.flash("success")
-      const errorMsg = req.flash("error")
-      const perPage = 5; 
-      const page = parseInt(req.query.page) || 1; 
+    const successMsg = req.flash("success");
+    const errorMsg = req.flash("error");
+    const perPage = 5;
+    const page = parseInt(req.query.page) || 1;
 
-      const orderDetails = await orderCollection
-        .find()
-        .populate("userId")
-        .populate({
-          path: "products.product",
-          model: "product",
-        })
-        .populate("shippingAddress")
-        .sort({ orderDate: -1 })
-        .skip((page - 1) * perPage)
-        .limit(perPage);
+    const orderDetails = await orderCollection
+      .find()
+      .populate("userId")
+      .populate({
+        path: "products.product",
+        model: "product",
+      })
+      .populate("shippingAddress")
+      .sort({ orderDate: -1 })
+      .skip((page - 1) * perPage)
+      .limit(perPage);
 
-      const totalOrders = await orderCollection.countDocuments();
-      const totalPages = Math.ceil(totalOrders / perPage);
+    const totalOrders = await orderCollection.countDocuments();
+    const totalPages = Math.ceil(totalOrders / perPage);
 
-      res.render("adminViews/orderManagement", {
-        orders: orderDetails,
-        page,
-        totalPages,
-        successMsg,
-        errorMsg
-      });
-    } else {
-      res.render("adminViews/login");
-    }
+    res.render("adminViews/orderManagement", {
+      orders: orderDetails,
+      page,
+      totalPages,
+      successMsg,
+      errorMsg,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering order management page");
   }
 };
-
 
 //get method for changing order staus
 const getUpdateOrderStatus = async (req, res) => {
@@ -50,7 +44,7 @@ const getUpdateOrderStatus = async (req, res) => {
     const order = await orderCollection.findById(orderId);
 
     if (order.status === "Cancelled") {
-      req.flash("error","Order already cancelled")
+      req.flash("error", "Order already cancelled");
       return res.redirect("/admin/orderManagement");
     }
 
@@ -60,14 +54,13 @@ const getUpdateOrderStatus = async (req, res) => {
       { new: true }
     );
 
-    req.flash("success",`Order status updated to ${newStatus}`)
+    req.flash("success", `Order status updated to ${newStatus}`);
     res.redirect("/admin/orderManagement");
   } catch (error) {
     console.error("Error updating order status:", error);
     res.status(500).send("Internal Server Error");
   }
 };
-
 
 //get method for rendering a particular order detail
 const getOrderDetails = async (req, res) => {
@@ -83,11 +76,10 @@ const getOrderDetails = async (req, res) => {
         },
       })
       .populate("shippingAddress");
-    
-    res.render("adminViews/orderDetails",{order});
+
+    res.render("adminViews/orderDetails", { order });
   } catch (error) {}
 };
-
 
 module.exports = {
   getOrederManagement,

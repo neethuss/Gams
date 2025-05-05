@@ -142,7 +142,7 @@ const getDashboard = async (req, res) => {
 
     const categorySalesLabel = categoryWiseSales.map((item) => item._id);
     const categorySalesData = categoryWiseSales.map((item) => item.totalSales);
-    
+
     // Calculating payment method usage for sales
     const paymentMethodStats = await orderCollection.aggregate([
       {
@@ -167,10 +167,10 @@ const getDashboard = async (req, res) => {
       paymentMethodLabels.push(stat._id);
       paymentMethodData.push(stat.totalPayments);
     });
-    console.log('Category Labels:', categorySalesLabel);
-    console.log('Category Data:', categorySalesData);
-    console.log('Payment Labels:', paymentMethodLabels);
-    console.log('Payment Data:', paymentMethodData);
+    console.log("Category Labels:", categorySalesLabel);
+    console.log("Category Data:", categorySalesData);
+    console.log("Payment Labels:", paymentMethodLabels);
+    console.log("Payment Data:", paymentMethodData);
     res.render("adminViews/dashboard", {
       successMsg,
       todaySalesAmount,
@@ -179,11 +179,11 @@ const getDashboard = async (req, res) => {
       newUsersCount,
       salesAmount,
       banners,
-      weeklySalesData:weeklySalesData,
-      categorySalesLabel:categorySalesLabel,
-      categorySalesData:categorySalesData,
-      paymentMethodLabels:paymentMethodLabels,
-      paymentMethodData:paymentMethodData,
+      weeklySalesData: weeklySalesData,
+      categorySalesLabel: categorySalesLabel,
+      categorySalesData: categorySalesData,
+      paymentMethodLabels: paymentMethodLabels,
+      paymentMethodData: paymentMethodData,
     });
   } catch (error) {
     console.log(error);

@@ -2,85 +2,82 @@ const categoryCollection = require("../../models/categoryModel");
 const productCollection = require("../../models/productModel");
 const cartCollection = require("../../models/cartModel");
 
+const isVisibleProduct = (product) =>
+  product.unlist === true && product.product_category?.isBlocked === true;
+
+
 //get method for rendering shop page
 const getShop = async (req, res) => {
-  console.log("get method for rendering shop page");
   try {
-    if (req.session.user) {
-      const page = parseInt(req.query.page) || 1;
-      const perPage = 6;
-      const allProducts = await productCollection
-        .find()
-        .populate("product_category");
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 6;
 
-      const products = allProducts.filter((product) => product.unlist);
+    const allProducts = await productCollection
+      .find()
+      .populate("product_category");
 
-      const allCategories = await categoryCollection.find();
-      const categories = allCategories.filter((category) => category.isBlocked);
+    const products = allProducts.filter(isVisibleProduct);
 
-      const totalPages = Math.ceil(products.length / perPage);
-      const startIndex = (page - 1) * perPage;
-      const endIndex = Math.min(startIndex + perPage, products.length);
-      const currentProducts = products.slice(startIndex, endIndex);
+    const allCategories = await categoryCollection.find();
+    const categories = allCategories.filter((category) => category.isBlocked);
 
-      const sortOption = req.query.sortOption || null;
-      const category = req.query.category || null;
-      const search = req.query.search || null;
+    const totalPages = Math.ceil(products.length / perPage);
+    const startIndex = (page - 1) * perPage;
+    const endIndex = Math.min(startIndex + perPage, products.length);
+    const currentProducts = products.slice(startIndex, endIndex);
 
-      const cart = await cartCollection.findOne({
-        userId: req.session.user._id,
-      });
-      const cartQuantity = cart ? cart.products.length : 0; 
+    const { sortOption = null, category = null, search = null } = req.query;
 
-      res.render("userViews/shop", {
-        products: currentProducts,
-        page,
-        totalPages,
-        categories,
-        sortOption,
-        category,
-        search,
-        cartQuantity,
-      });
-    }
+    const cart = await cartCollection.findOne({ userId: req.session.user._id });
+    const cartQuantity = cart ? cart.products.length : 0;
+
+    res.render("userViews/shop", {
+      products: currentProducts,
+      page,
+      totalPages,
+      categories,
+      sortOption,
+      category,
+      search,
+      cartQuantity,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering shop page");
   }
 };
 
+
 //get method for searching a product
 const getSearchProduct = async (req, res) => {
   try {
-    const search = req.query.search;
-    const sortOption = req.query.sortOption || null;
-    const category = req.query.category || null;
-
+    const { search = "", sortOption = null, category = null } = req.query;
     const page = parseInt(req.query.page) || 1;
     const perPage = 6;
 
     const allCategories = await categoryCollection.find();
     const categories = allCategories.filter((category) => category.isBlocked);
+
     const allProducts = await productCollection
       .find()
       .populate("product_category");
 
-    const searchedProducts = allProducts.filter(
-      (product) =>
-        product.unlist &&
+    const searchedProducts = allProducts.filter((product) => {
+      return (
+        isVisibleProduct(product) &&
         product.product_name.toLowerCase().includes(search.toLowerCase()) &&
         (!category ||
-          (category && product.product_category.category_name === category))
-    );
+          product.product_category?.category_name === category)
+      );
+    });
 
     const totalPages = Math.ceil(searchedProducts.length / perPage);
-
     const startIndex = (page - 1) * perPage;
     const endIndex = Math.min(startIndex + perPage, searchedProducts.length);
     const currentProducts = searchedProducts.slice(startIndex, endIndex);
 
     const cart = await cartCollection.findOne({ userId: req.session.user._id });
-    const cartQuantity = cart.products.length;
+    const cartQuantity = cart ? cart.products.length : 0;
 
     res.render("userViews/shop", {
       products: currentProducts,
@@ -98,43 +95,41 @@ const getSearchProduct = async (req, res) => {
   }
 };
 
+
 //get method for filtering by category
 const getFilterByCategory = async (req, res) => {
   try {
     const category = req.query.category;
-
     const page = parseInt(req.query.page) || 1;
     const perPage = 6;
-
-    const cart = await cartCollection.findOne({ userId: req.session.user._id });
-    const cartQuantity = cart.products.length;
-
-    let products;
 
     const allCategories = await categoryCollection.find();
     const categories = allCategories.filter((category) => category.isBlocked);
 
+    let products = [];
+
     if (category) {
-      const selectedCategory = await categoryCollection.findOne({
-        category_name: category,
-      });
-      if (selectedCategory) {
-        products = await productCollection
+      const selectedCategory = await categoryCollection.findOne({ category_name: category });
+      if (selectedCategory && selectedCategory.isBlocked) {
+        const fetchedProducts = await productCollection
           .find({ product_category: selectedCategory._id })
           .populate("product_category");
+        products = fetchedProducts.filter(isVisibleProduct);
       }
     } else {
-      products = await productCollection.find().populate("product_category");
+      const allProducts = await productCollection.find().populate("product_category");
+      products = allProducts.filter(isVisibleProduct);
     }
 
     const totalPages = Math.ceil(products.length / perPage);
-
     const startIndex = (page - 1) * perPage;
     const endIndex = Math.min(startIndex + perPage, products.length);
     const currentProducts = products.slice(startIndex, endIndex);
 
-    const sortOption = req.query.sortOption || null;
-    const search = req.query.search || null;
+    const { sortOption = null, search = null } = req.query;
+
+    const cart = await cartCollection.findOne({ userId: req.session.user._id });
+    const cartQuantity = cart ? cart.products.length : 0;
 
     res.render("userViews/shop", {
       products: currentProducts,
@@ -148,7 +143,7 @@ const getFilterByCategory = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).send("Error while post filter by category");
+    res.status(500).send("Error while filtering by category");
   }
 };
 
@@ -161,33 +156,33 @@ const getSortByPrice = async (req, res) => {
 
     const allCategories = await categoryCollection.find();
     const categories = allCategories.filter((category) => category.isBlocked);
-    let products;
 
     let sortQuery = {};
-
     if (sortOption === "LowToHigh") {
       sortQuery = { product_price: 1 };
     } else if (sortOption === "HighToLow") {
       sortQuery = { product_price: -1 };
     }
 
-    const count = await productCollection.countDocuments();
-    const totalPages = Math.ceil(count / perPage);
-
-    products = await productCollection
+    const allProducts = await productCollection
       .find()
       .sort(sortQuery)
-      .skip((page - 1) * perPage)
-      .limit(perPage);
+      .populate("product_category");
 
-    const category = req.query.category || null;
-    const search = req.query.search || null;
+    const filteredProducts = allProducts.filter(isVisibleProduct);
+
+    const totalPages = Math.ceil(filteredProducts.length / perPage);
+    const startIndex = (page - 1) * perPage;
+    const endIndex = Math.min(startIndex + perPage, filteredProducts.length);
+    const currentProducts = filteredProducts.slice(startIndex, endIndex);
+
+    const { category = null, search = null } = req.query;
 
     const cart = await cartCollection.findOne({ userId: req.session.user._id });
-    const cartQuantity = cart.products.length;
+    const cartQuantity = cart ? cart.products.length : 0;
 
     res.render("userViews/shop", {
-      products,
+      products: currentProducts,
       page,
       totalPages,
       categories,
@@ -202,39 +197,35 @@ const getSortByPrice = async (req, res) => {
   }
 };
 
+
 // get method for single product
 const getProduct = async (req, res) => {
   try {
-    if (req.session.user) {
-      const proId = req.params.proId;
+    const proId = req.params.proId;
 
-      const productData = await productCollection.findById(proId);
-      const user = req.session.user;
-      const userId = user._id;
+    const productData = await productCollection.findById(proId);
+    const user = req.session.user;
+    const userId = user._id;
 
-      if (!productData) {
-        return res.status(404).send("Product not found");
-      }
-
-      // Fetch the cart for the logged-in user
-      const cart = await cartCollection.findOne({
-        userId: req.session.user._id,
-      });
-
-      // Check if cart exists, and get the cart quantity safely
-      const cartQuantity = cart ? cart.products.length : 0; // Handle null case
-
-      // Render the product page with product data
-      res.render("userViews/product", {
-        product: productData,
-        userId: userId,
-        productId: proId,
-        cartQuantity,
-      });
-    } else {
-      // Handle case where user is not logged in
-      return res.status(403).send("User not authenticated");
+    if (!productData) {
+      return res.status(404).send("Product not found");
     }
+
+    // Fetch the cart for the logged-in user
+    const cart = await cartCollection.findOne({
+      userId: req.session.user._id,
+    });
+
+    // Check if cart exists, and get the cart quantity safely
+    const cartQuantity = cart ? cart.products.length : 0; // Handle null case
+
+    // Render the product page with product data
+    res.render("userViews/product", {
+      product: productData,
+      userId: userId,
+      productId: proId,
+      cartQuantity,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Error while rendering product page");
