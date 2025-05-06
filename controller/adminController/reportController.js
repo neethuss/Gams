@@ -46,44 +46,159 @@ const getSalesReport = async (req, res) => {
 
 const getGeneratePdf = async (req, res) => {
   try {
-  
     const orders = await orderCollection
       .find({ status: 'Delivered' })
       .populate("userId")
       .populate("products.product")
       .populate("shippingAddress");
 
-   
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', 'attachment; filename=orders.pdf');
 
-    
     const doc = new PDFDocument();
     doc.pipe(res);
 
-   
-    doc.fontSize(25).text('Sales Report', { underline: true }).moveDown();
+    doc.fontSize(25).text('Sales Report', { align: 'center' }).moveDown(2);
 
+    const pageWidth = doc.page.width;
+    const margin = 50;
+    const tableWidth = pageWidth - (margin * 2);
+    let yPosition = doc.y;
+
+    const columns = [
+      { header: 'Order #', width: tableWidth * 0.1 },
+      { header: 'Customer', width: tableWidth * 0.2 },
+      { header: 'Date', width: tableWidth * 0.15 },
+      { header: 'Payment', width: tableWidth * 0.15 },
+      { header: 'Products', width: tableWidth * 0.25 },
+      { header: 'Total', width: tableWidth * 0.15 }
+    ];
+
+    doc.font('Helvetica-Bold');
+    doc.fontSize(12);
     
-    orders.forEach((order, index) => {
-      doc.fontSize(14).text(`Order ${index +  1}:`);
-      doc.fontSize(12).text(`User: ${order.userId.username}`);
-      doc.fontSize(12).text(`Email: ${order.userId.email}`);
-      doc.fontSize(12).text(`Phone: ${order.userId.phone}`);
-      doc.fontSize(12).text(`Address: ${order.shippingAddress.address}, ${order.shippingAddress.district}, ${order.shippingAddress.state}, ${order.shippingAddress.country}, ${order.shippingAddress.pincode}`);
-      doc.fontSize(12).text(`Payment Method: ${order.paymentMethod}`);
-      doc.fontSize(12).text(`Order Date: ${new Date(order.orderDate).toLocaleDateString()}`);
-      doc.fontSize(12).text(`Status: ${order.status}`);
-      doc.fontSize(12).text(`Discount Amount: ${order.discountAmount}`)
-      doc.fontSize(12).text(`Total Amount: ${order.payTotal}`);
-      
-      order.products.forEach((product, idx) => {
-        doc.fontSize(12).text(`Product ${idx +  1}: ${product.product.product_name}`);
+    doc.fillColor('#f0f0f0')
+       .rect(margin, yPosition, tableWidth, 20)
+       .fill();
+    
+    doc.fillColor('#000000');
+    let xPosition = margin;
+    columns.forEach(column => {
+      doc.text(column.header, xPosition, yPosition + 5, {
+        width: column.width,
+        align: 'center'
       });
-      doc.moveDown();
+      xPosition += column.width;
+    });
+    
+    yPosition += 20;
+    doc.font('Helvetica');
+
+    doc.moveTo(margin, yPosition)
+       .lineTo(margin + tableWidth, yPosition)
+       .stroke();
+
+    orders.forEach((order, index) => {
+      if (yPosition > doc.page.height - 100) {
+        doc.addPage();
+        yPosition = 50;
+        
+        doc.font('Helvetica-Bold');
+        doc.fillColor('#f0f0f0')
+           .rect(margin, yPosition, tableWidth, 20)
+           .fill();
+        
+        doc.fillColor('#000000');
+        let headerX = margin;
+        columns.forEach(column => {
+          doc.text(column.header, headerX, yPosition + 5, {
+            width: column.width,
+            align: 'center'
+          });
+          headerX += column.width;
+        });
+        
+        yPosition += 20;
+        doc.font('Helvetica');
+        
+        doc.moveTo(margin, yPosition)
+           .lineTo(margin + tableWidth, yPosition)
+           .stroke();
+      }
+
+      const productList = order.products.map(p => p.product.product_name).join(', ');
+      const customerInfo = `${order.userId.username}\n${order.userId.email}\n${order.userId.phone}`;
+      
+      const textHeight = Math.max(
+        doc.heightOfString(customerInfo, { width: columns[1].width }),
+        doc.heightOfString(productList, { width: columns[4].width })
+      );
+      const rowHeight = Math.max(textHeight + 10, 40);
+
+      if (index % 2 === 1) {
+        doc.fillColor('#f9f9f9')
+           .rect(margin, yPosition, tableWidth, rowHeight)
+           .fill();
+      }
+      doc.fillColor('#000000');
+
+      let xPosition = margin;
+      
+      doc.text((index + 1).toString(), xPosition, yPosition + 5, {
+        width: columns[0].width,
+        align: 'center'
+      });
+      xPosition += columns[0].width;
+      
+      doc.text(customerInfo, xPosition, yPosition + 5, {
+        width: columns[1].width,
+        align: 'left'
+      });
+      xPosition += columns[1].width;
+      
+      doc.text(new Date(order.orderDate).toLocaleDateString(), xPosition, yPosition + 5, {
+        width: columns[2].width,
+        align: 'center'
+      });
+      xPosition += columns[2].width;
+      
+      doc.text(order.paymentMethod, xPosition, yPosition + 5, {
+        width: columns[3].width,
+        align: 'center'
+      });
+      xPosition += columns[3].width;
+      
+      doc.text(productList, xPosition, yPosition + 5, {
+        width: columns[4].width,
+        align: 'left'
+      });
+      xPosition += columns[4].width;
+      
+      doc.text(`₹${order.payTotal}`, xPosition, yPosition + 5, {
+        width: columns[5].width,
+        align: 'right'
+      });
+      
+      yPosition += rowHeight;
+      
+      doc.moveTo(margin, yPosition)
+         .lineTo(margin + tableWidth, yPosition)
+         .stroke();
     });
 
+    yPosition += 20;
+    doc.fontSize(12).font('Helvetica-Bold').text(`Total Orders: ${orders.length}`, margin, yPosition);
+    yPosition += 20;
     
+    const totalAmount = orders.reduce((sum, order) => sum + Number(order.payTotal), 0);
+    doc.text(`Total Revenue: ₹${totalAmount.toFixed(2)}`, margin, yPosition);
+    
+    doc.fontSize(10).font('Helvetica')
+       .text(`Report generated on: ${new Date().toLocaleDateString()}`, margin, doc.page.height - 50, {
+         align: 'center',
+         width: tableWidth
+       });
+
     doc.end();
   } catch (error) {
     console.log(error);
