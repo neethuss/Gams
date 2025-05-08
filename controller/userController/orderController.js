@@ -163,7 +163,7 @@ const cancelOrder = async (req, res) => {
         { new: true }
       );
       for (const item of order.products) {
-        await productCollection.findByIdAndUpdate(item.product._id, {
+        await productCollection.findByIdAndUpdate(item.product, {
           $inc: { product_stock: item.quantity },
         });
       }
