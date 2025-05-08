@@ -49,7 +49,7 @@ router.get('/removeWishlist/:id',userSessionMiddleware.isUser,userBlockMiddlewar
 router.get('/cart',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,cartController.getCart)
 router.post('/cart',userBlockMiddleware.isBlocked,cartController.postCart)
 router.post('/updateCart',userBlockMiddleware.isBlocked,cartController.updateCart)
-router.get('/removeCart/:id',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,cartController.removeCart)
+router.get('/removeCart/:id/:quantity',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,cartController.removeCart)
 
 router.post('/couponApply',userBlockMiddleware.isBlocked,checkoutcontroller.postCouponApply)
 

@@ -1,6 +1,5 @@
 const cartCollection = require("../../models/cartModel");
-const couponCollection = require("../../models/couponModel");
-const userCollection = require("../../models/userModel");
+const productCollection = require('../../models/productModel')
 
 //get method for cart page
 const getCart = async (req, res) => {
@@ -41,6 +40,7 @@ const postCart = async (req, res) => {
 
     const cart = await cartCollection.findOne({ userId: userId });
 
+
     if (!cart) {
       // If cart doesn't exist, create a new cart and add the product
 
@@ -49,6 +49,8 @@ const postCart = async (req, res) => {
         products: [{ product: productId, quantity: quantity }],
       };
       await cartCollection.insertMany(cart);
+      await productCollection.updateOne({_id:productId},{$inc:{product_stock:-quantity}})
+
       res.redirect("/cart");
     } else {
       // If cart exists, check if the product is already in the car
@@ -61,6 +63,7 @@ const postCart = async (req, res) => {
         // If the product is not in the cart, add it
 
         cart.products.push({ product: productId, quantity: quantity });
+        await productCollection.updateOne({_id:productId},{$inc:{product_stock:-quantity}})
 
         await cart.save();
         res.redirect("/cart");
@@ -68,6 +71,7 @@ const postCart = async (req, res) => {
         // If the product is already in the cart, update the quantity
 
         cart.products[existingProductIndex].quantity += parseInt(quantity);
+        await productCollection.updateOne({_id:productId},{$inc:{product_stock:-quantity}})
 
         await cart.save();
         res.redirect("/cart");
@@ -128,6 +132,7 @@ const updateCart = async (req, res) => {
 const removeCart = async (req, res) => {
   try {
     const productId = req.params.id;
+    const quantity = req.params.quantity
     const user = req.session.user;
     const userId = user._id;
 
@@ -135,6 +140,9 @@ const removeCart = async (req, res) => {
       { userId: userId },
       { $pull: { products: { product: productId } } }
     );
+
+    await productCollection.findByIdAndUpdate(productId,{$inc:{product_stock:quantity}})
+
 
     res.redirect("/cart");
   } catch (error) {

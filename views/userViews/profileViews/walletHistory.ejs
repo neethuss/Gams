@@ -81,75 +81,77 @@
 
 
     <div class="header-middle sticky-header">
-      <div class="container">
-        <div class="header-left">
-          <button class="mobile-menu-toggler">
-            <span class="sr-only">Toggle mobile menu</span>
-            <i class="icon-bars"></i>
-          </button>
+        <div class="container">
+            <div class="header-left">
+                <button class="mobile-menu-toggler">
+                    <span class="sr-only">Toggle mobile menu</span>
+                    <i class="icon-bars"></i>
+                </button>
 
-          <a href="/" class="logo">
-            <img src="/uploads/logo-resized.png" alt="Molla Logo" width="50px">
-          </a>
+                <a href="" class="logo">
+                    <img src="/uploads/logo-resized.png" alt="Molla Logo" width="40" height="20">
+                </a>
 
-          <nav class="main-nav">
-            <ul class="menu sf-arrows">
-              <li class="megamenu-container active">
-                <a href="/" class="sf-with-ul">Home</a>
+                <nav class="main-nav">
+                    <ul class="menu sf-arrows">
+                        <li class="megamenu-container active">
+                            <a href="/" class="sf-with-ul">Home</a>
+
+                        </li>
+
+                        <li>
+                            <a href="/shop" class="sf-with-ul">Shop</a>
+                        </li>
+
+                        <li>
+                            <a href="">About us</a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="header-right" style="display: flex; align-items: center;">
+
+               
+
+                <div style="margin-top: 12px; margin-left: 40px;">
+                    <ul
+                        style="display: flex;flex-direction: row; justify-content: space-between;align-items: center;">
+                        <li style="width: 20px; margin-right: 20px;">
+                            <a href="/profile"><img src="/uploads/user profile.png" alt=""></a>
+                        </li>
+
+                        <li style="width: 30px; margin-right: 20px;">
+                            <a href="/wishlist"><img src="/uploads/my-wish-list.png" alt=""></a>
+                        </li>
+
+                        <li class="cart-icon" style="margin-right: 20px;">
+                            <a href="/cart" class="cart-link">
+                                <img src="/uploads/shopping-cart-icon.webp" alt="">
+                                <span class="cart-badge">
+                                    <%= cartQuantity %>
+                                </span>
+                            </a>
+                        </li>
+
+                        <li style="width: 30px; margin-right: 20px;">
+                            <a href="/myOrders"><img src="/uploads/lock-icon.png" alt=""></a>
+                        </li>
 
 
-              </li>
-              <li>
-                <a href="/shop" class="sf-with-ul">Shop</a>
+                        <li style="width: 20px;">
+                            <a id="logoutIcon" href="#"><img src="/uploads/logout-icon.png" alt=""></a>
+                        </li>
 
+                    </ul>
 
-              </li>
-              <li>
-                <a href="/aboutUs" class="sf-with-ul">About Us</a>
+                </div>
 
-
-              </li>
-
-            </ul>
-          </nav>
+            </div>
         </div>
-
-        <div class="header-right">
-          <ul class="menu sf-arrows">
-
-
-            <li>
-              <a href="/wallet" class="sf-with-ul">Wallet </a>
-
-
-            </li>
-            <li style="width: 80px; ">
-              <a href="/profile"><img src="/uploads/user profile.png" alt=""></a>
-            </li>
-
-            <li style="width: 90px; ">
-              <a href="/wishlist"><img src="/uploads/my-wish-list.png" alt=""></a>
-            </li>
-
-            <li class="cart-icon-container">
-              <a href="/cart" style="padding-bottom: 17px;">
-                <img src="/uploads/shopping-cart-icon.webp" alt="Shopping Cart">
-                <span class="cart-badge">
-                  <%= cartQuantity %>
-                </span>
-              </a>
-            </li>
-
-            <li style="width: 80px;">
-              <a id="logoutIcon" href="#"><img src="/uploads/logout-icon.png" alt=""></a>
-            </li>
-
-          </ul>
-        </div>
-      </div>
     </div>
-  </header>
-
+</header>
   <% if(wallet) {%>
 
     <div class="container">
@@ -217,28 +219,28 @@
             height: 70vh;
           }
 
-          .cart-icon-container {
-            position: relative;
-            width: 100px;
-          }
+            .cart-icon {
+                position: relative;
+                width: 40px;
+            }
 
-          .cart-icon-container a {
-            display: block;
-          }
+            .cart-link {
+                display: block;
+            }
 
-          .cart-badge {
-            position: absolute;
-            top: -30px;
-            right: -30px;
-            background-color: #c73232a1;
-            color: white;
-            border-radius: 50%;
-            padding: 5px 8px;
-            font-size: 12px;
-            width: 20px;
-            height: 20px;
-          }
-
+            .cart-badge {
+                position: absolute;
+                top: -10px;
+                right: -10px;
+                background-color: #c73232a1;
+                color: white;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
+                padding-left: 6px;
+            }
+        
           .green-text {
             color: green;
           }

@@ -30,6 +30,12 @@ const productSchema = new mongoose.Schema({
     required:true
   },
 
+  product_description: {
+    type: String,
+    required: true
+  },
+
+
   inWishlist:{
     type:Boolean,
     default:false

@@ -17,7 +17,7 @@
   <meta name="keywords" content="HTML5 Template">
   <meta name="description" content="Molla - Bootstrap eCommerce Template">
   <meta name="author" content="p-themes">
-  
+
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo-resized.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo-resized.png">
@@ -31,16 +31,16 @@
   <meta name="theme-color" content="#ffffff">
   <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
   <link rel="stylesheet" href="/assets/css/plugins/magnific-popup/magnific-popup.css">
- 
+
   <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-  
+
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/plugins/nouislider/nouislider.css">
   <link rel="stylesheet" href="/assets/css/modal.css">
   <style>
-      .centered-box {
+    .centered-box {
       text-align: center;
-      margin: 50px auto; 
+      margin: 50px auto;
       padding: 20px;
       background-color: #fff;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -76,69 +76,77 @@
 
 
     <div class="header-middle sticky-header">
-      <div class="container">
-        <div class="header-left">
-          <button class="mobile-menu-toggler">
-            <span class="sr-only">Toggle mobile menu</span>
-            <i class="icon-bars"></i>
-          </button>
+        <div class="container">
+            <div class="header-left">
+                <button class="mobile-menu-toggler">
+                    <span class="sr-only">Toggle mobile menu</span>
+                    <i class="icon-bars"></i>
+                </button>
 
-          <a href="/" class="logo">
-            <img src="/uploads/logo-resized.png" alt="Molla Logo" width="50px" >
-          </a>
+                <a href="" class="logo">
+                    <img src="/uploads/logo-resized.png" alt="Molla Logo" width="40" height="20">
+                </a>
 
-          <nav class="main-nav">
-            <ul class="menu sf-arrows">
-              <li class="megamenu-container active">
-                <a href="/" class="sf-with-ul">Home</a>
+                <nav class="main-nav">
+                    <ul class="menu sf-arrows">
+                        <li class="megamenu-container active">
+                            <a href="/" class="sf-with-ul">Home</a>
+
+                        </li>
+
+                        <li>
+                            <a href="/shop" class="sf-with-ul">Shop</a>
+                        </li>
+
+                        <li>
+                            <a href="">About us</a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="header-right" style="display: flex; align-items: center;">
+
+                
+
+                <div style="margin-top: 12px; margin-left: 40px;">
+                    <ul
+                        style="display: flex;flex-direction: row; justify-content: space-between;align-items: center;">
+                        <li style="width: 20px; margin-right: 20px;">
+                            <a href="/profile"><img src="/uploads/user profile.png" alt=""></a>
+                        </li>
+
+                        <li style="width: 30px; margin-right: 20px;">
+                            <a href="/wishlist"><img src="/uploads/my-wish-list.png" alt=""></a>
+                        </li>
+
+                        <li class="cart-icon" style="margin-right: 20px;">
+                            <a href="/cart" class="cart-link">
+                                <img src="/uploads/shopping-cart-icon.webp" alt="">
+                                <span class="cart-badge">
+                                    <%= cartQuantity %>
+                                </span>
+                            </a>
+                        </li>
+
+                        <li style="width: 30px; margin-right: 20px;">
+                            <a href="/myOrders"><img src="/uploads/lock-icon.png" alt=""></a>
+                        </li>
 
 
-              </li>
-              <li>
-                <a href="/shop" class="sf-with-ul">Shop</a>
+                        <li style="width: 20px;">
+                            <a id="logoutIcon" href="#"><img src="/uploads/logout-icon.png" alt=""></a>
+                        </li>
 
+                    </ul>
 
-              </li>
-              <li>
-                <a href="/aboutUs" class="sf-with-ul">About Us</a>
+                </div>
 
-
-              </li>
-
-            </ul>
-          </nav>
+            </div>
         </div>
-
-        <div class="header-right">
-          <ul class="menu sf-arrows">
-
-
-            <li style="width: 80px; ">
-              <a href="/profile"><img src="/uploads/user profile.png" alt=""></a>
-          </li>
-
-          <li style="width: 90px; ">
-              <a href="/wishlist"><img src="/uploads/my-wish-list.png" alt=""></a>
-          </li>
-
-          <li class="cart-icon-container">
-            <a href="/cart" style="padding-bottom: 17px;">
-              <img src="/uploads/shopping-cart-icon.webp" alt="Shopping Cart">
-              <span class="cart-badge"><%= cartQuantity %></span>
-            </a>
-          </li>
-
-          <li style="width: 80px;">
-            <a id="logoutIcon" href="#"><img src="/uploads/logout-icon.png" alt=""></a>
-          </li>
-
-
-
-          </ul>
-        </div>
-      </div>
     </div>
-  </header>
+</header>
 
 
   <div class="container">
@@ -146,11 +154,11 @@
       <h2>My Wallet</h2>
       <div class="wallet-amount">
         Wallet Amount: Rs.<span id="walletAmountPlaceholder">
-          <% if (wallet && wallet.walletAmount !== undefined) { %>
+          <% if (wallet && wallet.walletAmount !==undefined) { %>
             <%= wallet.walletAmount %>
-          <% } else { %>
-            0.00
-          <% } %>
+              <% } else { %>
+                0.00
+                <% } %>
         </span>
       </div>
       <a href="/walletHistory"><button class="wallet-history-btn">Wallet History</button></a>
@@ -169,73 +177,72 @@
     </div>
 
   </div>
-  
+
   <style>
-    .cart-icon-container {
-      position: relative;
-      width: 100px;
+    .cart-icon {
+        position: relative;
+        width: 40px;
     }
 
-    .cart-icon-container a {
-      display: block;
+    .cart-link {
+        display: block;
     }
 
     .cart-badge {
-      position: absolute;
-      top: -30px;
-      right: -30px;
-      background-color:  #c73232a1;
-      color: white;
-      border-radius: 50%;
-      padding: 5px 8px;
-      font-size: 12px;
-      width: 20px;
-      height: 20px;
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background-color: #c73232a1;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        padding-left: 6px;
     }
-  </style>
+</style>
+  <script>
+    const logoutIcon = document.querySelector('#logoutIcon');
+    const logoutModal = document.querySelector('#logoutModal');
+    const closeButton = document.querySelector('.close');
 
-<script>
-  const logoutIcon = document.querySelector('#logoutIcon');
-  const logoutModal = document.querySelector('#logoutModal');
-  const closeButton = document.querySelector('.close');
+    logoutIcon.addEventListener('click', function () {
+      logoutModal.style.display = 'block';
+    });
 
-  logoutIcon.addEventListener('click', function () {
-    logoutModal.style.display = 'block';
-  });
-
-  closeButton.addEventListener('click', function () {
-    logoutModal.style.display = 'none';
-  });
-
-  window.addEventListener('click', function (event) {
-    if (event.target == logoutModal) {
+    closeButton.addEventListener('click', function () {
       logoutModal.style.display = 'none';
-    }
-  });
+    });
 
-  document.querySelector('#cancelLogout').addEventListener('click', function () {
-    logoutModal.style.display = 'none';
-  });
+    window.addEventListener('click', function (event) {
+      if (event.target == logoutModal) {
+        logoutModal.style.display = 'none';
+      }
+    });
 
-  document.querySelector('#confirmLogout').addEventListener('click', function () {
-    window.location.href = '/logout';
-  });
+    document.querySelector('#cancelLogout').addEventListener('click', function () {
+      logoutModal.style.display = 'none';
+    });
+
+    document.querySelector('#confirmLogout').addEventListener('click', function () {
+      window.location.href = '/logout';
+    });
 
 
-</script>
+  </script>
 
   <script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/jquery.hoverIntent.min.js"></script>
-<script src="assets/js/jquery.waypoints.min.js"></script>
-<script src="assets/js/superfish.min.js"></script>
-<script src="assets/js/owl.carousel.min.js"></script>
-<script src="assets/js/bootstrap-input-spinner.js"></script>
-<script src="assets/js/jquery.magnific-popup.min.js"></script>
-<script src="assets/js/wNumb.js"></script>
-<script src="assets/js/nouislider.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/jquery.hoverIntent.min.js"></script>
+  <script src="assets/js/jquery.waypoints.min.js"></script>
+  <script src="assets/js/superfish.min.js"></script>
+  <script src="assets/js/owl.carousel.min.js"></script>
+  <script src="assets/js/bootstrap-input-spinner.js"></script>
+  <script src="assets/js/jquery.magnific-popup.min.js"></script>
+  <script src="assets/js/wNumb.js"></script>
+  <script src="assets/js/nouislider.min.js"></script>
 
-<script src="assets/js/main.js"></script>
+  <script src="assets/js/main.js"></script>
 
 </body>
 <html>

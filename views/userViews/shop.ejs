@@ -1,43 +1,311 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>GAMS</title>
+    <title>GAMS - Shop</title>
     <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Molla - Bootstrap eCommerce Template">
-    <meta name="author" content="p-themes">
+    <meta name="description" content="GAMS - eCommerce Template">
 
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/uploads/logo-resized.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/uploads/logo-resized.png">
-    <link rel="" manifest="" href="/assets/images/icons/site.html">
-    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
     <link rel="shortcut icon" href="../../upload/logo gams.jpg">
-    <meta name="apple-mobile-web-app-title" content="Molla">
-    <meta name="application-name" content="Molla">
+    <meta name="apple-mobile-web-app-title" content="GAMS">
+    <meta name="application-name" content="GAMS">
     <meta name="msapplication-TileColor" content="#cc9966">
-    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
 
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/toastify.css">
     <link rel="stylesheet" href="/assets/css/coupon.css">
     <link rel="stylesheet" href="/assets/css/shop.css">
     <link rel="stylesheet" href="/assets/css/modal.css">
 
+    <style>
+        /* Custom styles for the improved layout */
+        .shop-container {
+            display: flex;
+            width: 100%;
+            padding: 0 15px;
+        }
+
+        .sidebar {
+            width: 250px;
+            padding: 20px;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+
+        .sidebar h4 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .main-content {
+            flex: 1;
+            padding-left: 30px;
+        }
+
+        .filter-form {
+            margin-bottom: 25px;
+        }
+
+        .filter-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .filter-form select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .filter-button,
+        .sort-button,
+        .reset-button {
+            width: 100%;
+            padding: 8px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .filter-button:hover,
+        .sort-button:hover {
+            background-color: #555;
+        }
+
+        .reset-button {
+            background-color: #6c757d;
+            margin-top: 20px;
+        }
+
+        .reset-button:hover {
+            background-color: #5a6268;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .product {
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 15px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-container {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .product-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .product-action {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .btn-product {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-product:hover {
+            background-color: #555;
+        }
+
+        .product-body {
+            padding: 10px 0;
+        }
+
+        .product-cat {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .product-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .pagination-container {
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+
+        .cart-icon {
+            position: relative;
+            width: 40px;
+        }
+
+        .cart-link {
+            display: block;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #c73232a1;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-body {
+            padding: 10px;
+            text-align: left;
+        }
+
+        figure {
+  margin: 0;
+}
+
+        .product-cat a {
+            font-size: 14px;
+            color: #888;
+            text-decoration: none;
+        }
+
+        .product-title a {
+            font-size: 16px;
+            font-weight: 500;
+            color: #000;
+            text-decoration: none;
+            display: block;
+            margin: 5px 0;
+        }
+
+        .product-price {
+            font-weight: bold;
+            font-size: 16px;
+            color: #000;
+        }
+
+
+        @media (max-width: 992px) {
+            .shop-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                margin-bottom: 30px;
+            }
+
+            .main-content {
+                padding-left: 0;
+            }
+
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .products {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .active-filters {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .active-filters strong {
+            margin-right: 5px;
+        }
+
+        .current-filter {
+            display: inline-block;
+            background: #e9e9e9;
+            padding: 3px 8px;
+            margin: 2px;
+            border-radius: 3px;
+        }
+    </style>
 </head>
 
 <body>
     <div class="page-wrapper">
         <header class="header">
-
-
             <div class="header-middle sticky-header">
                 <div class="container">
                     <div class="header-left">
@@ -47,37 +315,35 @@
                         </button>
 
                         <a href="" class="logo">
-                            <img src="/uploads/logo-resized.png" alt="Molla Logo" width="40" height="20">
+                            <img src="/uploads/logo-resized.png" alt="GAMS Logo" width="40" height="20">
                         </a>
 
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
-                                <li class="megamenu-container active">
+                                <li class="megamenu-container">
                                     <a href="/" class="sf-with-ul">Home</a>
-
                                 </li>
-
-                                <li>
+                                <li class="active">
                                     <a href="/shop" class="sf-with-ul">Shop</a>
                                 </li>
-
                                 <li>
                                     <a href="">About us</a>
                                 </li>
-
                             </ul>
                         </nav>
                     </div>
 
                     <div class="header-right" style="display: flex; align-items: center;">
-
                         <div class="header-search">
                             <a href="#" class="search-toggle" role="button" title="Search"><i
                                     class="icon-search"></i></a>
-                            <form action="/searchProduct" method="get">
+                            <form action="/searchProduct" method="get" id="search-form">
                                 <div class="header-search-wrapper">
                                     <label for="q" class="sr-only">Search</label>
-                                    <input type="hidden" name="category" value="<%= category %>">
+                                    <input type="hidden" name="category" id="search-category-input"
+                                        value="<%= category %>">
+                                    <input type="hidden" name="sortOption" id="search-sort-input"
+                                        value="<%= sortOption %>">
                                     <input type="search" class="form-control" name="search" id="q"
                                         placeholder="Search product" required>
                                 </div>
@@ -90,11 +356,9 @@
                                 <li style="width: 20px; margin-right: 20px;">
                                     <a href="/profile"><img src="/uploads/user profile.png" alt=""></a>
                                 </li>
-
                                 <li style="width: 30px; margin-right: 20px;">
                                     <a href="/wishlist"><img src="/uploads/my-wish-list.png" alt=""></a>
                                 </li>
-
                                 <li class="cart-icon" style="margin-right: 20px;">
                                     <a href="/cart" class="cart-link">
                                         <img src="/uploads/shopping-cart-icon.webp" alt="">
@@ -103,244 +367,249 @@
                                         </span>
                                     </a>
                                 </li>
-
+                                <li style="width: 30px; margin-right: 20px;">
+                                    <a href="/myOrders"><img src="/uploads/lock-icon.png" alt=""></a>
+                                </li>
                                 <li style="width: 20px;">
                                     <a id="logoutIcon" href="#"><img src="/uploads/logout-icon.png" alt=""></a>
                                 </li>
-
                             </ul>
-
                         </div>
-
                     </div>
                 </div>
             </div>
         </header>
 
         <main class="main">
-            <div>
-                <div class="page-header text-center"
-                    style="background-image: url('assets/images/page-header-bg.jpg'); height: 120px; margin-bottom: 12px;">
-                    <div class="container-fluid">
-                        <h1 class="page-title">Our Shop Gallery</h1>
-                    </div>
-                </div>
-
-
-
-
-                <div class="page-content">
-
-
-                    <div class="container-fluid">
-
-                        <div class="container-fluid">
-
-                            <div class="container-fluid">
-                                <div class="filter-sort-container">
-                                    <div class="filter-form">
-                                        <form action="/filterByCategory" method="get">
-                                            <select name="category" class="category-select">
-                                                <option value="">All Categories</option>
-                                                <% categories.forEach((category)=> { %>
-                                                    <option value="<%= category.category_name %>">
-                                                        <%= category.category_name %>
-                                                    </option>
-                                                    <% }) %>
-                                            </select>
-                                            <button type="submit" class="filter-button">Filter By Category</button>
-                                        </form>
-
-                                    </div>
-                                    <div class="filter-form">
-                                        <form action="/sortByPrice" method="get">
-                                            <select name="sortOption" class="sort-select">
-                                                <option value="">All Products</option>
-                                                <option value="LowToHigh">Low to High</option>
-                                                <option value="HighToLow">High to Low</option>
-                                            </select>
-                                            <button type="submit" class="sort-button">Sort By Price</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                        </div>
-
-
-
-
-
-                        <div class="products">
-                            <div class="row"
-                                style="display: flex; justify-content: space-around;align-items: center;padding-left: 70px;padding-right: 70px;">
-                                <% products.forEach((product, i)=> { %>
-                                    <div class="col-4 col-md-4 col-lg-4 col-xl-4">
-                                        <div class="product">
-                                            <figure class="product-media">
-
-
-                                                <div class="image-container">
-                                                    <img src="/uploads/<%= product.product_image[0] %>"
-                                                        alt="Product image" class="product-image">
-                                                </div>
-
-
-
-                                                <div class="product-action ">
-                                                    <a href="/product/<%= product._id%>" class="btn-product "><span>View
-                                                            product</span></a>
-                                                </div>
-                                            </figure>
-
-                                            <div class="product-body">
-                                                <div class="product-cat">
-                                                    <a href="#">
-                                                        <%= product.product_category.category_name %>
-                                                    </a>
-                                                </div>
-                                                <h3 class="product-title">
-                                                    <a href="/product">
-                                                        <%= product.product_name %>
-                                                    </a>
-                                                </h3>
-                                                <div class="product-price">
-                                                    <span>Rs. </span>
-                                                    <%= product.product_price %>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <% }) %>
-                            </div>
-                        </div>
-
-
-
-
-                    </div>
-
-
-                    <div class="pagination" style="display: flex; align-items: center; justify-content: center;">
-                        <nav aria-label="Page navigation" class="pagination-container" style="margin-top:30px">
-                            <ul class="pagination justify-content-center">
-
-                                <li class="page-item <%= page == 1 ? 'disabled' : '' %>">
-                                    <a class="page-link"
-                                        href="?page=<%= page - 1 %><%= sortOption ? '&sortOption=' + sortOption : '' %><%= category ? '&category=' + category : '' %><%= search ? '&search=' + search : '' %>"
-                                        aria-label="Previous">
-                                        <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
-                                    </a>
-                                </li>
-
-
-                                <% for (let i=1; i <=totalPages; i++) { %>
-                                    <li class="page-item <%= page == i ? 'active' : '' %>">
-                                        <a class="page-link"
-                                            href="?page=<%= i %><%= sortOption ? '&sortOption=' + sortOption : '' %><%= category ? '&category=' + category : '' %><%= search ? '&search=' + search : '' %>">
-                                            <%= i %>
-                                        </a>
-                                    </li>
-                                    <% } %>
-
-                                        <li class="page-item <%= page == totalPages ? 'disabled' : '' %>">
-                                            <a class="page-link"
-                                                href="?page=<%= page + 1 %><%= sortOption ? '&sortOption=' + sortOption : '' %><%= category ? '&category=' + category : '' %><%= search ? '&search=' + search : '' %>"
-                                                aria-label="Next">
-                                                Next <span aria-hidden="true"><i
-                                                        class="icon-long-arrow-right"></i></span>
-                                            </a>
-                                        </li>
-
-
-                            </ul>
-                        </nav>
-                    </div>
-
-
-
+            <div class="page-header text-center"
+                style="background-image: url('assets/images/page-header-bg.jpg'); height: 70px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; padding: 0;">
+                <div class="container-fluid" style="padding: 0; margin: 0;">
+                    <h1 class="page-title" style="margin: 0; padding: 0; font-size: 20px; line-height: 1;">Our Shop
+                        Gallery</h1>
                 </div>
             </div>
 
-            <div id="logoutModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <p>Are you sure you want to logout?</p>
-                    <div class="modal-buttons">
-                        <button id="confirmLogout">Yes</button>
-                        <button id="cancelLogout">Cancel</button>
+            <div class="page-content">
+                <div class="container">
+                    <div class="shop-container">
+                        <!-- Sidebar with filters -->
+                        <div class="sidebar">
+                            <h4>Shop Filters</h4>
+
+                            <!-- Category Filter -->
+                            <div class="filter-form">
+                                <form action="/filterByCategory" method="get" id="category-form">
+                                    <label for="category-select">Category:</label>
+                                    <select name="category" id="category-select" class="category-select">
+                                        <option value="">All Categories</option>
+                                        <% categories.forEach((category)=> { %>
+                                            <option value="<%= category.category_name %>" <%=(locals.category &&
+                                                locals.category===category.category_name) ? 'selected' : '' %>>
+                                                <%= category.category_name %>
+                                            </option>
+                                            <% }) %>
+                                    </select>
+
+                                    <!-- Hidden fields to maintain sort state -->
+                                    <input type="hidden" name="sortOption" id="category-sort-input"
+                                        value="<%= sortOption %>">
+                                    <input type="hidden" name="page" value="1">
+                                    <input type="hidden" name="search" value="<%= search %>">
+
+                                    <button type="submit" class="filter-button">Apply Filter</button>
+                                </form>
+                            </div>
+
+                            <!-- Price Sort -->
+                            <div class="filter-form">
+                                <form action="/sortByPrice" method="get" id="sort-form">
+                                    <label for="sort-select">Sort by Price:</label>
+                                    <select name="sortOption" id="sort-select" class="sort-select">
+                                        <option value="">Default Sorting</option>
+                                        <option value="LowToHigh" <%=sortOption==='LowToHigh' ? 'selected' : '' %>
+                                            >Price: Low to High</option>
+                                        <option value="HighToLow" <%=sortOption==='HighToLow' ? 'selected' : '' %>
+                                            >Price: High to Low</option>
+                                    </select>
+
+                                    <!-- Hidden fields to maintain category state -->
+                                    <input type="hidden" name="category" id="sort-category-input"
+                                        value="<%= category %>">
+                                    <input type="hidden" name="page" value="1">
+                                    <input type="hidden" name="search" value="<%= search %>">
+
+                                    <button type="submit" class="sort-button">Apply Sorting</button>
+                                </form>
+                            </div>
+
+                            <!-- Reset Button -->
+                            <a href="/shop" class="reset-button"
+                                style="display: block; text-align: center; text-decoration: none; color: white;">
+                                Reset All Filters
+                            </a>
+                        </div>
+
+                        <!-- Main content -->
+                        <div class="main-content">
+                            <!-- Active filters display -->
+                            <% if (category || sortOption || search) { %>
+                                <div class="active-filters">
+                                    <strong>Active Filters:</strong>
+                                    <% if (category) { %>
+                                        <span class="current-filter">Category: <%= category %></span>
+                                        <% } %>
+                                            <% if (sortOption) { %>
+                                                <span class="current-filter">Sort: <%= sortOption==='LowToHigh'
+                                                        ? 'Price Low to High' : 'Price High to Low' %></span>
+                                                <% } %>
+                                                    <% if (search) { %>
+                                                        <span class="current-filter">Search: <%= search %></span>
+                                                        <% } %>
+                                </div>
+                                <% } %>
+
+                                    <!-- Products Grid -->
+                                    <div class="products">
+  <% products.forEach((product) => { %>
+    <div class="product">
+      <div class="product-media">
+        <div class="image-container">
+          <img src="/uploads/<%= product.product_image[0] %>" alt="<%= product.product_name %>" class="product-image">
+          <div class="product-action">
+            <a href="/product/<%= product._id%>" class="btn-product">View product</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-cat">
+          <a href="#"><%= product.product_category.category_name %></a>
+        </div>
+        <h3 class="product-title">
+          <a href="/product/<%= product._id%>"><%= product.product_name %></a>
+        </h3>
+        <div class="product-price">Rs.<%= product.product_price %></div>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+                                      
+
+
+                                    <!-- Pagination -->
+                                    <div class="pagination-container">
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination justify-content-center">
+                                                <li class="page-item <%= page == 1 ? 'disabled' : '' %>">
+                                                    <a class="page-link"
+                                                        href="?page=<%= page - 1 %><%= sortOption ? '&sortOption=' + sortOption : '' %><%= category ? '&category=' + category : '' %><%= search ? '&search=' + search : '' %>"
+                                                        aria-label="Previous">
+                                                        <span aria-hidden="true"><i
+                                                                class="icon-long-arrow-left"></i></span>Prev
+                                                    </a>
+                                                </li>
+
+                                                <% for (let i=1; i <=totalPages; i++) { %>
+                                                    <li class="page-item <%= page == i ? 'active' : '' %>">
+                                                        <a class="page-link"
+                                                            href="?page=<%= i %><%= sortOption ? '&sortOption=' + sortOption : '' %><%= category ? '&category=' + category : '' %><%= search ? '&search=' + search : '' %>">
+                                                            <%= i %>
+                                                        </a>
+                                                    </li>
+                                                    <% } %>
+
+                                                        <li
+                                                            class="page-item <%= page == totalPages ? 'disabled' : '' %>">
+                                                            <a class="page-link"
+                                                                href="?page=<%= page + 1 %><%= sortOption ? '&sortOption=' + sortOption : '' %><%= category ? '&category=' + category : '' %><%= search ? '&search=' + search : '' %>"
+                                                                aria-label="Next">
+                                                                Next <span aria-hidden="true"><i
+                                                                        class="icon-long-arrow-right"></i></span>
+                                                            </a>
+                                                        </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
 
-        <style>
-            .cart-icon {
-                position: relative;
-                width: 40px;
-            }
-
-            .cart-link {
-                display: block;
-            }
-
-            .cart-badge {
-                position: absolute;
-                top: -10px;
-                right: -10px;
-                background-color: #c73232a1;
-                color: white;
-                border-radius: 50%;
-                width: 20px;
-                height: 20px;
-                font-size: 12px;
-                padding-left: 6px;
-            }
-        </style>
-
-        <script>
-            const logoutIcon = document.querySelector('#logoutIcon');
-            const logoutModal = document.querySelector('#logoutModal');
-            const closeButton = document.querySelector('.close');
-
-            logoutIcon.addEventListener('click', function () {
-                logoutModal.style.display = 'block';
-            });
-
-            closeButton.addEventListener('click', function () {
-                logoutModal.style.display = 'none';
-            });
-
-            window.addEventListener('click', function (event) {
-                if (event.target == logoutModal) {
-                    logoutModal.style.display = 'none';
-                }
-            });
-
-            document.querySelector('#cancelLogout').addEventListener('click', function () {
-                logoutModal.style.display = 'none';
-            });
-
-            document.querySelector('#confirmLogout').addEventListener('click', function () {
-                window.location.href = '/logout';
-            });
-
-            document.addEventListener('DOMContentLoaded', function () {
-                const searchToggle = document.querySelector('.search-toggle');
-                const searchWrapper = document.querySelector('.header-search-wrapper');
-
-                searchToggle.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    searchWrapper.classList.toggle('show');
-                });
-            });
-            []
-
-
-        </script>
-
-
+        <!-- Logout Modal -->
+        <div id="logoutModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Are you sure you want to logout?</p>
+                <div class="modal-buttons">
+                    <button id="confirmLogout">Yes</button>
+                    <button id="cancelLogout">Cancel</button>
+                </div>
+            </div>
+        </div>
 
         <%- include('footer') -%>
+    </div>
+
+    <script>
+        // Logout modal functionality
+        const logoutIcon = document.querySelector('#logoutIcon');
+        const logoutModal = document.querySelector('#logoutModal');
+        const closeButton = document.querySelector('.close');
+
+        logoutIcon.addEventListener('click', function () {
+            logoutModal.style.display = 'block';
+        });
+
+        closeButton.addEventListener('click', function () {
+            logoutModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function (event) {
+            if (event.target == logoutModal) {
+                logoutModal.style.display = 'none';
+            }
+        });
+
+        document.querySelector('#cancelLogout').addEventListener('click', function () {
+            logoutModal.style.display = 'none';
+        });
+
+        document.querySelector('#confirmLogout').addEventListener('click', function () {
+            window.location.href = '/logout';
+        });
+
+        // Search toggle functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchToggle = document.querySelector('.search-toggle');
+            const searchWrapper = document.querySelector('.header-search-wrapper');
+
+            searchToggle.addEventListener('click', function (event) {
+                event.preventDefault();
+                searchWrapper.classList.toggle('show');
+            });
+
+            // Maintain filter states across forms
+            const categorySelect = document.getElementById('category-select');
+            const sortSelect = document.getElementById('sort-select');
+            const sortCategoryInput = document.getElementById('sort-category-input');
+            const categorySortInput = document.getElementById('category-sort-input');
+            const searchCategoryInput = document.getElementById('search-category-input');
+            const searchSortInput = document.getElementById('search-sort-input');
+
+            // When category changes, update the hidden category field in other forms
+            categorySelect.addEventListener('change', function () {
+                sortCategoryInput.value = this.value;
+                searchCategoryInput.value = this.value;
+            });
+
+            // When sort changes, update the hidden sort field in other forms
+            sortSelect.addEventListener('change', function () {
+                categorySortInput.value = this.value;
+                searchSortInput.value = this.value;
+            });
+        });
+    </script>
+</body>
+
+</html>

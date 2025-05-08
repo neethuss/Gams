@@ -1,6 +1,6 @@
 <%- include('nav') -%>
 
-  <div  style="font-family: auto;">
+  <div style="font-family: auto;">
     <section class="h-100 gradient-custom">
       <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -21,7 +21,7 @@
                       <%= order.status %>
                     </span></h5>
 
-                    <h5 class="text-muted mb-0">Payment Method:<span style="color: #a8729a;">
+                  <h5 class="text-muted mb-0">Payment Method:<span style="color: #a8729a;">
                       <%= order.paymentMethod %>
                     </span></h5>
 
@@ -37,23 +37,35 @@
                         <div class="card-body" style="font-size: 18px;">
                           <div class="row align-items-center">
                             <div class="col-md-2">
-                              <img src="/uploads/<%= product.product.product_image[0] %>" class="img-fluid"
-                                alt="Product Image">
+                              <% if (product.product && product.product_image && product.product_image.length> 0) { %>
+                                <img src="/uploads/<%= product.product_image[0] %>" class="img-fluid"
+                                  alt="Product Image">
+                                <% } else if (product.product && product.product.product_image &&
+                                  product.product.product_image.length> 0) { %>
+                                  <img src="/uploads/<%= product.product.product_image[0] %>" class="img-fluid"
+                                    alt="Product Image">
+                                  <% } else { %>
+                                    <img src="/images/default-product.png" class="img-fluid" alt="No Image Available">
+                                    <% } %>
                             </div>
                             <div class="col-md-2 text-center">
                               <p class="text-muted mb-0" style="font-weight: bold;">
-                                <%= product.product.product_name %>
+                                <%= product.product ? product.product.product_name : 'Product Name Not Available' %>
                               </p>
                             </div>
                             <div class="col-md-2 text-center">
                               <p class="text-muted mb-0">
                                 Category: <br>
-                                <%= product.product.product_category.category_name %>
+                                <% if (product.product && product.product.product_category) { %>
+                                  <%= product.product.product_category.category_name %>
+                                    <% } else { %>
+                                      Not Available
+                                      <% } %>
                               </p>
                             </div>
                             <div class="col-md-2 text-center">
                               <p class="text-muted mb-0 small">
-                                Price:<br> Rs. <%= product.product.product_price %>
+                                Price:<br> Rs. <%= product.product ? product.product.product_price : '0' %>
                               </p>
                             </div>
                             <div class="col-md-2 text-center">
@@ -68,10 +80,7 @@
                           </div>
                         </div>
                       </div>
-
-
                       <% }); %>
-
 
                         <div style="display: flex; justify-content: space-between;">
                           <div>
@@ -89,8 +98,6 @@
                           </div>
 
                           <div>
-
-                  
                             <div>
                               <p class="text-muted mb-0"><span class="fw-bold me-4">Total:</span>Rs. <%= totalOrderPrice
                                   %>
@@ -104,22 +111,13 @@
                             </div>
 
                             <div>
-
-                              <p class="text-muted mb-0"><span class="fw-bold me-4">Total:</span>Rs.
+                              <p class="text-muted mb-0"><span class="fw-bold me-4">Total:</span>
                                 Rs. <%= order.payTotal %>/-
                               </p>
                             </div>
-
                           </div>
-
                         </div>
-
-
-
-
-
               </div>
-
             </div>
           </div>
         </div>

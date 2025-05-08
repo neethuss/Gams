@@ -61,6 +61,7 @@ const postAddProduct = async (req, res) => {
         product_price: req.body.productPrice,
         product_stock: req.body.productStock,
         product_image: img,
+        product_description:req.body.productDescription
       };
       await productCollection.insertMany([productData]);
       req.flash("success", "Product added");
@@ -89,79 +90,83 @@ const getEditProduct = async (req, res) => {
 //post method fot edit product
 const postEditProduct = async (req, res) => {
   try {
-    let img;
-    const category = await categoryCollection.findOne({
-      category_name: req.body.productCategory,
-    });
-
-    if (req.files && req.files.length > 0) {
-      img = req.files.map((val) => {
-        return val.filename;
-      });
-
-      const existingProduct = await productCollection.findById(
-        req.params.proId
-      );
-
-      img = existingProduct.product_image.concat(img);
-    } else {
-      const existingProduct = await productCollection.findById(
-        req.params.proId
-      );
-      img = existingProduct.product_image;
-    }
-
     const proId = req.params.proId;
-
-    const productName = req.body.productName.toLowerCase();
+    const productName = req.body.productName.trim().toLowerCase();
 
     const check = await productCollection.findOne({
       product_name: { $regex: new RegExp("^" + productName + "$", "i") },
       _id: { $ne: proId },
     });
+
     if (check) {
-      return res.redirect("/admin/editProduct", {
-        msg: "Product already exists",
-      });
+      req.flash("error", "Product name already exists");
+      return res.redirect(`/admin/editProduct/${proId}`);
+    }
+
+    const existingProduct = await productCollection.findById(proId);
+    if (!existingProduct) {
+      req.flash("error", "Product not found");
+      return res.redirect("/admin/productManagement");
+    }
+
+    let productImages = existingProduct.product_image;
+    if (req.files && req.files.length > 0) {
+      const newImages = req.files.map((file) => file.filename);
+      productImages = productImages.concat(newImages);
+    }
+
+    if (productImages.length === 0) {
+      req.flash("error", "At least one product image is required");
+      return res.redirect(`/admin/editProduct/${proId}`);
     }
 
     await productCollection.findByIdAndUpdate(
       proId,
       {
         product_name: req.body.productName,
-        product_category: category._id,
+        product_category: req.body.productCategory,
         product_price: req.body.productPrice,
         product_stock: req.body.productStock,
-        product_image: img,
+        product_image: productImages,
+        product_description:req.body.productDescription
       },
       { new: true }
     );
-    req.flash("success", "Product details edited");
+
+    req.flash("success", "Product details updated successfully");
     res.redirect("/admin/productManagement");
   } catch (error) {
     console.log(error);
-    res.status(500).send("Error occurred");
+    req.flash("error", "An error occurred while updating the product");
+    res.redirect(`/admin/editProduct/${req.params.proId}`);
   }
 };
 
 //get method for unlist a product
 const postBlockProduct = async (req, res) => {
   try {
-    
-    const product = await productCollection.findOne({product_name:req.body.product_name});
+    const product = await productCollection.findOne({
+      product_name: req.body.product_name,
+    });
 
     if (product) {
       const block = product.unlist;
       if (block) {
-        await productCollection.updateOne({product_name:req.body.product_name}, {
-          $set: { unlist: false },
-        });
+        await productCollection.updateOne(
+          { product_name: req.body.product_name },
+          {
+            $set: { unlist: false },
+          }
+        );
       } else {
-        await productCollection.updateOne({product_name:req.body.product_name}, {
-          $set: { unlist: true },
-        });
+        await productCollection.updateOne(
+          { product_name: req.body.product_name },
+          {
+            $set: { unlist: true },
+          }
+        );
       }
-      res.status(200).json({ message: 'product updated' });
+      res.status(200).json({ message: "product updated" });
     }
   } catch (error) {
     console.log(error);
@@ -169,23 +174,35 @@ const postBlockProduct = async (req, res) => {
   }
 };
 
-//get method for deleting an image in edit product
-const getDeleteImage = async (req, res) => {
+// method for deleting an image in edit product
+const deleteProductImage = async (req, res) => {
   try {
+    console.log('deletig product', req.params)
     const { index, id } = req.params;
     const product = await productCollection.findById(id);
 
-    const deletedImage = product.product_image.splice(index, 1);
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
 
+    const deletedImage = product.product_image.splice(index, 1)[0];
+    console.log(deletedImage)
     await product.save();
 
-    res.redirect(`/admin/editProduct/${id}`);
+    res.json({
+      success: true,
+      message: "Image deleted successfully",
+      remainingImages: product.product_image.length,
+    });
   } catch (error) {
     console.log(error);
-    res.status(500).send("Error occurred while deleting image");
+    res
+      .status(500)
+      .json({ success: false, message: "Error occurred while deleting image" });
   }
 };
-
 module.exports = {
   getProductManagement,
   getAddProduct,
@@ -193,5 +210,5 @@ module.exports = {
   getEditProduct,
   postEditProduct,
   postBlockProduct,
-  getDeleteImage,
+  deleteProductImage,
 };

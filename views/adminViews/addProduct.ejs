@@ -1,172 +1,283 @@
 <%- include('nav') -%>
 
-<div class="container-fluid py-4" style="font-family: auto;">
-  <div class="row">
-      <div class="col-12">
-          <div class="card my-4">
-              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                  <div
-                      class="bg-gradient-danger shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between">
-                      <h6 class="text-white text-capitalize ps-3">Add Product</h6>
-                  </div>
-              </div>
-              <div class="card-body px-3 pb-2">
-                  <form action="/admin/addProduct" method="post" enctype="multipart/form-data" onsubmit="return validateForm()" style="display: flex;flex-direction: column;align-items: center;">
-                      <div class="mb-3">
-                          <label for="productName" class="form-label">Product Name</label>
-                          <input type="text" class="form-control" id="productName" name="productName"
-                              placeholder="Enter Product Name" style="border: 1px solid #ced4da; width: 430px;text-align: center;" required>
-                          <span id="nameError" style="color: red;"></span>
+    <div class="container-fluid py-4" style="font-family: auto;">
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div
+                            class="bg-gradient-danger shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between">
+                            <h6 class="text-white text-capitalize ps-3">Add Product</h6>
+                        </div>
+                    </div>
+                    <div class="card-body px-3 pb-2">
+                        <form action="/admin/addProduct" method="post" enctype="multipart/form-data"
+                            onsubmit="return validateForm()"
+                            style="display: flex;flex-direction: column;align-items: center;">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Product Name <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="productName" name="productName"
+                                    placeholder="Enter Product Name"
+                                    style="border: 1px solid #ced4da; width: 430px;text-align: center;" required>
+                                <span id="nameError" style="color: red; font-size: 12px;"></span>
+                            </div>
 
-                      </div>
-                      <div class="mb-3">
-                          <label for="productCategory" class="form-label">Product Category</label>
-                          <select class="form-select" id="productCategory" name="productCategory"
-                              style="border: 1px solid #ced4da; width: 430px;text-align: center;">
-                              <% for (let i=0; i < categories.length; i++) { %>
-                                  <% if(categories[i].isBlocked){%>
-                                      <option value="<%= categories[i].category_name %>">
-                                          <%= categories[i].category_name %>
-                                      </option>
-                                      <% } %>
-                                          <% } %>
-                          </select>
-                      </div>
-                      <div class="mb-3">
-                          <label for="productPrice" class="form-label">Product Price</label>
+                            <div class="mb-3">
+                                <label for="productCategory" class="form-label">Product Category <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="productCategory" name="productCategory"
+                                    style="border: 1px solid #ced4da; width: 430px;text-align: center;" required>
+                                    <option value="" disabled selected>Select a category</option>
+                                    <% for (let i=0; i < categories.length; i++) { %>
+                                        <% if(categories[i].isBlocked){%>
+                                            <option value="<%= categories[i].category_name %>">
+                                                <%= categories[i].category_name %>
+                                            </option>
+                                            <% } %>
+                                                <% } %>
+                                </select>
+                                <span id="categoryError" style="color: red; font-size: 12px;"></span>
+                            </div>
 
-                          <input type="number" class="form-control" id="productPrice" name="productPrice"
-                              placeholder="Enter Product Price" style="border: 1px solid #ced4da; width: 430px;text-align: center;" 
-                              min="1" required>
-                          <span id="priceError" style="color: red;"></span>
+                            <div class="mb-3">
+                                <label for="productPrice" class="form-label">Product Price <span
+                                        class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="productPrice" name="productPrice"
+                                    placeholder="Enter Product Price"
+                                    style="border: 1px solid #ced4da; width: 430px;text-align: center;" min="1"
+                                    required>
+                                <span id="priceError" style="color: red; font-size: 12px;"></span>
+                            </div>
 
-                      </div>
+                            <div class="mb-3">
+                                <label for="productStock" class="form-label">Product Stock <span
+                                        class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="productStock" name="productStock"
+                                    placeholder="Enter Product Stock"
+                                    style="border: 1px solid #ced4da; width: 430px;text-align: center;" min="0"
+                                    required>
+                                <span id="stockError" style="color: red; font-size: 12px;"></span>
+                            </div>
 
+                            <div class="mb-3">
+                                <label for="productDescription" class="form-label">Product Description <span
+                                        class="text-danger">*</span></label>
+                                <input class="form-control" id="productDescription"
+                                    name="productDescription" placeholder="Enter Product Details"
+                                    style="border: 1px solid #ced4da; width: 430px;text-align: center;" min="0"
+                                    required>
+                                <span id="DescriptionError" style="color: red; font-size: 12px;"></span>
+                            </div>
 
-                      <div class="mb-3">
-                          <label for="productStock" class="form-label">Product Stock</label>
-                          <input type="number" class="form-control" id="productStock" name="productStock"
-                              placeholder="Enter Product Stock" style="border: 1px solid #ced4da;  width: 430px;text-align: center;" 
-                              min="0" required>
-                          <span id="stockError" style="color: red;"></span>
+                            <div class="mb-3">
+                                <label for="productImage" class="form-label">Product Image <span
+                                        class="text-danger">*</span></label>
+                                <input multiple type="file" class="form-control" id="productImage" name="productImage"
+                                    accept="image/jpeg, image/png, image/gif"
+                                    style="border: 1px solid #ced4da; width: 430px;text-align: center;" required>
+                                <span id="imageError" style="color: red; font-size: 12px;"></span>
+                                <div class="mt-1 small text-muted">Select at least one image file (JPG, PNG, or GIF)
+                                </div>
+                            </div>
 
-                      </div>
-                      <div class="mb-3">
-                          <label for="productImage" class="form-label">Product Image</label>
-                          <input multiple type="file" class="form-control" id="productImage"
-                              name="productImage"  accept="image/jpeg, image/png, image/gif"  style="border: 1px solid #ced4da; width: 430px;text-align: center;">
-                          <span id="imageError" style="color: red;"></span>
+                            <div id="selectedImagesContainer" class="mb-3 d-flex flex-wrap justify-content-center">
+                            </div>
 
-                      </div>
-                      <div id="selectedImagesContainer" class="mb-3"></div>
-                      <button type="submit" class="btn btn-success">Add Product</button>
-                      <p class="text-danger text-center mt-3 mb-0">
-                          <%= locals.msg ? locals.msg : "" %>
-                      </p>
-                      <p class="text-danger text-center mt-2 mb-0">
-                          <%= locals.error ? locals.error : "" %>
-                      </p>
-                  </form>
-              </div>
-          </div>
-      </div>
-  </div>
-</div>
+                            <button type="submit" class="btn btn-success">Add Product</button>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Add event listener for file input change
-        document.getElementById('productImage').addEventListener('change', function (e) {
-            var files = e.target.files;
-            var selectedImagesContainer = document.getElementById('selectedImagesContainer');
-            selectedImagesContainer.innerHTML = ''; // Clear previous images
+                            <p class="text-danger text-center mt-3 mb-0">
+                                <%= locals.msg ? locals.msg : "" %>
+                            </p>
+                            <p class="text-danger text-center mt-2 mb-0">
+                                <%= locals.error ? locals.error : "" %>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Image preview functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add event listener for file input change
+            document.getElementById('productImage').addEventListener('change', function (e) {
+                var files = e.target.files;
+                var selectedImagesContainer = document.getElementById('selectedImagesContainer');
+                selectedImagesContainer.innerHTML = ''; // Clear previous images
 
-            for (var i = 0; i < files.length; i++) {
-                // Create image element
-                var img = document.createElement('img');
-                img.src = URL.createObjectURL(files[i]);
-                img.className = 'selected-image';
-                img.style.maxWidth = '100px'; // Set maximum width as needed
-                img.style.maxHeight = '100px'; // Set maximum height as needed
-                img.style.marginRight = '10px'; // Add spacing between images
-                selectedImagesContainer.appendChild(img);
-            }
+                if (files.length > 0) {
+                    // Reset any error message if files are selected
+                    document.getElementById('imageError').textContent = '';
+
+                    // Create a header for the preview section
+                    var previewHeader = document.createElement('div');
+                    previewHeader.className = 'w-100 mb-2 text-center';
+                    previewHeader.innerHTML = '<strong>Image Preview:</strong>';
+                    selectedImagesContainer.appendChild(previewHeader);
+
+                    // Add preview of each selected image
+                    for (var i = 0; i < files.length; i++) {
+                        // Create image container
+                        var imgContainer = document.createElement('div');
+                        imgContainer.className = 'image-preview-container';
+                        imgContainer.style.margin = '5px';
+
+                        // Create image element
+                        var img = document.createElement('img');
+                        img.src = URL.createObjectURL(files[i]);
+                        img.className = 'selected-image';
+                        img.style.maxWidth = '100px';
+                        img.style.maxHeight = '100px';
+                        img.style.objectFit = 'cover';
+                        img.style.border = '1px solid #ddd';
+                        img.style.borderRadius = '4px';
+
+                        // Add file name below the image
+                        var fileName = document.createElement('div');
+                        fileName.className = 'small text-muted text-center';
+                        fileName.textContent = files[i].name.length > 15 ?
+                            files[i].name.substring(0, 12) + '...' :
+                            files[i].name;
+                        fileName.style.maxWidth = '100px';
+                        fileName.style.overflow = 'hidden';
+                        fileName.style.textOverflow = 'ellipsis';
+
+                        // Append elements to container
+                        imgContainer.appendChild(img);
+                        imgContainer.appendChild(fileName);
+                        selectedImagesContainer.appendChild(imgContainer);
+                    }
+                }
+            });
+
+            // Add event listeners to clear error messages when user starts typing/selecting
+            document.getElementById('productName').addEventListener('input', function () {
+                document.getElementById('nameError').textContent = '';
+            });
+
+            document.getElementById('productPrice').addEventListener('input', function () {
+                document.getElementById('priceError').textContent = '';
+            });
+
+            document.getElementById('productStock').addEventListener('input', function () {
+                document.getElementById('stockError').textContent = '';
+            });
+
+            document.getElementById('productCategory').addEventListener('change', function () {
+                document.getElementById('categoryError').textContent = '';
+            });
         });
-    });
-</script>
+
+        // Comprehensive form validation
+        function validateForm() {
+            // Clear previous error messages
+            document.getElementById('nameError').textContent = "";
+            document.getElementById('priceError').textContent = "";
+            document.getElementById('stockError').textContent = "";
+            document.getElementById('imageError').textContent = "";
+            document.getElementById('categoryError').textContent = "";
+            document.getElementById('descriptionError').textContent = "";
+
+            // Get form values
+            var productName = document.getElementById("productName").value.trim();
+            var productCategory = document.getElementById("productCategory").value;
+            var productPrice = document.getElementById("productPrice").value.trim();
+            var productStock = document.getElementById("productStock").value.trim();
+            var productDescription = document.getElementById("productDescription").value.trim();
+            var productImage = document.getElementById("productImage");
+
+            // Flag to track validation status
+            var isValid = true;
+
+            // Validate product name
+            if (productName === "") {
+                document.getElementById('nameError').textContent = "Product name is required";
+                isValid = false;
+            } else if (productName.length < 3) {
+                document.getElementById('nameError').textContent = "Product name must be at least 3 characters";
+                isValid = false;
+            }
+
+            // Validate category
+            if (productCategory === "" || productCategory === null) {
+                document.getElementById('categoryError').textContent = "Please select a category";
+                isValid = false;
+            }
+
+            // Validate price
+            if (productPrice === "") {
+                document.getElementById('priceError').textContent = "Product price is required";
+                isValid = false;
+            } else if (isNaN(productPrice) || parseFloat(productPrice) <= 0) {
+                document.getElementById('priceError').textContent = "Please enter a valid price (greater than 0)";
+                isValid = false;
+            }
+
+            // Validate stock
+            if (productStock === "") {
+                document.getElementById('stockError').textContent = "Product stock is required";
+                isValid = false;
+            } else if (isNaN(productStock) || parseInt(productStock) < 0) {
+                document.getElementById('stockError').textContent = "Please enter a valid stock (0 or greater)";
+                isValid = false;
+            }
+            if (productDescription === "") {
+                document.getElementById('descriptionError').textContent = "Product description name is required";
+                isValid = false;
+            }
+            // Validate image (ensure at least one image is selected)
+            if (productImage.files.length === 0) {
+                document.getElementById('imageError').textContent = "Please select at least one product image";
+                isValid = false;
+            }
+
+            // If validation fails, show a toast notification
+            if (!isValid) {
+                Toastify({
+                    text: "Please fill all required fields correctly",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "center",
+                    className: 'toastify-error',
+                    backgroundColor: 'red',
+                }).showToast();
+            }
+
+            return isValid;
+        }
+
+        // Toast notification for server-side errors
+        var errorMsg = '<%= errorMsg && errorMsg.join ? errorMsg.join("<br>") : "" %>';
+
+        if (errorMsg) {
+            Toastify({
+                text: errorMsg,
+                duration: 3000,
+                gravity: "top",
+                position: "center",
+                className: 'toastify-error',
+                backgroundColor: 'red',
+            }).showToast();
+        }
+    </script>
 
 
 
 
-<!-- JavaScript for client-side validation -->
-<script>
-  function validateForm() {
-      
-      document.getElementById('priceError').textContent = ""
-      document.getElementById('stockError').textContent = ""
-      document.getElementById('nameError').textContent = ""
-      document.getElementById('imageError').textContent = ""
-
-      var productName = document.getElementById("productName").value.trim()
-      var productPrice = parseFloat(document.getElementById("productPrice").value);
-      var productStock = parseInt(document.getElementById("productStock").value);
-      var productImage = document.getElementById("productImage").value
 
 
-      if (productName === "") {
-          document.getElementById('nameError').textContent = "Product name is required";
-          return false;
-      }
-      if(productPrice === ""){
-        document.getElementById('priceError').textContent = "Enter product price"
-        return false
-      }
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
-      if (productPrice <= 0) {
-          document.getElementById('priceError').textContent = "Enter a valid price"
-          return false;
-      }
 
-      if(productStock === ""){
-        document.getElementById('stockError').textContent = "Enter product stock"
-        return false
-      }
+    </body>
 
-      if (productStock < 0) {
-          document.getElementById('stockError').textContent = "Enter a valid stock"
-          return false;
-      }
-      
+    </html>
 
-      return true;
-  }
-</script>
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+    </body>
 
-<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-<script>
-  const errorMsg = '<%= errorMsg.join("<br>") %>'
-
-  if (errorMsg) {
-    Toastify({
-      text: errorMsg,
-      duration: 3000,
-      gravity: "top",
-      position: "center",
-      className: 'toastify-error',
-      backgroundColor: 'red',
-    }).showToast();
-  }
- 
-
-</script>
-</body>
-
-</html>
-
-<!-- Include Bootstrap JS and jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+    </html>

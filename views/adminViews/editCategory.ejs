@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body px-3 pb-2" >
 
-                    <form action="/admin/editCategory/<%=category._id%>" method="post" onsubmit="return validateForm()" style="display: flex;flex-direction: column;align-items: center;">
+                    <form action="/admin/editCategory/<%=category._id%>" method="patch" onsubmit="return validateForm()" style="display: flex;flex-direction: column;align-items: center;">
                         <div class="mb-3" >
                             <label for="categoryName" class="form-label">Category Name</label>
                             <input type="text" class="form-control" id="categoryName" name="categoryName" value="<%= locals.category.category_name %>" style="border: 2px solid #a1b0bb;width: 430px;text-align: center;" >

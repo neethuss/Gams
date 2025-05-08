@@ -21,14 +21,6 @@ const getOrder = async (req, res) => {
     let productDetails = [];
     let productPromises = cartDetails.products.map(async (val) => {
       const product = await productCollection.findById(val.product);
-      const newStock = product.product_stock - val.quantity;
-
-      const updatedStock = Math.max(0, newStock);
-
-      await productCollection.updateOne(
-        { _id: val.product },
-        { $set: { product_stock: updatedStock } }
-      );
       const price = product.product_price;
       const totalPrice = price * val.quantity;
       return {
@@ -170,6 +162,11 @@ const cancelOrder = async (req, res) => {
         },
         { new: true }
       );
+      for (const item of order.products) {
+        await productCollection.findByIdAndUpdate(item.product._id, {
+          $inc: { product_stock: item.quantity },
+        });
+      }
     }
 
     res.json({ message: "yes" });
@@ -207,8 +204,12 @@ const returnOrder = async (req, res) => {
       },
       { new: true }
     );
-    const wallet = await walletCollection.findOne({ userId: userId });
-    console.log(wallet);
+    await walletCollection.findOne({ userId: userId });
+    for (const item of order.products) {
+      await productCollection.findByIdAndUpdate(item.product._id, {
+        $inc: { product_stock: item.quantity },
+      });
+    }
     res.json({ message: "yes" });
   } catch (error) {
     console.log(error);

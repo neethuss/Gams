@@ -12,7 +12,7 @@
           </div>
           <div class="card-body px-3 pb-2">
 
-            <form action="/admin/editCoupon/<%=coupon._id%>" method="post" onsubmit="return validateForm()"
+            <form action="/admin/editCoupon/<%=coupon._id%>" method="patch" onsubmit="return validateForm()"
               style="display: flex;flex-direction: column;align-items: center;">
               <div class="mb-3">
                 <label for="couponName" class="form-label">Coupon Name</label>
@@ -53,7 +53,8 @@
               <div class="mb-3">
                 <label for="expiryDate" class="form-label">Expiry Date</label>
                 <input type="date" class="form-control" id="expiryDate" name="expiryDate"
-                  value="<%= locals.coupon.expiryDate.toLocaleDateString() %>"
+                  value="<%= locals.coupon.expiryDate.toISOString().split('T')[0] %>"
+                  min="<%= new Date().toISOString().split('T')[0] %>"
                   style="border: 2px solid #a1b0bb; width: 430px;text-align: center;">
                 <span id="expiryDateError" style="color: red;"></span>
 

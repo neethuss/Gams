@@ -3,6 +3,7 @@ const userCollection = require("../../models/userModel");
 //get method for rendering user management page
 const getUserManagement = async (req, res) => {
   try {
+    const successMsg = req.flash("success");
     const perPage = 5;
     const page = parseInt(req.query.page) || 1;
 
@@ -13,7 +14,7 @@ const getUserManagement = async (req, res) => {
 
     const users = await userCollection.find().skip(skip).limit(perPage);
 
-    res.render("adminViews/userManagement", { users, page, totalPages });
+    res.render("adminViews/userManagement", { users, page, totalPages ,successMsg});
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering user management");
