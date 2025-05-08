@@ -88,46 +88,56 @@ const updateCart = async (req, res) => {
   try {
     const userId = req.body.userId;
     const updatedProducts = req.body.updatedProducts;
-
+    
     const cart = await cartCollection
       .findOne({ userId: userId })
       .populate("products.product");
-
-    const cartId = cart._id;
-
-    if (cart) {
-      updatedProducts.forEach((updatedProduct) => {
-        const { productId, quantity } = updatedProduct;
-
-        const existingProductIndex = cart.products.findIndex((item) =>
-          item.product._id.equals(productId)
-        );
-
-        if (existingProductIndex !== -1) {
-          cart.products[existingProductIndex].quantity = parseInt(quantity);
-        }
-      });
-
-      await cart.save();
-
-      const cartTotal = cart.products.reduce((total, product) => {
-        return total + product.product.product_price * product.quantity;
-      }, 0);
-
-      res.json({
-        success: true,
-        cart: cart,
-        cartTotal: cartTotal.toFixed(2),
-      });
-    } else {
-      res.status(404).json({ error: "Cart not found" });
+      
+    if (!cart) {
+      return res.status(404).json({ error: "Cart not found" });
     }
+    
+    for (const updatedProduct of updatedProducts) {
+      const { productId, quantity } = updatedProduct;
+      
+      const existingProductIndex = cart.products.findIndex((item) =>
+        item.product._id.equals(productId)
+      );
+      
+      if (existingProductIndex !== -1) {
+        const currentQuantity = cart.products[existingProductIndex].quantity;
+        const newQuantity = parseInt(quantity);
+        
+        const quantityDifference = newQuantity - currentQuantity;
+        
+        if (quantityDifference !== 0) {
+          await productCollection.updateOne(
+            { _id: productId },
+            { $inc: { product_stock: -quantityDifference } }
+          );
+        }
+        
+        cart.products[existingProductIndex].quantity = newQuantity;
+      }
+    }
+    
+    await cart.save();
+    
+    const cartTotal = cart.products.reduce((total, product) => {
+      return total + product.product.product_price * product.quantity;
+    }, 0);
+    
+    res.json({
+      success: true,
+      cart: cart,
+      cartTotal: cartTotal.toFixed(2),
+    });
+    
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Error occurred" });
+    res.status(500).json({ error: "Error occurred while updating cart" });
   }
 };
-
 //get method for remove a product from cart
 const removeCart = async (req, res) => {
   try {

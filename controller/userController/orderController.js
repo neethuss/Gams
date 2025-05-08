@@ -136,19 +136,29 @@ const getMyOrders = async (req, res) => {
 const cancelOrder = async (req, res) => {
   try {
     const user = req.session.user;
+    const userId = user._id;
     const order = await orderCollection.findById(req.body.id);
+    
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    
     await orderCollection.findByIdAndUpdate(req.body.id, {
       $set: { status: "Cancelled" },
     });
-    const userId = user._id;
 
     const totalPrice = order.payTotal;
-    if (order.paymentMethod != "COD") {
+    
+
+    if (order.paymentMethod !== "COD") {
+
       await walletCollection.findOneAndUpdate(
         { userId: userId },
         { $inc: { walletAmount: totalPrice } },
         { new: true, upsert: true }
       );
+      
+
       await walletCollection.findOneAndUpdate(
         { userId: userId },
         {
@@ -162,16 +172,19 @@ const cancelOrder = async (req, res) => {
         },
         { new: true }
       );
-      for (const item of order.products) {
-        await productCollection.findByIdAndUpdate(item.product, {
-          $inc: { product_stock: item.quantity },
-        });
-      }
+    }
+    
+
+    for (const item of order.products) {
+      await productCollection.findByIdAndUpdate(item.product._id, {
+        $inc: { product_stock: item.quantity },
+      });
     }
 
     res.json({ message: "yes" });
   } catch (error) {
     console.log(error.message);
+    res.status(500).json({ message: "Error while cancelling order" });
   }
 };
 
