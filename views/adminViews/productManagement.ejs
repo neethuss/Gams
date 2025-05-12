@@ -177,7 +177,7 @@
                 
                 $.ajax({
                     url: '/admin/blockProduct',
-                    method: 'POST',
+                    method: 'PATCH',
                     contentType: 'application/json',
                     data: JSON.stringify({ product_name: productName }),
                     success: function () {

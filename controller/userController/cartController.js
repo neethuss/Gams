@@ -11,7 +11,9 @@ const getCart = async (req, res) => {
       .findOne({ userId: userId })
       .populate("products.product");
 
-    if (cart && !cart.cartTotal) {
+    if (cart ) {
+
+      cart.products = cart.products.filter(item=>item.product && item.product.unlist)
       // Recalculate the cartTotal
 
       const cartTotal = cart.products.reduce((total, product) => {

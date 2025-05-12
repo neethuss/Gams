@@ -10,7 +10,19 @@ const getWishlist = async (req, res) => {
       .findOne({ userId: userId })
       .populate("products.product");
 
+    if (wishlist) {
+      wishlist.products = wishlist.products.filter(
+        (item) => item.product && item.product.unlist === true
+      );
+    }
+
     const cart = await cartCollection.findOne({ userId: req.session.user._id });
+
+    if (cart) {
+      cart.products = cart.products.filter(
+        (item) => item.product && item.product.unlist === true
+      );
+    }
     const cartQuantity = cart.products.length;
 
     res.render("userViews/wishlist", { wishlist, userId, cartQuantity });

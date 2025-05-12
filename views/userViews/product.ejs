@@ -104,7 +104,7 @@
         </div>
       </div>
 
-      
+
 
 
     </div>
@@ -256,6 +256,14 @@
         .then(data => {
           inWishlist = data.added;
           this.textContent = inWishlist ? 'Remove from wishlist' : 'Add to wishlist';
+          Toastify({
+            text: inWishlist ? "Added to wishlist" : "Removed from wishlist",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            close: true,
+            backgroundColor: inWishlist ? "#28a745" : "#dc3545",
+          }).showToast();
         })
         .catch(error => {
           console.error('Error:', error);
@@ -313,6 +321,8 @@
   <script src="/assets/js/jquery.magnific-popup.min.js"></script>
 
   <script src="/assets/js/main.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
   </body>
 
 

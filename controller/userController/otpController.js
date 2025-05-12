@@ -117,6 +117,9 @@ const postSignupOtp = async (req, res) => {
 //get method for get forgot password otp page
 const getForgotPasswordOtp = async (req, res) => {
   try {
+    if (req.session.otpVerified) {
+      return res.redirect("/newPassword");
+    }
     const errorMsg = req.flash("error");
     res.render("userViews/forgotPasswordOtp", {
       expireTime: req.session.expireTime,
@@ -137,9 +140,13 @@ const postForgotPasswordOtp = async (req, res) => {
     const expireTime = req.session.expireTime;
 
     if (storedOtp != enteredOtp) {
+      console.log("not same");
       req.flash("error", "Wrong otp, Try again");
-      res.redirect("userViews/forgotPasswordOtp");
+      res.redirect("/forgotPasswordOtp");
     } else if (enteredOtp === storedOtp && new Date() <= new Date(expireTime)) {
+      req.session.otp = null;
+      req.session.expireTime = null;
+      req.session.otpVerified = true;
       res.redirect("/newPassword");
     }
   } catch (error) {

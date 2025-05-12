@@ -9,36 +9,50 @@ const getCheckout = async (req, res) => {
     req.session.addressOrigin = "checkout";
     const user = req.session.user;
     const userId = user._id;
-
-    let currentDate = new Date();
+    const currentDate = new Date();
 
     const coupons = await couponCollection.find({
-      expiryDate: { $gt: currentDate },unlist:true
+      expiryDate: { $gt: currentDate },
+      unlist: true
     });
 
     const address = await userCollection
       .findOne({ _id: userId })
       .populate("userAddress");
+
     const cart = await cartCollection
       .findOne({ userId: userId })
       .populate("products.product");
 
-    const cartQuantity = cart.products.length;
+    if (cart) {
+      cart.products = cart.products.filter(
+        item => item.product && item.product.unlist === true
+      );
+
+      cart.cartTotal = cart.products.reduce((total, product) => {
+        return total + product.product.product_price * product.quantity;
+      }, 0);
+    }
+
+    const cartQuantity = cart ? cart.products.length : 0;
 
     const addresses = await addressCollection.find({ userId: userId });
+
     res.render("userViews/checkout", {
-      address: address.userAddress,
+      address: address?.userAddress,
       user,
       cart,
       addresses,
       coupons,
       cartQuantity,
     });
+
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering checkout page");
   }
 };
+
 
 //pos method for post coupon apply
 const postCouponApply = async (req, res) => {

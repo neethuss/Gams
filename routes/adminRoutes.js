@@ -27,19 +27,19 @@ router.get('/addCategory',adminSessionMiddleware.isAdmin,categoryController.getA
 router.post('/addCategory',adminSessionMiddleware.isAdmin,categoryController.postAddCategory)
 router.get('/editCategory/:catId',adminSessionMiddleware.isAdmin,categoryController.getEditCategory)
 router.patch('/editCategory/:catId',adminSessionMiddleware.isAdmin,categoryController.postEditCategory)
-router.post('/blockCategory',adminSessionMiddleware.isAdmin,categoryController.postBlockCategory)
+router.patch('/blockCategory',adminSessionMiddleware.isAdmin,categoryController.postBlockCategory)
 
 router.get('/productManagement',adminSessionMiddleware.isAdmin,productController.getProductManagement)
 router.get('/addProduct',adminSessionMiddleware.isAdmin,productController.getAddProduct)
 router.post('/addProduct',adminSessionMiddleware.isAdmin,multer.upload.array('productImage',4),productController.postAddProduct)
 router.get('/editProduct/:proId',adminSessionMiddleware.isAdmin,productController.getEditProduct)
 router.patch('/editProduct/:proId',adminSessionMiddleware.isAdmin,multer.upload.array('productImage',4),productController.postEditProduct)
-router.post('/blockProduct',adminSessionMiddleware.isAdmin,productController.postBlockProduct)
+router.patch('/blockProduct',adminSessionMiddleware.isAdmin,productController.postBlockProduct)
 router.delete('/deleteProductImage/:index/:id',adminSessionMiddleware.isAdmin, productController.deleteProductImage);
 
 router.get('/orderManagement',adminSessionMiddleware.isAdmin,adminSessionMiddleware.isAdmin,orderController.getOrederManagement)
 router.get('/updateOrderStatus/:orderId/:newStatus',adminSessionMiddleware.isAdmin,orderController.getUpdateOrderStatus)
-router.get('/orderDetails/:orderId',orderController.getOrderDetails)
+router.get('/orderDetails/:orderId',adminSessionMiddleware.isAdmin,orderController.getOrderDetails)
 
 router.get('/couponManagement',adminSessionMiddleware.isAdmin,couponController.getCouponManagement)
 router.get('/addCoupon',adminSessionMiddleware.isAdmin,couponController.getAddCoupon)

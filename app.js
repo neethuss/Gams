@@ -33,8 +33,14 @@ app.use((req, res, next) => {
 
 app.use(flash());
 
+
 app.use("/", require("./routes/userRoutes"));
 app.use("/admin", require("./routes/adminRoutes"));
+
+app.use((req, res) => {
+  res.status(404).send("Page Not Found");
+});
+
 
 const port = process.env.PORT;
 

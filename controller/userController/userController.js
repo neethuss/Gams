@@ -1,6 +1,6 @@
 const userCollection = require("../../models/userModel");
 const bannerCollection = require("../../models/bannerModel");
-const cartCollection = require('../../models/cartModel')
+const cartCollection = require("../../models/cartModel");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 
@@ -9,16 +9,16 @@ const getHome = async (req, res) => {
   try {
     const successMsg = req.flash("success");
     let user = null;
-    let cartQuantity = 0
+    let cartQuantity = 0;
     if (req.session.user) {
       user = req.session.user;
       const cart = await cartCollection.findOne({
         userId: req.session.user._id,
       });
-      cartQuantity = cart ? cart.products.length : 0; 
+      cartQuantity = cart ? cart.products.length : 0;
     }
     const banners = await bannerCollection.find();
-    res.render("userViews/home", { user, successMsg, banners , cartQuantity});
+    res.render("userViews/home", { user, successMsg, banners, cartQuantity });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering home");
@@ -28,58 +28,58 @@ const getHome = async (req, res) => {
 //get method for rendering login page
 const getLogin = async (req, res) => {
   try {
-      const successMsg = req.flash("success");
-      const errorMsg = req.flash("error");
-      
-      if (req.session.user) {
-          return res.redirect("/");
-      }
-      
-      res.render("userViews/login", { 
-          successMsg, 
-          errorMsg 
-      });
+    const successMsg = req.flash("success");
+    const errorMsg = req.flash("error");
+
+    if (req.session.user) {
+      return res.redirect("/");
+    }
+    req.session.otpVerified = null;
+
+    res.render("userViews/login", {
+      successMsg,
+      errorMsg,
+    });
   } catch (error) {
-      console.log(error);
-      res.status(500).send("Error while rendering login page");
+    console.log(error);
+    res.status(500).send("Error while rendering login page");
   }
 };
 
 //post method for login
 const postLogin = async (req, res) => {
   try {
-      const check = await userCollection.findOne({ email: req.body.email });
-      
-      if (!check) {
-          req.flash("error", "User not found");
-          return res.redirect("/login");
-      }
-      
-      if (check.isBlocked) {
-          req.flash("error", "User is blocked");
-          return res.redirect("/login");
-      }
-      
-      const isPasswordMatch = await bcrypt.compare(
-          req.body.password, 
-          check.password
-      );
-      
-      if (isPasswordMatch) {
-          req.session.user = check;
-          req.flash("success", "User logged in successfully");
-          return res.redirect("/");
-      } else {
-          req.flash("error", "Incorrect password");
-          return res.redirect("/login");
-      }
-  } catch (error) {
-      console.log(error);
-      req.flash("error", "An error occurred during login");
+    const check = await userCollection.findOne({ email: req.body.email });
+
+    if (!check) {
+      req.flash("error", "User not found");
       return res.redirect("/login");
+    }
+
+    if (check.isBlocked) {
+      req.flash("error", "User is blocked");
+      return res.redirect("/login");
+    }
+
+    const isPasswordMatch = await bcrypt.compare(
+      req.body.password,
+      check.password
+    );
+
+    if (isPasswordMatch) {
+      req.session.user = check;
+      req.flash("success", "User logged in successfully");
+      return res.redirect("/");
+    } else {
+      req.flash("error", "Incorrect password");
+      return res.redirect("/login");
+    }
+  } catch (error) {
+    console.log(error);
+    req.flash("error", "An error occurred during login");
+    return res.redirect("/login");
   }
 };
-
 
 //get method for rendering signup page
 const getSignup = async (req, res) => {
@@ -186,21 +186,22 @@ function generateReaferal() {
 //get method for resending otp
 const getResendOtp = async (req, res) => {
   try {
+    req.session.expireTime = new Date(expireTime);
     const check = await userCollection.find({
-      email: req.session.userDetails.email,
+      email: req.session.email,
     });
-    if (check.length > 0) {
-      req.flash("error", "User already exists");
+    if (!check) {
+      req.flash("error", "User not found, please go to login");
       res.render("useViews/signup");
     } else {
       const otp = generateotp();
       console.log(otp);
 
-      const emailText = `Hello ${req.session.userDetailsusername}, this is from GAMS. Your OTP is : ${otp}`;
+      const emailText = `Hello ${check.username}, this is from GAMS. Your OTP is : ${otp}`;
 
       const mailOptions = {
         from: "neethusa162000@gmail.com",
-        to: req.session.userDetails.email,
+        to: req.session.email,
         subject: "OTP Verification",
         text: emailText,
       };
@@ -218,7 +219,7 @@ const getResendOtp = async (req, res) => {
 
           req.session.expireTime = new Date(expireTime);
 
-          res.redirect("/signupOtp");
+          res.redirect("forgotPasswordOtp");
         }
       });
     }
@@ -304,6 +305,8 @@ const postNewPassword = async (req, res) => {
       { password: hashedPassword }
     );
     req.flash("success", "New password set.Login now");
+    req.session.email = null;
+    req.session.otpVerified = null;
     res.redirect("/login");
   } catch (error) {
     console.log(error);

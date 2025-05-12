@@ -184,7 +184,7 @@
                 
                 $.ajax({
                     url: '/admin/blockCategory',
-                    method: 'POST',
+                    method: 'PATCH',
                     contentType: 'application/json',
                     data: JSON.stringify({ category_name: categoryName }),
                     success: function () {
