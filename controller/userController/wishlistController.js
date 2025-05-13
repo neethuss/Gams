@@ -6,34 +6,27 @@ const cartCollection = require("../../models/cartModel");
 const getWishlist = async (req, res) => {
   try {
     const userId = req.session.user._id;
-    let wishlist = await wishlistCollection
+    let wishlist = []
+     wishlist = await wishlistCollection
       .findOne({ userId: userId })
       .populate("products.product");
 
-    let wishlistItems = [];
-    
-    if (wishlist && wishlist.products) {
-    
-      wishlistItems = wishlist.products.filter(
-        (item) => item.product && item.product.unlist === false
+    if (wishlist) {
+      wishlist.products = wishlist.products.filter(
+        (item) => item.product && item.product.unlist === true
       );
     }
 
     const cart = await cartCollection.findOne({ userId: req.session.user._id });
-    
-    let cartQuantity = 0;
-    if (cart && cart.products) {
-      const filteredProducts = cart.products.filter(
-        (item) => item.product && item.product.unlist === false
-      );
-      cartQuantity = filteredProducts.length;
-    }
 
-    res.render("userViews/wishlist", { 
-      wishlist: { products: wishlistItems }, 
-      userId, 
-      cartQuantity 
-    });
+    if (cart) {
+      cart.products = cart.products.filter(
+        (item) => item.product && item.product.unlist === true
+      );
+    }
+    const cartQuantity = cart.products.length;
+
+    res.render("userViews/wishlist", { wishlist, userId, cartQuantity });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering wishlist");

@@ -6,33 +6,24 @@ const getCart = async (req, res) => {
   try {
     const user = req.session.user;
     const userId = user._id;
-
-    let cart = await cartCollection
+let cart = []
+     cart = await cartCollection
       .findOne({ userId: userId })
       .populate("products.product");
 
-    let cartQuantity = 0;
-    
-    if (!cart) {
-      cart = new cartCollection({
-        userId: userId,
-        products: [],
-        cartTotal: 0
-      });
-      await cart.save();
-    } else {
-    
-      cart.products = cart.products.filter(item => item.product && !item.product.unlist);
-      
+    if (cart ) {
+
+      cart.products = cart.products.filter(item=>item.product && item.product.unlist)
+
       const cartTotal = cart.products.reduce((total, product) => {
         return total + product.product.product_price * product.quantity;
       }, 0);
 
       cart.cartTotal = cartTotal;
+
       await cart.save();
-      
-      cartQuantity = cart.products.length;
     }
+    const cartQuantity = cart.products.length;
 
     res.render("userViews/cart", { cart, userId, cartQuantity });
   } catch (error) {
@@ -40,7 +31,6 @@ const getCart = async (req, res) => {
     res.status(500).send("Error while rendering cart page");
   }
 };
-
 
 //post method for cart page
 const postCart = async (req, res) => {
