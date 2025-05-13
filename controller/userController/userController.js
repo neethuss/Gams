@@ -186,13 +186,21 @@ function generateReaferal() {
 //get method for resending otp
 const getResendOtp = async (req, res) => {
   try {
-    req.session.expireTime = new Date(expireTime);
-    const check = await userCollection.find({
+    const expireTime = new Date(Date.now() + 1 * 60000); 
+    req.session.expireTime = expireTime;
+    
+    if (!req.session.email) {
+      req.flash("error", "Email not found, please go back to forgot password");
+      return res.redirect("/forgotPassword");
+    }
+    
+    const check = await userCollection.findOne({
       email: req.session.email,
     });
+    
     if (!check) {
       req.flash("error", "User not found, please go to login");
-      res.render("useViews/signup");
+      return res.redirect("/login");
     } else {
       const otp = generateotp();
       console.log(otp);
@@ -208,24 +216,26 @@ const getResendOtp = async (req, res) => {
 
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.log("Error while sending OTP");
+          console.log("Error while sending OTP", error);
           req.flash("error", "Error while sending OTP, try again");
-          res.render("userViews/otp");
+          res.render("userViews/forgotPasswordOtp", {
+            expireTime: req.session.expireTime,
+            errorMsg: req.flash("error")
+          });
         } else {
-          console.log("OTP send:", info.response);
+          console.log("OTP sent:", info.response);
           console.log(otp);
 
           req.session.otp = otp;
+          req.session.expireTime = expireTime;
 
-          req.session.expireTime = new Date(expireTime);
-
-          res.redirect("forgotPasswordOtp");
+          res.redirect("/forgotPasswordOtp");
         }
       });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send("Error while resend otp");
+    res.status(500).send("Error while resending forgot password OTP");
   }
 };
 
@@ -236,6 +246,53 @@ const getForgotPassword = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while rendering forgot password page");
+  }
+};
+
+// Get method for resending signup OTP
+const getResendSignupOtp = async (req, res) => {
+  try {
+    const expireTime = new Date(Date.now() + 1 * 60000); 
+    req.session.expireTime = expireTime;
+    
+    if (!req.session.userDetails || !req.session.userDetails.email) {
+      req.flash("error", "Session expired, please go back to signup");
+      return res.redirect("/signup");
+    }
+    
+    const otp = generateotp(); 
+    console.log(otp);
+
+    const emailText = `Hello ${req.session.userDetails.username}, this is from GAMS. Your OTP is : ${otp}`;
+
+    const mailOptions = {
+      from: "neethusa162000@gmail.com",
+      to: req.session.userDetails.email,
+      subject: "OTP Verification",
+      text: emailText,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error while sending OTP", error);
+        req.flash("error", "Error while sending OTP, try again");
+        res.render("userViews/otp", {
+          expireTime: req.session.expireTime,
+          errorMsg: req.flash("error")
+        });
+      } else {
+        console.log("OTP sent:", info.response);
+        console.log(otp);
+
+        req.session.otp = otp;
+        req.session.expireTime = expireTime;
+
+        res.redirect("/signupOtp");
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error while resending signup OTP");
   }
 };
 
@@ -331,6 +388,7 @@ module.exports = {
   getLogin,
   postLogin,
   getResendOtp,
+  getResendSignupOtp,
   getForgotPassword,
   postForgotPassword,
   getSignup,

@@ -3,6 +3,7 @@ const cartCollection = require("../../models/cartModel");
 const productCollection = require("../../models/productModel");
 const orderCollection = require("../../models/orderModel");
 const walletCollection = require("../../models/walletModel");
+const addressCollection = require('../../models/addressModel')
 const Razorpay = require("razorpay");
 const pdf = require("pdfkit-table");
 require("dotenv").config();
@@ -13,14 +14,26 @@ const getOrder = async (req, res) => {
     const userDetails = req.session.user;
     const user = await userCollection.findOne({ email: userDetails.email });
     const userId = user._id;
-    const userAddress = user.userAddress;
+    
+    const addressId = user.userAddress;
+    const addressDoc = await addressCollection.findById(addressId);
+    
+    if (!addressDoc) {
+      return res.status(400).send("Shipping address not found");
+    }
+
 
     const cartDetails = await cartCollection.findOne({ userId: userId });
-    console.log(cartDetails);
+    
+    if (!cartDetails || !cartDetails.products || cartDetails.products.length === 0) {
+      return res.status(400).send("Cart is empty");
+    }
 
-    let productDetails = [];
     let productPromises = cartDetails.products.map(async (val) => {
       const product = await productCollection.findById(val.product);
+      if (!product) {
+        throw new Error(`Product with ID ${val.product} not found`);
+      }
       const price = product.product_price;
       const totalPrice = price * val.quantity;
       return {
@@ -31,11 +44,28 @@ const getOrder = async (req, res) => {
     });
 
     Promise.all(productPromises)
-      .then(async (results) => {
-        productDetails = results;
-        let detail = productDetails;
+      .then(async (productDetails) => {
+        const addressToSave = {
+          name: addressDoc.name || "",
+          address: addressDoc.address || "",
+          district: addressDoc.district || "",
+          state: addressDoc.state || "",
+          pincode: addressDoc.pincode || "",
+          country: addressDoc.country || "",
+          phone: addressDoc.phone || ""
+        };
 
-        // Remove purchased products from the cart
+
+        const newOrder = await orderCollection.create({
+          userId: userId,
+          products: productDetails,
+          shippingAddress: addressToSave,
+          paymentMethod: req.params.pay,
+          orderDate: Date.now(),
+          discountAmount: req.query.discountAmount || 0,
+          payTotal: req.query.totalPrice,
+        });
+
         await cartCollection.updateOne(
           { userId: userId },
           {
@@ -47,20 +77,7 @@ const getOrder = async (req, res) => {
           }
         );
 
-        // Insert order
-        await orderCollection.insertMany([
-          {
-            userId: userId,
-            products: detail,
-            shippingAddress: userAddress,
-            paymentMethod: req.params.pay,
-            orderDate: Date.now(),
-            discountAmount: req.query.discountAmount,
-            payTotal: req.query.totalPrice,
-          },
-        ]);
-
-        if (req.query.couponId && req.query.couponId !== undefined) {
+        if (req.query.couponId && req.query.couponId !== "undefined") {
           await userCollection.findByIdAndUpdate(userId, {
             $push: { appliedCoupons: req.query.couponId },
           });
@@ -70,11 +87,11 @@ const getOrder = async (req, res) => {
       })
       .catch((err) => {
         console.error(err);
-        res.status(500).send("Internal Server Error");
+        res.status(500).send("Internal Server Error: " + err.message);
       });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send("Internal Server Error: " + error.message);
   }
 };
 

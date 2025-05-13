@@ -26,7 +26,6 @@
     <link rel="stylesheet" href="/assets/css/modal.css">
 
     <style>
-        /* Custom styles for the improved layout */
         .shop-container {
             display: flex;
             width: 100%;
@@ -230,8 +229,8 @@
         }
 
         figure {
-  margin: 0;
-}
+            margin: 0;
+        }
 
         .product-cat a {
             font-size: 14px;
@@ -392,11 +391,9 @@
             <div class="page-content">
                 <div class="container">
                     <div class="shop-container">
-                        <!-- Sidebar with filters -->
                         <div class="sidebar">
                             <h4>Shop Filters</h4>
 
-                            <!-- Category Filter -->
                             <div class="filter-form">
                                 <form action="/filterByCategory" method="get" id="category-form">
                                     <label for="category-select">Category:</label>
@@ -410,7 +407,6 @@
                                             <% }) %>
                                     </select>
 
-                                    <!-- Hidden fields to maintain sort state -->
                                     <input type="hidden" name="sortOption" id="category-sort-input"
                                         value="<%= sortOption %>">
                                     <input type="hidden" name="page" value="1">
@@ -420,7 +416,6 @@
                                 </form>
                             </div>
 
-                            <!-- Price Sort -->
                             <div class="filter-form">
                                 <form action="/sortByPrice" method="get" id="sort-form">
                                     <label for="sort-select">Sort by Price:</label>
@@ -432,7 +427,6 @@
                                             >Price: High to Low</option>
                                     </select>
 
-                                    <!-- Hidden fields to maintain category state -->
                                     <input type="hidden" name="category" id="sort-category-input"
                                         value="<%= category %>">
                                     <input type="hidden" name="page" value="1">
@@ -442,16 +436,13 @@
                                 </form>
                             </div>
 
-                            <!-- Reset Button -->
                             <a href="/shop" class="reset-button"
                                 style="display: block; text-align: center; text-decoration: none; color: white;">
                                 Reset All Filters
                             </a>
                         </div>
 
-                        <!-- Main content -->
                         <div class="main-content">
-                            <!-- Active filters display -->
                             <% if (category || sortOption || search) { %>
                                 <div class="active-filters">
                                     <strong>Active Filters:</strong>
@@ -468,35 +459,40 @@
                                 </div>
                                 <% } %>
 
-                                    <!-- Products Grid -->
                                     <div class="products">
-  <% products.forEach((product) => { %>
-    <div class="product">
-      <div class="product-media">
-        <div class="image-container">
-          <img src="/uploads/<%= product.product_image[0] %>" alt="<%= product.product_name %>" class="product-image">
-          <div class="product-action">
-            <a href="/product/<%= product._id%>" class="btn-product">View product</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-body">
-        <div class="product-cat">
-          <a href="#"><%= product.product_category.category_name %></a>
-        </div>
-        <h3 class="product-title">
-          <a href="/product/<%= product._id%>"><%= product.product_name %></a>
-        </h3>
-        <div class="product-price">Rs.<%= product.product_price %></div>
-      </div>
-    </div>
-  <% }) %>
-</div>
+                                        <% products.forEach((product)=> { %>
+                                            <div class="product">
+                                                <div class="product-media">
+                                                    <div class="image-container">
+                                                        <img src="/uploads/<%= product.product_image[0] %>"
+                                                            alt="<%= product.product_name %>" class="product-image">
+                                                        <div class="product-action">
+                                                            <a href="/product/<%= product._id%>"
+                                                                class="btn-product">View product</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-body">
+                                                    <div class="product-cat">
+                                                        <a href="#">
+                                                            <%= product.product_category.category_name %>
+                                                        </a>
+                                                    </div>
+                                                    <h3 class="product-title">
+                                                        <a href="/product/<%= product._id%>">
+                                                            <%= product.product_name %>
+                                                        </a>
+                                                    </h3>
+                                                    <div class="product-price">Rs.<%= product.product_price %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% }) %>
+                                    </div>
 
-                                      
 
 
-                                    <!-- Pagination -->
+
                                     <div class="pagination-container">
                                         <nav aria-label="Page navigation">
                                             <ul class="pagination justify-content-center">
@@ -536,7 +532,6 @@
             </div>
         </main>
 
-        <!-- Logout Modal -->
         <div id="logoutModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -552,7 +547,6 @@
     </div>
 
     <script>
-        // Logout modal functionality
         const logoutIcon = document.querySelector('#logoutIcon');
         const logoutModal = document.querySelector('#logoutModal');
         const closeButton = document.querySelector('.close');
@@ -579,7 +573,6 @@
             window.location.href = '/logout';
         });
 
-        // Search toggle functionality
         document.addEventListener('DOMContentLoaded', function () {
             const searchToggle = document.querySelector('.search-toggle');
             const searchWrapper = document.querySelector('.header-search-wrapper');
@@ -589,7 +582,6 @@
                 searchWrapper.classList.toggle('show');
             });
 
-            // Maintain filter states across forms
             const categorySelect = document.getElementById('category-select');
             const sortSelect = document.getElementById('sort-select');
             const sortCategoryInput = document.getElementById('sort-category-input');
@@ -597,13 +589,11 @@
             const searchCategoryInput = document.getElementById('search-category-input');
             const searchSortInput = document.getElementById('search-sort-input');
 
-            // When category changes, update the hidden category field in other forms
             categorySelect.addEventListener('change', function () {
                 sortCategoryInput.value = this.value;
                 searchCategoryInput.value = this.value;
             });
 
-            // When sort changes, update the hidden sort field in other forms
             sortSelect.addEventListener('change', function () {
                 categorySortInput.value = this.value;
                 searchSortInput.value = this.value;

@@ -23,9 +23,15 @@ const orderSchema = new mongoose.Schema({
     },
   ],
 
-  shippingAddress: {
-    type: mongoose.Schema.ObjectId,
-    ref: "address",
+   shippingAddress: {
+    name: String,
+    address:String,
+    district: String,
+    state: String,
+    pincode: String,
+    country: String,
+    phone: String,
+    
   },
 
   discountAmount:{

@@ -1,86 +1,89 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 
-const userController = require('../controller/userController/userController')
-const otpcontroller = require('../controller/userController/otpController')
-const shopController = require('../controller/userController/shopController')
-const wishlistController = require('../controller/userController/wishlistController')
-const cartController = require('../controller/userController/cartController')
-const checkoutcontroller = require('../controller/userController/checkoutController')
-const profileController = require('../controller/userController/profileController')
-const orderController = require('../controller/userController/orderController')
+// Controllers
+const userController = require('../controller/userController/userController');
+const otpController = require('../controller/userController/otpController');
+const shopController = require('../controller/userController/shopController');
+const wishlistController = require('../controller/userController/wishlistController');
+const cartController = require('../controller/userController/cartController');
+const checkoutController = require('../controller/userController/checkoutController');
+const profileController = require('../controller/userController/profileController');
+const orderController = require('../controller/userController/orderController');
 
-const userBlockMiddleware = require('../middleware/userAuth')
-const userSessionMiddleware = require('../middleware/userSession')
+const authentication = require('../middleware/userAuth').isBlocked;
 
-router.get('/',userBlockMiddleware.isBlocked,userController.getHome)
-
-router.get('/login',userController.getLogin)
-router.post('/login',userController.postLogin)
-router.get('/forgotPassword',userController.getForgotPassword)
-router.post('/forgotPassword',userController.postForgotPassword)
-router.get('/forgotPasswordOtp',otpcontroller.getForgotPasswordOtp)
-router.post('/forgotPasswordOtp',otpcontroller.postForgotPasswordOtp)
-
-router.get('/resendOtp',userController.getResendOtp)
-
-router.get('/newPassword',userController.getNewPassword)
-router.post('/newPassword',userController.postNewPassword)
-
-router.get('/signup',userController.getSignup)
-router.post('/signup',userController.postSignup)
-
-router.get('/signupOtp',otpcontroller.getSignupOtp)
-router.post('/signupOtp',otpcontroller.postSignupOtp)
+router.get('/', userController.getHome);
+router.get('/login', userController.getLogin);
+router.post('/login', userController.postLogin);
+router.get('/forgotPassword', userController.getForgotPassword);
+router.post('/forgotPassword', userController.postForgotPassword);
+router.get('/forgotPasswordOtp', otpController.getForgotPasswordOtp);
+router.post('/forgotPasswordOtp', otpController.postForgotPasswordOtp);
+router.get('/resendOtp', userController.getResendOtp);
+router.get('/resendSignupOtp', userController.getResendSignupOtp);
+router.get('/newPassword', userController.getNewPassword);
+router.post('/newPassword', userController.postNewPassword);
+router.get('/signup', userController.getSignup);
+router.post('/signup', userController.postSignup);
+router.get('/signupOtp', otpController.getSignupOtp);
+router.post('/signupOtp', otpController.postSignupOtp);
 
 
-router.get('/shop',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,shopController.getShop)
+router.get('/shop', authentication, shopController.getShop);
+router.get('/searchProduct', authentication, shopController.getSearchProduct);
+router.get('/filterByCategory', authentication, shopController.getFilterByCategory);
+router.get('/sortByPrice', authentication, shopController.getSortByPrice);
+router.get('/product/:proId', authentication, shopController.getProduct);
 
-router.get('/searchProduct',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,shopController.getSearchProduct)
-router.get('/filterByCategory',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,shopController.getFilterByCategory)
-router.get('/sortByPrice',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,shopController.getSortByPrice)
 
-router.get('/product/:proId',userSessionMiddleware.isUser,userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,shopController.getProduct)
+router.route('/wishlist')
+  .get(authentication, wishlistController.getWishlist)
+  .post(authentication, wishlistController.postWishlist);
+router.get('/wishlist/remove/:id', authentication, wishlistController.getRemoveWishlist);
 
-router.get('/wishlist',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,wishlistController.getWishlist)
-router.post('/wishlist',userBlockMiddleware.isBlocked,wishlistController.postWishlist)
-router.get('/removeWishlist/:id',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,wishlistController.getRemoveWishlist)
 
-router.get('/cart',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,cartController.getCart)
-router.post('/cart',userBlockMiddleware.isBlocked,cartController.postCart)
-router.post('/updateCart',userBlockMiddleware.isBlocked,cartController.updateCart)
-router.get('/removeCart/:id/:quantity',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,cartController.removeCart)
+router.route('/cart')
+  .get(authentication, cartController.getCart)
+  .post(authentication, cartController.postCart);
+router.post('/updateCart', authentication, cartController.updateCart);
+router.get('/removeCart/:id/:quantity', authentication, cartController.removeCart);
 
-router.post('/couponApply',userBlockMiddleware.isBlocked,checkoutcontroller.postCouponApply)
 
-router.get('/checkout',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,checkoutcontroller.getCheckout)
+router.post('/couponApply', authentication, checkoutController.postCouponApply);
+router.get('/checkout', authentication, checkoutController.getCheckout);
 
-router.post('/razorpay',userBlockMiddleware.isBlocked,orderController.postRazorpay)
-router.post('/walletPayment',userBlockMiddleware.isBlocked,orderController.postWalletPayment)
 
-router.get('/order/:pay',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,orderController.getOrder)
-router.get('/orderConfirmed',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,orderController.getOrderConfirmed)
-router.get('/myOrders',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,orderController.getMyOrders)
-router.post('/cancelOrder',userBlockMiddleware.isBlocked,orderController.cancelOrder)
-router.post('/returnOrder',userBlockMiddleware.isBlocked,orderController.returnOrder)
-router.get('/invoiceDownload',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,orderController.getInvoiceDownload)
-router.get('/orderDetails/:id',userSessionMiddleware.isUser,orderController.getOrderDetail)
+router.post('/razorpay', authentication, orderController.postRazorpay);
+router.post('/walletPayment', authentication, orderController.postWalletPayment);
+router.get('/order/:pay', authentication, orderController.getOrder);
+router.get('/orderConfirmed', authentication, orderController.getOrderConfirmed);
+router.get('/myOrders', authentication, orderController.getMyOrders);
+router.post('/cancelOrder', authentication, orderController.cancelOrder);
+router.post('/returnOrder', authentication, orderController.returnOrder);
+router.get('/invoiceDownload', authentication, orderController.getInvoiceDownload);
+router.get('/orderDetails/:id', authentication, orderController.getOrderDetail);
 
-router.get('/profile',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getProfile)
-router.get('/editProfile/:id',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getEditProfile)
-router.post('/editProfile/:id',userBlockMiddleware.isBlocked,profileController.postEditProfile)
-router.get('/addAddress',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getAddAddress)
-router.post('/addAddress',userBlockMiddleware.isBlocked,profileController.postAddAddress)
-router.post('/defaultAddress',profileController.postSetDefaultAddress)
-router.get('/editAddress/:addressId',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getEditAddress)
-router.post('/editAddress/:addressId',userBlockMiddleware.isBlocked,profileController.postEditAddress)
-router.get('/deleteAddress/:addressId',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getDeleteAddress)
 
-router.get('/wallet',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getWallet)
-router.get('/walletHistory',userSessionMiddleware.isUser,userBlockMiddleware.isBlocked,profileController.getWalletHistory)
+router.get('/profile', authentication, profileController.getProfile);
+router.route('/editProfile/:id')
+  .get(authentication, profileController.getEditProfile)
+  .post(authentication, profileController.postEditProfile);
+router.route('/addAddress')
+  .get(authentication, profileController.getAddAddress)
+  .post(authentication, profileController.postAddAddress);
+router.post('/defaultAddress', authentication, profileController.postSetDefaultAddress);
+router.route('/editAddress/:addressId')
+  .get(authentication, profileController.getEditAddress)
+  .post(authentication, profileController.postEditAddress);
+router.get('/deleteAddress/:addressId', authentication, profileController.getDeleteAddress);
 
-router.get('/referalLogout',userSessionMiddleware.isUser,userController.getReferalLogout)
 
-router.get('/logout',userSessionMiddleware.isUser,userController.getLogout)
+router.get('/wallet', authentication, profileController.getWallet);
+router.get('/walletHistory', authentication, profileController.getWalletHistory);
 
-module.exports = router
+
+router.get('/referalLogout', authentication, userController.getReferalLogout);
+router.get('/logout', authentication, userController.getLogout);
+
+module.exports = router;

@@ -4,6 +4,7 @@ const walletCollection = require("../../models/walletModel");
 const cartCollection = require("../../models/cartModel");
 
 //get method for rendering profile page
+
 const getProfile = async (req, res) => {
   try {
     req.session.addressOrigin = "profile";
@@ -22,7 +23,11 @@ const getProfile = async (req, res) => {
     const cart = await cartCollection.findOne({
       userId: req.session.user._id,
     });
-    const cartQuantity = cart.products.length;
+    
+    let cartQuantity = 0;
+    if (cart && cart.products) {
+      cartQuantity = cart.products.length;
+    }
 
     const addresses = await addressCollection.find({ userId: userId });
     res.render("userViews/profileViews/profile", {
